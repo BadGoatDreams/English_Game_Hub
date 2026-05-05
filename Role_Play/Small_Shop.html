@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Market Day</title>
+    <link rel="stylesheet" href="../styles/unified-theme.css">
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: #f4f6f7;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+            touch-action: manipulation;
+            user-select: none;
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border: 3px solid #333;
+        }
+        h1 { color: #2c3e50; margin-top: 0; font-size: 28px; }
+        h2 { color: #e67e22; border-bottom: 2px dashed #ccc; padding-bottom: 10px; margin-top: 0;}
+        
+        /* BUTTONS */
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px;
+            margin: 8px 0;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 0 #2980b9;
+            transition: transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        button:active { transform: translateY(4px); box-shadow: none; }
+        button.secondary { background-color: #95a5a6; box-shadow: 0 4px 0 #7f8c8d; }
+        button.pay-btn { background-color: #e74c3c; box-shadow: 0 4px 0 #c0392b; font-size: 24px; }
+        button.vocab-btn { background-color: #9b59b6; box-shadow: 0 4px 0 #8e44ad; }
+
+        /* INPUTS */
+        .money-input {
+            width: 80%;
+            padding: 15px;
+            font-size: 30px;
+            text-align: center;
+            border: 3px solid #333;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            outline: none;
+        }
+        .money-input:focus { border-color: #3498db; }
+
+        /* CARDS & LISTS */
+        .card {
+            background: #fff8dc;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #f1c40f;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .hidden { display: none; }
+        
+        /* SELLER LIST STYLES */
+        .price-list { list-style: none; padding: 0; text-align: left;}
+        .price-list li {
+            background: white;
+            margin: 8px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #ddd;
+            font-size: 18px;
+            cursor: pointer; /* Clickable cursor */
+            transition: background 0.1s;
+        }
+        .price-list li:active {
+            background-color: #dff9fb;
+            transform: scale(0.98);
+        }
+
+        /* WALLETS & TILLS */
+        .wallet-box {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .wallet-amount { font-size: 45px; font-weight: bold; color: #f1c40f;}
+        
+        .till-box {
+            background: #27ae60;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* VOCABULARY TABLE */
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin-top: 10px;
+        }
+        .vocab-table td {
+            padding: 12px 5px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+        }
+        .eng-text { font-weight: bold; font-size: 18px; display: block;}
+        .rus-text { color: #7f8c8d; font-size: 16px; font-style: italic;}
+
+        /* FLASH OVERLAY */
+        #flash-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            color: white; font-size: 80px; font-weight: bold;
+            z-index: 9999; opacity: 0; pointer-events: none;
+            transition: opacity 0.2s; text-align: center;
+            text-shadow: 2px 2px 0 #000; background-color: #e74c3c;
+        }
+        #flash-overlay.active { opacity: 1; pointer-events: all; }
+
+        .acting-tip {
+            background: #e8f4fd; color: #2980b9;
+            padding: 10px; border-radius: 8px;
+            font-style: italic; margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<a href="../index.html" class="back-btn" style="position: fixed; top: 15px; left: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">← Back to Hub</a>
+
+<div id="flash-overlay">
+    <div style="font-size: 120px; margin-bottom: 20px;">💸</div>
+    <div id="flash-text">PAID $5</div>
+</div>
+
+<div class="container" id="main-menu">
+    <h1>🛒 Classroom Market</h1>
+    <button onclick="startBuyer()">🛍️ I am a BUYER</button>
+    <button class="secondary" onclick="showSellerMenu()">🏪 I am a SELLER</button>
+    <button class="vocab-btn" onclick="showVocab()">🗣️ Helper / Помощник</button>
+</div>
+
+<div class="container hidden" id="vocab-section">
+    <h2>🗣️ Helpful Phrases</h2>
+    <div style="overflow-y: auto; max-height: 400px;">
+        <table class="vocab-table">
+            <tr>
+                <td><span class="eng-text">Hello!</span><span class="rus-text">Здравствуйте!</span></td>
+            </tr>
+            <tr>
+                <td><span class="eng-text">How much is this?</span><span class="rus-text">Сколько это стоит?</span></td>
+            </tr>
+            <tr>
+                <td><span class="eng-text">It costs 5 dollars.</span><span class="rus-text">Это стоит 5 долларов.</span></td>
+            </tr>
+            <tr>
+                <td><span class="eng-text">Here you go.</span><span class="rus-text">Вот, пожалуйста.</span></td>
+            </tr>
+            <tr>
+                <td><span class="eng-text">Do you have...?</span><span class="rus-text">У вас есть...?</span></td>
+            </tr>
+            <tr>
+                <td><span class="eng-text">Here is your change.</span><span class="rus-text">Вот ваша сдача.</span></td>
+            </tr>
+            <tr>
+                <td><span class="eng-text">Thank you!</span><span class="rus-text">Спасибо!</span></td>
+            </tr>
+            <tr>
+                <td><span class="eng-text">Have a nice day!</span><span class="rus-text">Хорошего дня!</span></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <button class="secondary" onclick="resetApp()">⬅️ Back</button>
+</div>
+
+<div class="container hidden" id="buyer-section">
+    <h2>🎒 My Wallet</h2>
+    
+    <div class="wallet-box">
+        <div>Current Money</div>
+        <div class="wallet-amount">$<span id="wallet-val">0</span></div>
+    </div>
+
+    <div class="card">
+        <h3>🎯 Mission: <span id="mission-title"></span></h3>
+        <ul id="shopping-list" style="font-size: 18px;"></ul>
+    </div>
+
+    <h3>💸 Pay the Seller</h3>
+    <input type="number" id="amount-input" class="money-input" placeholder="$" inputmode="numeric">
+    
+    <button class="pay-btn" onclick="paySeller()">PAY NOW 💸</button>
+    <p style="font-size: 14px; color: #7f8c8d;">Show your screen to the seller when it flashes red!</p>
+
+    <br>
+    <button class="secondary" onclick="resetApp()">🔄 Quit / Restart</button>
+</div>
+
+<div class="container hidden" id="seller-menu">
+    <h2>Choose Your Shop</h2>
+    <div id="seller-buttons"></div>
+    <button class="secondary" onclick="resetApp()">⬅️ Back</button>
+</div>
+
+<div class="container hidden" id="seller-dashboard">
+    <h2 id="shop-title">Shop Name</h2>
+    
+    <div class="till-box">
+        <div>💰 Register Total (Till)</div>
+        <div class="wallet-amount">$<span id="till-val">0</span></div>
+        <div style="font-size: 12px;">(Tap items below to add money)</div>
+    </div>
+
+    <div class="acting-tip">
+        <strong>🎭 Acting Tip:</strong> <span id="shop-personality"></span>
+    </div>
+    
+    <h3>👇 Tap items when sold:</h3>
+    <ul class="price-list" id="shop-items"></ul>
+    
+    <br>
+    <button class="secondary" onclick="showSellerMenu()">🔄 Switch Shops</button>
+</div>
+
+<script>
+    // --- REAL LIFE MISSIONS ---
+    // Costs are calculated to be well within budget.
+    const buyers = [
+        {
+            mission: "🏠 Weekly Groceries",
+            list: ["🍞 Bread (Bakery)", "🥛 Milk (Supermarket)", "🥚 Eggs (Supermarket)"],
+            budget: 40 // Cost approx $10
+        },
+        {
+            mission: "🤕 Cold & Flu Season",
+            list: ["💊 Medicine (Pharmacy)", "🥣 Soup (Supermarket)", "🧃 Orange Juice (Supermarket)"],
+            budget: 45 // Cost approx $15
+        },
+        {
+            mission: "🎁 Best Friend's Birthday",
+            list: ["🎂 Cake (Bakery)", "🎈 Balloons (Toy Store)", "🎁 Gift Wrap (Book Nook)"],
+            budget: 50 // Cost approx $24
+        },
+        {
+            mission: "🏖️ Summer Vacation Prep",
+            list: ["🧴 Sunscreen (Pharmacy)", "🕶️ Sunglasses (Cool Clothes)", "🧢 Hat (Cool Clothes)"],
+            budget: 60 // Cost approx $28
+        },
+        {
+            mission: "🎒 Back to School",
+            list: ["✏️ Pencils (Book Nook)", "📓 Notebook (Book Nook)", "👕 New Shirt (Cool Clothes)"],
+            budget: 50 // Cost approx $20
+        },
+        {
+            mission: "🍝 Dinner Party",
+            list: ["🍝 Pasta/Food (Supermarket)", "🥖 Garlic Bread (Bakery)", "🥤 Drinks (Supermarket)"],
+            budget: 40 // Cost approx $12
+        }
+    ];
+
+    const sellers = [
+        {
+            name: "🍎 Supermarket",
+            personality: "Fast & Polite. 'Do you need a bag?'",
+            items: { "🍎 Apple": 2, "🥛 Milk": 4, "🥚 Eggs": 4, "🥣 Soup": 4, "🥤 Juice/Soda": 3, "🍝 Pasta": 5 }
+        },
+        {
+            name: "🥖 The Bakery",
+            personality: "Warm & Friendly. 'Fresh from the oven!'",
+            items: { "🍞 Bread": 4, "🧁 Cupcake": 3, "🎂 Birthday Cake": 15, "🥪 Sandwich": 6, "🥖 Garlic Bread": 4 }
+        },
+        {
+            name: "🧸 Toy Store",
+            personality: "Energetic! 'This is the most popular toy!'",
+            items: { "🎈 Balloons": 5, "🎾 Ball": 3, "🤖 Robot": 20, "🧩 Puzzle": 8, "🧸 Teddy Bear": 12 }
+        },
+        {
+            name: "🏥 Pharmacy",
+            personality: "Professional. 'Take this twice a day.'",
+            items: { "🩹 Bandages": 3, "💊 Medicine": 8, "🧴 Sunscreen": 10, "🦷 Toothbrush": 4, "🧼 Soap": 2 }
+        },
+        {
+            name: "📚 Book Nook",
+            personality: "Quiet & Helpful. 'Excellent choice.'",
+            items: { "📖 Comic Book": 5, "📓 Notebook": 5, "✏️ Pencils": 3, "🎁 Gift Wrap": 4, "🗺️ Map": 2 }
+        },
+        {
+            name: "👕 Cool Clothes",
+            personality: "Trendy. 'That is very stylish!'",
+            items: { "👕 T-Shirt": 12, "🧢 Hat": 8, "🕶️ Sunglasses": 10, "🧣 Scarf": 6, "🧤 Gloves": 5 }
+        }
+    ];
+
+    // --- LOGIC ---
+    let currentWallet = 0;
+    let currentTill = 0;
+
+    function resetApp() {
+        document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
+        document.getElementById('main-menu').classList.remove('hidden');
+        document.getElementById('amount-input').value = "";
+    }
+
+    // --- VOCABULARY ---
+    function showVocab() {
+        document.getElementById('main-menu').classList.add('hidden');
+        document.getElementById('vocab-section').classList.remove('hidden');
+    }
+
+    // --- BUYER LOGIC ---
+    function startBuyer() {
+        const randomTask = buyers[Math.floor(Math.random() * buyers.length)];
+        
+        document.getElementById('mission-title').innerText = randomTask.mission;
+        const listEl = document.getElementById('shopping-list');
+        listEl.innerHTML = "";
+        randomTask.list.forEach(item => {
+            let li = document.createElement('li');
+            li.innerText = "☐ " + item;
+            listEl.appendChild(li);
+        });
+
+        currentWallet = randomTask.budget;
+        updateWalletDisplay();
+
+        document.getElementById('main-menu').classList.add('hidden');
+        document.getElementById('buyer-section').classList.remove('hidden');
+    }
+
+    function paySeller() {
+        const inputEl = document.getElementById('amount-input');
+        const amount = parseInt(inputEl.value);
+
+        if (!amount || amount <= 0) {
+            alert("Please type a valid number!");
+            return;
+        }
+
+        if (amount > currentWallet) {
+            alert("🚫 You don't have enough money!");
+            return;
+        }
+
+        currentWallet -= amount;
+        updateWalletDisplay();
+        
+        // Trigger Flash
+        const overlay = document.getElementById('flash-overlay');
+        document.getElementById('flash-text').innerText = "PAID $" + amount;
+        overlay.classList.add('active');
+
+        setTimeout(() => {
+            overlay.classList.remove('active');
+        }, 2000);
+
+        inputEl.value = "";
+        inputEl.focus();
+    }
+
+    function updateWalletDisplay() {
+        document.getElementById('wallet-val').innerText = currentWallet;
+    }
+
+    // --- SELLER LOGIC ---
+    function showSellerMenu() {
+        const container = document.getElementById('seller-buttons');
+        container.innerHTML = "";
+        
+        sellers.forEach((shop, index) => {
+            let btn = document.createElement('button');
+            btn.innerText = shop.name;
+            btn.onclick = () => openShop(index);
+            container.appendChild(btn);
+        });
+
+        document.getElementById('main-menu').classList.add('hidden');
+        document.getElementById('seller-dashboard').classList.add('hidden');
+        document.getElementById('seller-menu').classList.remove('hidden');
+    }
+
+    function openShop(index) {
+        const shop = sellers[index];
+        currentTill = 0; // Reset till when opening shop (or keep it? Reset is safer for shared devices)
+        updateTillDisplay();
+
+        document.getElementById('shop-title').innerText = shop.name;
+        document.getElementById('shop-personality').innerText = shop.personality;
+        
+        const list = document.getElementById('shop-items');
+        list.innerHTML = "";
+        
+        for (const [item, price] of Object.entries(shop.items)) {
+            let li = document.createElement('li');
+            li.innerHTML = `<span>${item}</span> <strong>$${price}</strong>`;
+            // Add click listener to add to till
+            li.onclick = () => addToTill(price);
+            list.appendChild(li);
+        }
+
+        document.getElementById('seller-menu').classList.add('hidden');
+        document.getElementById('seller-dashboard').classList.remove('hidden');
+    }
+
+    function addToTill(amount) {
+        currentTill += amount;
+        updateTillDisplay();
+    }
+
+    function updateTillDisplay() {
+        document.getElementById('till-val').innerText = currentTill;
+    }
+</script>
+
+</body>
+</html>

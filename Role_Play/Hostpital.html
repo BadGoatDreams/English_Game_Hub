@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🏥 Chaos Clinic (Mobile Master)</title>
+    <link rel="stylesheet" href="../styles/unified-theme.css">
+    <style>
+        :root { 
+            --med-blue: #3498db; 
+            --med-green: #27ae60; 
+            --med-red: #e74c3c; 
+            --med-dark: #2c3e50; 
+            --bg-gray: #f0f2f5;
+        }
+        
+        /* MOBILE RESET & TYPOGRAPHY */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-gray); 
+            margin: 0; 
+            padding: 0; 
+            color: #333;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 15px; 
+            padding-bottom: 50px; /* Space for scrolling */
+        }
+
+        /* CARD STYLING */
+        .card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 16px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
+            margin-bottom: 15px; 
+            border-top: 6px solid var(--med-blue); 
+        }
+
+        h1, h2, h3 { margin-top: 0; text-align: center; color: var(--med-dark); }
+        h1 { font-size: 1.8em; }
+        p { line-height: 1.5; font-size: 1.1em; }
+
+        /* BUTTONS - LARGE TOUCH TARGETS */
+        .btn { 
+            display: block; 
+            width: 100%; 
+            padding: 18px; 
+            margin: 12px 0; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 1.2em; 
+            font-weight: 700; 
+            text-align: center; 
+            color: white; 
+            cursor: pointer; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.1s;
+        }
+        .btn:active { transform: scale(0.97); }
+        
+        .btn-blue { background: var(--med-blue); }
+        .btn-green { background: var(--med-green); }
+        .btn-red { background: var(--med-red); }
+        .btn-dark { background: var(--med-dark); }
+        .btn-gold { background: #f1c40f; color: #000; }
+
+        /* SLIDESHOW OVERLAY */
+        #vocab-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: white; z-index: 5000; 
+            display: none; flex-direction: column; 
+        }
+        .slide { 
+            flex: 1; display: none; padding: 20px; overflow-y: auto; 
+        }
+        .slide.active { display: block; }
+        
+        .vocab-item { 
+            background: #f8f9fa; 
+            padding: 12px; 
+            border-radius: 8px; 
+            margin: 8px 0; 
+            border-left: 5px solid var(--med-blue); 
+            font-size: 1.1em;
+        }
+        .ru { 
+            display: block; 
+            color: #7f8c8d; 
+            font-size: 0.9em; 
+            margin-top: 4px; 
+            font-weight: normal; 
+        }
+
+        .slide-nav { 
+            display: flex; gap: 10px; padding: 15px; 
+            background: white; border-top: 1px solid #eee; 
+            position: sticky; bottom: 0;
+        }
+
+        /* UTILITIES */
+        .hidden { display: none !important; }
+        .price-tag { 
+            background: #fadbd8; color: #c0392b; 
+            font-size: 2.5em; font-weight: bold; 
+            padding: 20px; border-radius: 12px; 
+            text-align: center; margin: 15px 0; display: none; 
+        }
+        
+        /* WALL GRID (Responsive) */
+        #wall-view { background: var(--med-dark); min-height: 100vh; padding: 10px; display: none; }
+        #wall-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 10px; 
+        }
+        .doc-col { 
+            background: rgba(255,255,255,0.05); 
+            padding: 10px; border-radius: 8px; 
+            border: 1px solid #444; text-align: center; color: white;
+        }
+        .ticket-box { 
+            background: black; color: #00ff00; 
+            font-family: monospace; font-size: 2em; 
+            padding: 5px; margin: 10px 0; border-radius: 4px;
+        }
+        
+        /* MISSION BOX */
+        .mission-box { 
+            background: #eaf2f8; 
+            padding: 20px; 
+            border-radius: 12px; 
+            border: 2px dashed var(--med-blue); 
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<a href="../index.html" class="back-btn" style="position: fixed; top: 15px; left: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">← Back to Hub</a>
+
+    <div id="vocab-overlay">
+        <div id="slide-container" style="flex:1; overflow-y: scroll;">
+            
+            <div class="slide active">
+                <h1>🏥 Clinic Vocabulary</h1>
+                <p>Before we play, let's learn the words for the sicknesses you will see today! 👩‍⚕️</p>
+                <div style="font-size: 4em; text-align: center;">💊</div>
+            </div>
+
+            <div class="slide">
+                <h2>🦷 Dentistry (Teeth)</h2>
+                <div class="vocab-item"><strong>Cavity</strong> <span class="ru">Кариес (дырка в зубе)</span></div>
+                <div class="vocab-item"><strong>Filling</strong> <span class="ru">Пломба</span></div>
+                <div class="vocab-item"><strong>Gums</strong> <span class="ru">Десны</span></div>
+                <div class="vocab-item"><strong>Braces</strong> <span class="ru">Брекеты</span></div>
+                <div class="vocab-item"><strong>Wisdom Teeth</strong> <span class="ru">Зубы мудрости</span></div>
+            </div>
+
+            <div class="slide">
+                <h2>🤒 General Health</h2>
+                <div class="vocab-item"><strong>Fatigued</strong> <span class="ru">Сильно уставший / истощенный</span></div>
+                <div class="vocab-item"><strong>Migraine</strong> <span class="ru">Мигрень (сильная головная боль)</span></div>
+                <div class="vocab-item"><strong>Infection</strong> <span class="ru">Инфекция</span></div>
+                <div class="vocab-item"><strong>Vaccination</strong> <span class="ru">Прививка / Вакцинация</span></div>
+                <div class="vocab-item"><strong>Physical Checkup</strong> <span class="ru">Медицинский осмотр</span></div>
+            </div>
+
+            <div class="slide">
+                <h2>🫀 Heart & Chest</h2>
+                <div class="vocab-item"><strong>High Blood Pressure</strong> <span class="ru">Высокое давление</span></div>
+                <div class="vocab-item"><strong>Numb</strong> <span class="ru">Онемевший (не чувствует)</span></div>
+                <div class="vocab-item"><strong>Dizzy</strong> <span class="ru">Головокружение</span></div>
+                <div class="vocab-item"><strong>Tightness</strong> <span class="ru">Сдавленность / Теснота</span></div>
+            </div>
+
+            <div class="slide">
+                <h2>🧴 Skin (Dermatology)</h2>
+                <div class="vocab-item"><strong>Rash</strong> <span class="ru">Сыпь (красные пятна)</span></div>
+                <div class="vocab-item"><strong>Acne</strong> <span class="ru">Акне / Прыщи</span></div>
+                <div class="vocab-item"><strong>Mole</strong> <span class="ru">Родинка</span></div>
+                <div class="vocab-item"><strong>Eczema</strong> <span class="ru">Экзема (сухая кожа)</span></div>
+            </div>
+
+            <div class="slide">
+                <h2>🧠 Mental Health</h2>
+                <div class="vocab-item"><strong>Insomnia</strong> <span class="ru">Бессонница (нет сна)</span></div>
+                <div class="vocab-item"><strong>Panic Attack</strong> <span class="ru">Паническая атака</span></div>
+                <div class="vocab-item"><strong>Phobia</strong> <span class="ru">Фобия (сильный страх)</span></div>
+                <div class="vocab-item"><strong>Depressed</strong> <span class="ru">В депрессии / Подавленный</span></div>
+            </div>
+
+            <div class="slide">
+                <h2>🤕 Surgery & Trauma</h2>
+                <div class="vocab-item"><strong>Stitches</strong> <span class="ru">Швы (после пореза)</span></div>
+                <div class="vocab-item"><strong>Appendicitis</strong> <span class="ru">Аппендицит</span></div>
+                <div class="vocab-item"><strong>Dislocated</strong> <span class="ru">Вывихнул (сустав)</span></div>
+                <div class="vocab-item"><strong>Broken / Fracture</strong> <span class="ru">Сломан / Перелом</span></div>
+            </div>
+
+            <div class="slide">
+                <h2>📝 Medical Verbs</h2>
+                <div class="vocab-item"><strong>To Prescribe</strong> <span class="ru">Выписать (лекарство)</span></div>
+                <div class="vocab-item"><strong>To Extract</strong> <span class="ru">Удалить / Вырвать</span></div>
+                <div class="vocab-item"><strong>To Bleed</strong> <span class="ru">Кровоточить</span></div>
+                <div class="vocab-item"><strong>To Swell</strong> <span class="ru">Опухать</span></div>
+            </div>
+
+            <div class="slide">
+                <h1>🏁 Ready?</h1>
+                <p>1. Get a mission.<br>2. Go to the waiting wall.<br>3. Find the right doctor.<br>4. Don't die!</p>
+                <button class="btn btn-green" onclick="closeVocab()">START GAME</button>
+            </div>
+
+        </div>
+
+        <div class="slide-nav">
+            <button class="btn btn-dark" style="flex:1; margin:0 5px;" onclick="moveSlide(-1)">⬅️ Prev</button>
+            <button class="btn btn-dark" style="flex:1; margin:0 5px;" onclick="moveSlide(1)">Next ➡️</button>
+        </div>
+    </div>
+
+    <div id="main-menu" class="container">
+        <div class="card">
+            <h1>🏥 Chaos Clinic</h1>
+            <p style="text-align:center; color:#666;">Mobile Edition</p>
+            <button class="btn btn-gold" onclick="openVocab()">📚 VOCAB SLIDES (Start Here)</button>
+            <button class="btn btn-dark" onclick="openWall()">📺 BIG BOARD (Wall)</button>
+            <hr>
+            <button class="btn btn-blue" onclick="startPatient()">🤒 I am a Patient</button>
+            <button class="btn btn-green" onclick="showScreen('cashier-screen')">💰 I am the Cashier</button>
+            <button class="btn btn-blue" style="background:#8e44ad" onclick="showScreen('doctor-select')">🩺 I am a Doctor</button>
+            <button class="btn btn-red" onclick="showScreen('security-screen')">👮 Security Guard</button>
+        </div>
+    </div>
+
+    <div id="patient-screen" class="container hidden">
+        <div class="card">
+            <h2>🤒 Your Mission</h2>
+            <div id="mission-display" class="mission-box">
+                </div>
+            
+            <div style="background:var(--med-dark); color:#2ecc71; padding:15px; border-radius:10px; margin-top:15px; text-align:center;">
+                <div style="font-size:0.8em; opacity:0.8;">INSURANCE BALANCE</div>
+                <div id="wallet-amt" style="font-size:2.5em; font-weight:bold;">$0</div>
+            </div>
+            
+            <button class="btn btn-red" style="margin-top:20px;" onclick="startPatient()">🔄 New Character</button>
+            <button class="btn btn-dark" onclick="location.reload()">Exit Game</button>
+        </div>
+    </div>
+
+    <div id="doctor-select" class="container hidden">
+        <div class="card">
+            <h2>Select Role</h2>
+            <div id="doc-btn-grid"></div>
+            <button class="btn btn-red" onclick="location.reload()">⬅️ Back</button>
+        </div>
+    </div>
+
+    <div id="doctor-dash" class="container hidden">
+        <div class="card">
+            <h2 id="active-doc-name"></h2>
+            <p id="active-doc-desc" style="font-style:italic; color:#666; text-align:center;"></p>
+            <hr>
+            <div id="doc-action-btns"></div>
+            <div id="bill-result" class="price-tag"></div>
+            <p id="bill-instruction" class="hidden" style="color:var(--med-red); font-weight:bold; text-align:center;">✍️ WRITE ON PAPER!</p>
+            <button class="btn btn-red" onclick="location.reload()">Sign Out</button>
+        </div>
+    </div>
+
+    <div id="cashier-screen" class="container hidden">
+        <div class="card">
+            <h2>💰 Cashier</h2>
+            <p style="text-align:center;">Ask for the paper bill.</p>
+            <button class="btn btn-green" style="padding:40px;" onclick="flashScreen('green')">✅ PAYMENT ACCEPTED</button>
+            <button class="btn btn-red" onclick="flashScreen('red')">❌ DECLINED</button>
+            <button class="btn btn-dark" onclick="location.reload()">Close</button>
+        </div>
+    </div>
+
+    <div id="security-screen" class="container hidden">
+        <div class="card" style="background:var(--med-dark); color:white;">
+            <h2>👮 Grammar Guard</h2>
+            <p>Listen for "broken English" or rude behavior.</p>
+            <button class="btn btn-red" style="padding:30px;" onclick="alert('Ticket Issued! Send them to Cashier.')">🎫 ISSUE FINE ($50)</button>
+            <button class="btn btn-blue" onclick="location.reload()">End Shift</button>
+        </div>
+    </div>
+
+    <div id="wall-view">
+        <h1 style="color:#f1c40f; margin-bottom:20px;">🏥 QUEUE STATUS</h1>
+        <div id="wall-grid"></div>
+        <button class="btn btn-red" style="max-width:200px; margin:30px auto;" onclick="location.reload()">CLOSE WALL</button>
+    </div>
+
+    <script>
+        // --- DATA ---
+        const doctors = [
+            { name: "Dr. Drill", role: "Dentist", desc: "Teeth Expert", actions: ["Cleaning ($50)", "Extraction ($150)", "Root Canal ($400)"] },
+            { name: "Dr. Sweet", role: "Dentist", desc: "Cavity Expert", actions: ["Fillings ($200)", "Checkup ($40)", "Braces ($1000)"] },
+            { name: "Dr. Sleepy", role: "GP", desc: "General Health", actions: ["Prescribe Pills ($30)", "Doctor's Note ($20)", "Blood Test ($150)"] },
+            { name: "Dr. Google", role: "GP", desc: "Online Diagnosis", actions: ["Web Search ($10)", "Vaccination ($60)", "Checkup ($80)"] },
+            { name: "Dr. Heartless", role: "Cardio", desc: "Heart Specialist", actions: ["Heart Monitor ($300)", "Surgery Prep ($500)", "ECG Test ($200)"] },
+            { name: "Dr. Itchy", role: "Derma", desc: "Skin Specialist", actions: ["Skin Cream ($90)", "Biopsy ($250)", "Rash Exam ($70)"] },
+            { name: "Dr. Zen", role: "Psych", desc: "Mind Specialist", actions: ["Therapy ($300)", "Breathing ($100)", "Meditation ($50)"] },
+            { name: "Dr. Sharp", role: "Surgeon", desc: "Trauma Specialist", actions: ["Stitches ($1200)", "Appendectomy ($800)", "Cast ($500)"] }
+        ];
+
+        const missions = {
+            0: [ // Drill
+                { txt: "I have a sharp pain in my back tooth.", ru: "Острая боль в заднем зубе.", hint: "Dr. Drill (Dentist)" },
+                { txt: "My gums are bleeding when I brush.", ru: "Десны кровоточат.", hint: "Dr. Drill (Dentist)" },
+                { txt: "I need my wisdom teeth extracted.", ru: "Нужно удалить зубы мудрости.", hint: "Dr. Drill (Dentist)" },
+                { txt: "I have a cracked tooth.", ru: "У меня сломан зуб.", hint: "Dr. Drill (Dentist)" }
+            ],
+            1: [ // Sweet
+                { txt: "I lost a filling while eating.", ru: "Выпала пломба.", hint: "Dr. Sweet (Dentist)" },
+                { txt: "I need braces for my smile.", ru: "Мне нужны брекеты.", hint: "Dr. Sweet (Dentist)" },
+                { txt: "I have a deep cavity.", ru: "У меня глубокий кариес.", hint: "Dr. Sweet (Dentist)" },
+                { txt: "My teeth are sensitive to cold.", ru: "Зубы чувствительны к холоду.", hint: "Dr. Sweet (Dentist)" }
+            ],
+            2: [ // Sleepy
+                { txt: "I have a cough and feel fatigued.", ru: "Кашель и усталость.", hint: "Dr. Sleepy (GP)" },
+                { txt: "I have a bad infection.", ru: "У меня инфекция.", hint: "Dr. Sleepy (GP)" },
+                { txt: "I have a sore throat and fever.", ru: "Болит горло и температура.", hint: "Dr. Sleepy (GP)" },
+                { txt: "I need a doctor's note for work.", ru: "Нужна справка для работы.", hint: "Dr. Sleepy (GP)" }
+            ],
+            3: [ // Google
+                { txt: "I need a physical checkup.", ru: "Нужен медосмотр.", hint: "Dr. Google (GP)" },
+                { txt: "I have severe migraines.", ru: "У меня сильные мигрени.", hint: "Dr. Google (GP)" },
+                { txt: "I need a vaccination.", ru: "Мне нужна прививка.", hint: "Dr. Google (GP)" },
+                { txt: "My ear hurts (Infection).", ru: "Болит ухо (инфекция).", hint: "Dr. Google (GP)" }
+            ],
+            4: [ // Heartless
+                { txt: "My chest feels tight.", ru: "Сдавленность в груди.", hint: "Dr. Heartless (Cardio)" },
+                { txt: "My heart beats too fast.", ru: "Сердце бьется слишком быстро.", hint: "Dr. Heartless (Cardio)" },
+                { txt: "I have high blood pressure.", ru: "Высокое давление.", hint: "Dr. Heartless (Cardio)" },
+                { txt: "My arm is numb and I am dizzy.", ru: "Рука онемела, кружится голова.", hint: "Dr. Heartless (Cardio)" }
+            ],
+            5: [ // Itchy
+                { txt: "I have a red rash.", ru: "У меня красная сыпь.", hint: "Dr. Itchy (Derma)" },
+                { txt: "I have severe acne.", ru: "У меня сильное акне.", hint: "Dr. Itchy (Derma)" },
+                { txt: "I have a strange mole.", ru: "У меня странная родинка.", hint: "Dr. Itchy (Derma)" },
+                { txt: "I have eczema on my hands.", ru: "У меня экзема.", hint: "Dr. Itchy (Derma)" }
+            ],
+            6: [ // Zen
+                { txt: "I am having panic attacks.", ru: "У меня панические атаки.", hint: "Dr. Zen (Psych)" },
+                { txt: "I have insomnia (cannot sleep).", ru: "У меня бессонница.", hint: "Dr. Zen (Psych)" },
+                { txt: "I feel very depressed.", ru: "У меня депрессия.", hint: "Dr. Zen (Psych)" },
+                { txt: "I have a phobia of spiders.", ru: "У меня фобия пауков.", hint: "Dr. Zen (Psych)" }
+            ],
+            7: [ // Sharp
+                { txt: "I think my ankle is broken.", ru: "Сломана лодыжка.", hint: "Dr. Sharp (Surgeon)" },
+                { txt: "I have appendicitis.", ru: "У меня аппендицит.", hint: "Dr. Sharp (Surgeon)" },
+                { txt: "I need stitches for a cut.", ru: "Нужны швы на порез.", hint: "Dr. Sharp (Surgeon)" },
+                { txt: "I dislocated my shoulder.", ru: "Я вывихнул плечо.", hint: "Dr. Sharp (Surgeon)" }
+            ]
+        };
+
+        let currentS = 0;
+        let tickets = new Array(doctors.length).fill(0);
+
+        // --- NAVIGATION ---
+        function showScreen(id) {
+            document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            if(id === 'doctor-select') renderDocSelect();
+        }
+
+        // --- PATIENT ---
+        function startPatient() {
+            showScreen('patient-screen');
+            const wallet = Math.floor(Math.random() * 400) + 100;
+            document.getElementById('wallet-amt').innerText = `$${wallet}`;
+            
+            // Equal Chance Logic
+            const docId = Math.floor(Math.random() * 8);
+            const docMissions = missions[docId];
+            const m = docMissions[Math.floor(Math.random() * docMissions.length)];
+
+            document.getElementById('mission-display').innerHTML = `
+                <div style="font-size:1.3em; font-weight:bold; color:#2c3e50;">"${m.txt}"</div>
+                <div style="color:#7f8c8d; margin-top:5px;">${m.ru}</div>
+                <div style="color:#e74c3c; font-weight:bold; margin-top:15px; font-size:0.9em;">📍 HINT: ${m.hint}</div>
+            `;
+        }
+
+        // --- DOCTOR ---
+        function renderDocSelect() {
+            const grid = document.getElementById('doc-btn-grid');
+            grid.innerHTML = '';
+            doctors.forEach((d, i) => {
+                const b = document.createElement('button');
+                b.className = 'btn btn-blue';
+                b.innerText = d.name;
+                b.onclick = () => launchDoc(i);
+                grid.appendChild(b);
+            });
+        }
+        function launchDoc(i) {
+            const d = doctors[i];
+            showScreen('doctor-dash');
+            document.getElementById('active-doc-name').innerText = d.name;
+            document.getElementById('active-doc-desc').innerText = d.desc;
+            
+            const box = document.getElementById('doc-action-btns');
+            box.innerHTML = '';
+            d.actions.forEach(act => {
+                const b = document.createElement('button');
+                b.className = 'btn btn-dark';
+                b.innerText = act;
+                b.onclick = () => {
+                    document.getElementById('bill-result').style.display = 'block';
+                    document.getElementById('bill-result').innerText = act.match(/\$\d+/)[0];
+                    document.getElementById('bill-instruction').classList.remove('hidden');
+                };
+                box.appendChild(b);
+            });
+        }
+
+        // --- WALL ---
+        function openWall() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('wall-view').style.display = 'block';
+            renderWall();
+        }
+        function renderWall() {
+            const grid = document.getElementById('wall-grid');
+            grid.innerHTML = doctors.map((d, i) => `
+                <div class="doc-col">
+                    <div style="color:#f1c40f; font-weight:bold;">${d.name}</div>
+                    <div style="font-size:0.8em; opacity:0.7;">${d.role}</div>
+                    <div class="ticket-box">${String(tickets[i]).padStart(3, '0')}</div>
+                    <div style="display:flex; gap:5px; justify-content:center;">
+                        <button class="btn btn-red" style="padding:10px; margin:0; flex:1;" onclick="tickets[${i}]--; renderWall()">-</button>
+                        <button class="btn btn-green" style="padding:10px; margin:0; flex:1;" onclick="tickets[${i}]++; renderWall()">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- SLIDESHOW ---
+        function openVocab() { document.getElementById('vocab-overlay').style.display = 'flex'; }
+        function closeVocab() { document.getElementById('vocab-overlay').style.display = 'none'; }
+        function moveSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            slides[currentS].classList.remove('active');
+            currentS = (currentS + n + slides.length) % slides.length;
+            slides[currentS].classList.add('active');
+            document.getElementById('slide-container').scrollTop = 0;
+        }
+
+        // --- UTILS ---
+        function flashScreen(c) {
+            const bg = c === 'green' ? '#2ecc71' : '#e74c3c';
+            document.body.style.background = bg;
+            setTimeout(() => document.body.style.background = '#f0f2f5', 500);
+        }
+    </script>
+</body>
+</html>

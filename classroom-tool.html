@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESL Classroom Tool v3.0</title>
+    <link rel="stylesheet" href="styles/unified-theme.css">
+    <style>
+        .btn-silly { background-color: var(--secondary-orange); }
+        .btn-wyr { background-color: var(--secondary-purple); }
+        .btn-game { background-color: var(--secondary-green); }
+        .btn-taboo { background-color: var(--secondary-red); }
+        .btn-reveal { background-color: var(--text-light); margin-top: 10px; display: none; }
+        
+        .taboo-word { color: var(--secondary-red); font-size: 1.8rem; text-transform: uppercase; font-weight: bold; margin-bottom: 10px; }
+        .forbidden { font-size: 1.1rem; color: var(--text-light); font-style: italic; }
+        .label { font-weight: bold; display: block; margin-top: 15px; color: var(--text-light); font-size: 0.8rem; text-transform: uppercase; }
+        
+        body { display: flex; justify-content: center; padding: 20px; }
+        .container { max-width: 800px; width: 100%; }
+    </style>
+</head>
+<body>
+<a href="index.html" class="back-btn" style="position: fixed; top: 15px; left: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">← Back to Hub</a>
+
+<div class="container">
+    <h1>Classroom English Hub</h1>
+    <p class="subtitle">Because staring in silence is uncomfortable for everyone.</p>
+    
+    <span class="label">English Level</span>
+    <select id="level">
+        <option value="basic">Basic</option>
+        <option value="intermediate" selected>Intermediate</option>
+        <option value="advanced">Advanced</option>
+    </select>
+
+    <div class="button-grid">
+        <button onclick="getTopic()">Random Topic</button>
+        <button class="btn-silly" onclick="getQuestion('silly')">Silly Question</button>
+        <button onclick="getQuestion('serious')">Serious Question</button>
+        <button class="btn-wyr" onclick="getWYR()">Would You Rather?</button>
+        <button class="btn-game" onclick="getTwister()">Tongue Twister</button>
+        <button class="btn-game" onclick="getScramble()">Word Scramble</button>
+        <button class="btn-game" onclick="getWOTD()">Word of the Day</button>
+        <button class="btn-taboo" onclick="getTaboo()">Vocab Taboo</button>
+    </div>
+
+    <div id="display-area">
+        <div id="text-output">Select an activity to begin.</div>
+        <button id="reveal-btn" class="btn-reveal" onclick="revealAnswer()">Reveal Answer</button>
+    </div>
+</div>
+
+<script>
+    const data = {
+       topics: {
+    basic: [
+        "Hobbies", "Family", "Food", "Pets", "Weather", "Daily Routine", "School", "Colors", "Clothes", "Sports", "Music", "Movies", "Holidays", "Animals", "Body Parts", "Transportation", "Jobs", "My Hometown", "Friends", "Shopping",
+        "Favorite Fruit", "The Weekend", "TV Shows", "My Bedroom", "Breakfast", "Birthdays", "Toys and Games", "Seasons", "Vegetables", "The Beach", "My Teacher", "Parks", "Computers", "Supermarkets", "Morning vs Night", "Drawing", "Insects", "The Moon", "My Best Friend", "Pizza Toppings"
+    ],
+    intermediate: [
+        "Technology", "Travel", "Environment", "Work-Life Balance", "Social Media", "Healthy Habits", "Future Goals", "Childhood Memories", "Cooking", "Cultural Differences", "Learning Languages", "News and Media", "Art and Design", "Space Exploration", "Fashion Trends", "Public Transportation", "Overcoming Fears", "Volunteering", "Local History", "Music Festivals",
+        "Remote Work", "Mental Health", "Artificial Intelligence", "Sustainable Living", "Photography", "Extreme Sports", "E-books vs Paper Books", "Minimalism", "The Education System", "Urban vs Rural Life", "Video Game Culture", "Traditional Festivals", "Modern Dating", "Personal Finance", "Public Speaking", "DIY Projects", "Cinema History", "National Parks", "The Future of Cities", "Inventions of the 20th Century"
+    ],
+    advanced: [
+        "Ethics in Technology", "Artificial Intelligence", "Globalization", "Philosophy", "Economic Inequality", "Climate Change Mitigation", "The Justice System", "Modern Architecture", "Universal Basic Income", "Genetic Engineering", "The Gig Economy", "Censorship", "Mental Health Awareness", "Urban Planning", "Cryptocurrency", "Historical Revisionism", "The Concept of Time", "Consumerism", "Space Colonization", "Political Polarization",
+        "Neuroethics", "Quantum Computing Impacts", "Bio-mimicry in Design", "The Paradox of Choice", "Post-Colonial Literature", "Algorithmic Bias", "Deep Sea Exploration Rights", "Animal Personhood", "The Singularity", "Existentialism", "Meritocracy Myths", "Data Privacy Rights", "Nuclear Energy Debate", "The Sociology of Fame", "Transhumanism", "Geopolitics of Water", "Cognitive Dissonance", "The Future of Monarchy", "Universal Healthcare Models", "Rhetoric and Propaganda"
+    ]
+},
+        questions: {
+            silly: [
+    "If you were a vegetable, what would you be?", 
+    "Can you describe the smell of blue?", 
+    "Is a hotdog a sandwich?", 
+    "Which animal would be the rudest if they could talk?", 
+    "What is the most useless superpower?", 
+    "If you had to replace your hands with objects, what would they be?", 
+    "Would you rather fight one horse-sized duck or a hundred duck-sized horses?", 
+    "If clouds were made of food, what would you want them to be?", 
+    "What's the weirdest thing you've ever eaten?", 
+    "If you were a ghost, who would you haunt?", 
+    "What inanimate object do you wish you could talk to?", 
+    "If you could only wear one color for the rest of your life, what is it?", 
+    "What is the worst pizza topping imaginable?", 
+    "If your life had a theme song, what would it be?", 
+    "What is the funniest word in the English language?", 
+    "If you were a piece of furniture, what would you be?", 
+    "Do penguins have knees?", 
+    "If you could make a new holiday, what would it celebrate?", 
+    "What's the silliest rule you had to follow as a child?", 
+    "If animals played sports, which animal would be the best at basketball?",
+    "If you were a professional wrestler, what would your stage name be?",
+    "What's the best way to survive a zombie apocalypse using only items in this room?",
+    "If you were arrested for no reason, what would your friends assume you did?",
+    "How many chickens would it take to kill a lion?",
+    "If you could talk to one species of animal, which would it be?",
+    "What is the most embarrassing thing you've worn because it was 'fashionable'?",
+    "If you had to change your name to a type of fruit, what would it be?",
+    "What’s the most useless talent you have?",
+    "If you could shrink any animal to the size of a cat and keep it as a pet, what would it be?",
+    "Would you rather have a nose like an elephant or a neck like a giraffe?",
+    "If you could ban one vegetable forever, which one would go?",
+    "What’s the worst name you could give a pet dog?",
+    "If you were a kitchen appliance, which one would you be?",
+    "How long would you last in a horror movie?",
+    "What’s the weirdest secret talent you possess?",
+    "If you could only eat one meal for the rest of your life, but it had to be dessert, what is it?",
+    "Which Disney villain is actually right?",
+    "If you could teleport, but only to the inside of a refrigerator, would you do it?",
+    "What’s the most ridiculous fact you know?",
+    "If you were a flavor of ice cream, what would you be?",
+    "What’s the worst thing to say right before going into surgery?",
+    "If your pets could talk, what’s the first thing they’d say about you?",
+    "Which body part would you most like to be able to detach and leave at home?",
+    "If you could create a law that everyone had to follow for one day, what would it be?",
+    "What’s the strangest thing a guest has ever done at your house?",
+    "If you were a billionaire, what’s the most useless thing you’d buy?",
+    "What’s the worst song to have as your alarm clock?",
+    "If you could be any mythological creature, what would you be?",
+    "What’s the weirdest dream you’re willing to admit to?",
+    "If you could have a permanent candle that smelled like anything, what scent would you choose?",
+    "What is the best type of cheese to use as a weapon?",
+    "If you had to replace your legs with wheels, what kind of wheels would they be?",
+    "Would you rather always have to skip everywhere or always have to run everywhere?",
+    "If you were a bird, who would you poop on first?",
+    "What’s the most creative use for a banana?",
+    "If you could turn any chore into a professional sport, which one would you win a gold medal in?",
+    "What’s the most ridiculous thing you’ve ever seen a stranger do in public?",
+    "If you were a superhero whose only power was to summon pigeons, what would your name be?",
+    "What would the world be like if everyone looked exactly like you?",
+    "If you could make any two animals merge into one, which two would they be?",
+    "What’s the funniest thing you’ve ever seen a baby do?",
+    "If you had to be haunted by a ghost, which celebrity ghost would you pick?",
+    "What’s the most boring superpower you can think of?",
+    "If you could invent a new color, what would you call it?",
+    "What’s the most suspicious thing you could buy at a grocery store?",
+    "If you could swap lives with a cartoon character, who would it be?",
+    "What’s the weirdest thing you’ve found in a pocket?",
+    "If you could give everyone in the world one item, what would it be?",
+    "What’s the most confusing thing about the opposite gender?",
+    "If you were a tree, what kind of person would you want to sit under you?",
+    "What’s the worst gift you’ve ever received?",
+    "If you could add a 13th month to the calendar, what would you call it?",
+    "What’s the most useless thing they taught you in school?",
+    "If you were a professional thief, what would you steal that isn't money?",
+    "What’s the strangest habit you have?",
+    "If you were a topping on a giant taco, what would you be?",
+    "What’s the most annoying sound in the world?",
+    "If you could change the sound of your farts to a musical instrument, which one would it be?",
+    "What’s the worst possible thing to say during a job interview?",
+    "If you had to live in a movie for a week, which one would you choose?"
+],
+            serious: {
+    basic: [
+        "What is your favorite memory?", "Who is your hero?", "What do you do on the weekends?", "What is your favorite book?", "Describe your best friend.", "What makes you happy?", "Where do you want to travel?", "What is your favorite meal?", "How do you relax?", "What are you good at?", "What is your favorite season and why?", "What did you do yesterday?", "Who is the funniest person you know?", "What is a good habit you have?", "What do you like about your city?", "What is your favorite movie?", "What are you afraid of?", "What do you want to buy?", "What is a fun game to play?", "How do you learn English?",
+        "What is your dream job?", "How many siblings do you have?", "What is your favorite color?", "Do you like to cook?", "What is your favorite animal?", "How do you get to school or work?", "What time do you wake up?", "What is in your bag right now?", "Do you like rainy days?", "What is your favorite holiday?",
+        "Who is your favorite singer?", "What is the best gift you ever received?", "Do you prefer tea or coffee?", "What is your favorite fruit?", "How often do you exercise?", "What was your favorite subject in school?", "Do you have any pets?", "What is your favorite sport?", "Can you play a musical instrument?", "What is the tallest building you have ever seen?",
+        "What do you usually eat for breakfast?", "Do you like to dance?", "What is your favorite TV show?", "How do you spend your birthdays?", "What is the most beautiful place in your country?", "Do you prefer the beach or the mountains?", "What is your favorite hobby?", "Do you like learning new words?", "What is the best way to spend a Friday night?", "Who is the kindest person you know?",
+        "What do you want to do this summer?", "Do you like to take photos?", "What is your favorite restaurant?", "How do you feel today?", "What is your favorite clothes to wear?", "Do you like to go to the cinema?", "What is the first thing you do in the morning?", "What is your favorite type of music?", "Do you like to read newspapers?", "How do you help your parents?",
+        "What is your favorite flower?", "Do you like to travel by plane?", "What is your favorite drink?", "What is the best thing about your home?", "Do you prefer to walk or drive?", "What is your favorite vegetable?", "Do you like to use a computer?", "What is your favorite month of the year?", "Do you like to go shopping?", "What is your favorite ice cream flavor?",
+        "What is your favorite dessert?", "Do you have a lucky number?", "What is the best park in your town?", "Do you like to watch the sunrise?", "What is your favorite childhood toy?", "Do you speak other languages?", "What is the most difficult thing for you in English?", "Do you like to write letters?", "What is your favorite store?", "Do you like to swim?"
+    ],
+    intermediate: [
+        "How has the internet changed learning?", "Is work-life balance possible?", "What is the best way to handle stress?", "How does travel change a person?", "What makes a good leader?", "Is social media good or bad for society?", "What is the biggest challenge for young people today?", "How important is a university degree?", "What is the most important invention in history?", "How can we protect the environment?", "What does success mean to you?", "Is it better to be a specialist or a generalist?", "How do advertisements affect us?", "What is the value of failure?", "Should children have smartphones?", "How do you handle disagreements?", "What is the importance of art?", "Is homework necessary?", "How has your hometown changed?", "What is a controversial opinion you hold?",
+        "Is technology making us more or less social?", "What is the most important quality in a friend?", "How can people be more productive?", "Should public transportation be free?", "What is the best age to be?", "Does money buy happiness?", "How can we reduce plastic waste?", "What is the impact of globalization on local cultures?", "Should the school week be four days?", "Is modern life too fast-paced?",
+        "What is the best way to learn a new skill?", "How important is physical exercise for mental health?", "Should people be required to vote?", "What is the role of family in modern society?", "How do you stay motivated?", "Should zoos exist?", "What is the future of traditional books?", "Is fast food a major problem in your country?", "What makes someone 'successful'?", "How do you define a 'good life'?",
+        "Should celebrities be role models?", "How do we bridge the gap between different generations?", "Is space exploration worth the cost?", "What is the impact of tourism on your country?", "How has your diet changed over the years?", "What is the most difficult decision you’ve ever made?", "Should every person learn a second language?", "What is the benefit of living in a foreign country?", "How do you handle your time?", "What is the most important lesson you learned as a child?",
+        "Should we rely more on renewable energy?", "Is a college education still relevant in 2026?", "How does music affect our emotions?", "What are the pros and cons of working from home?", "How can we improve our local communities?", "Is it important to preserve historical buildings?", "What is the effect of social media on self-esteem?", "Should we encourage people to consume less?", "How do you define 'freedom'?", "Is it better to live in a city or the countryside?",
+        "Should the government regulate artificial intelligence?", "How does culture influence our personality?", "What is the best way to solve a conflict?", "How important is it to have a hobby?", "Should children be taught about money in school?", "Is it better to be an employer or an employee?", "How has technology changed the way we communicate?", "What is the value of volunteering?", "How can we promote peace in the world?", "Is the news today reliable?",
+        "What is your opinion on genetic engineering?", "Should we ban single-use plastics?", "How do you balance your personal and professional life?", "What is the role of art in education?", "How can we deal with the problem of loneliness?", "Is the concept of 'privacy' dying?", "What is the best way to save money?", "How does travel help in understanding other cultures?", "Should we spend more on medical research?", "Is competition healthy or harmful?"
+    ],
+    advanced: [
+        "Does privacy exist anymore?", "How should we measure success as a society?", "Is capitalism sustainable?", "What are the ethical implications of AI?", "Should the government regulate the internet?", "Is free will an illusion?", "How does language shape our perception of reality?", "What is the role of the individual in society?", "Should healthcare be entirely free and public?", "Is objective truth attainable?", "How do we define human consciousness?", "What are the limits of freedom of speech?", "Is globalization a net positive or negative?", "How should nations deal with historical injustices?", "What is the future of human evolution?", "Should the space race be privatized?", "How does automation impact the human psyche?", "Is democracy the best form of government?", "What is the morality of eating animals?", "How do cultural narratives influence history?",
+        "Is universal basic income a viable solution to automation?", "To what extent should parents be allowed to design their babies?", "Is the nation-state becoming obsolete?", "What are the ethical boundaries of surveillance?", "Should we colonize other planets?", "Is altruism truly possible?", "How do we address systemic inequality?", "Should information ever be censored for the public good?", "What is the nature of beauty?", "Is our education system outdated for the 21st century?",
+        "Can artificial intelligence ever possess true creativity?", "Is the current legal system just?", "How do we define the 'soul' in a scientific world?", "Should life extension technologies be available to everyone?", "What is the responsibility of wealthy nations to developing ones?", "Is world peace a realistic goal?", "How does the digital world alter our memory?", "Should we forgive historical figures for their mistakes?", "What is the role of religion in a secular world?", "Is a cashless society inevitable?",
+        "How do we combat misinformation in the digital age?", "Is human nature inherently good or evil?", "Should the pursuit of profit be the primary driver of innovation?", "How does architecture reflect societal values?", "What is the ethical status of non-human animals?", "Is the concept of 'home' changing in a mobile world?", "Should we prioritize the environment over economic growth?", "How does social media affect the democratic process?", "What is the impact of longevity on societal structures?", "Is it ethical to use robots for elderly care?",
+        "How do we define 'work' in a post-labor society?", "Is artistic merit objective or subjective?", "Should the death penalty be abolished globally?", "What are the risks of a mono-culture?", "Is genetic modification a right or a privilege?", "How do we reconcile tradition with progress?", "Should people be allowed to live forever if they can?", "What is the impact of consumerism on human happiness?", "Is the concept of 'truth' being eroded?", "Should we implement a global currency?",
+        "How do we prepare for a world with sentient machines?", "Is there a limit to how much a single person should earn?", "Should we allow the privatization of water?", "What is the psychological effect of living in a hyper-connected world?", "How do we define 'sanity' in a changing society?", "Is the family unit still the core of society?", "Should we rewrite history books to be more inclusive?", "What is the future of gender roles?", "Is the current form of capitalism the 'end of history'?", "How does space travel change our perspective of Earth?",
+        "Should we give robots legal rights?", "Is it possible to have a truly unbiased news source?", "How does the gig economy change the social contract?", "Should we regulate the collection of personal data by corporations?", "What is the morality of genetic screening?", "Is urban planning the key to solving social problems?", "How does the concept of 'justice' vary across cultures?", "Should we ban the manufacture of weapons?", "What is the role of the humanities in a tech-driven world?", "Is the concept of a 'career' becoming a thing of the past?"
+    ]
+}
+        },
+       wyr: [
+    "Would you rather always sing or always dance?",
+    "Travel 100 years back or 100 years forward?",
+    "Be able to fly or be invisible?",
+    "Live without music or live without television?",
+    "Speak all languages or communicate with animals?",
+    "Have unlimited sushi or unlimited tacos?",
+    "Never have to sleep or never have to eat?",
+    "Be incredibly lucky or incredibly smart?",
+    "Live in a treehouse or a cave?",
+    "Have a rewind button or a pause button for your life?",
+    "Only be able to whisper or only be able to shout?",
+    "Have spaghetti for hair or sweat maple syrup?",
+    "Live on Mars or at the bottom of the ocean?",
+    "Be a famous director or a famous actor?",
+    "Always have a full phone battery or a full gas tank?",
+    "Give up your smartphone or give up your computer?",
+    "Be a master painter or a brilliant mathematician?",
+    "Have a personal chef or a personal driver?",
+    "Fight a bear or a shark?",
+    "Never feel physical pain or never feel emotional pain?",
+    "Have a third eye or a third arm?",
+    "Always be 10 minutes late or 20 minutes early?",
+    "Be able to talk to plants or have the plants talk to you?",
+    "Only eat spicy food or only eat bland food for the rest of your life?",
+    "Have a dragon or be a dragon?",
+    "Always have a pebble in your shoe or a hair in your eye?",
+    "Live in a world where everyone is a robot or everyone is a pirate?",
+    "Be able to control fire or control water?",
+    "Have to announce every thought you have or never speak again?",
+    "Wear a tuxedo every day or a clown suit every day?",
+    "Have a tail that wags when you're happy or ears that flop when you're sad?",
+    "Lose your sense of taste or your sense of smell?",
+    "Be the first person to visit Mars or the last person on Earth?",
+    "Have a photographic memory or the ability to forget anything you want?",
+    "Always smell like wet dog or always smell like onions?",
+    "Be a cat for a day or a dog for a day?",
+    "Live without the internet or live without AC and heat?",
+    "Only be able to use a fork or only be able to use a spoon?",
+    "Have a permanent unibrow or no eyebrows at all?",
+    "Be able to jump over skyscrapers or run at the speed of light?",
+    "Have your own private island or your own private jet?",
+    "Always have to wear wet socks or always have to wear itchy sweaters?",
+    "Be the funniest person in the room or the smartest person in the room?",
+    "Own a tiny elephant or a giant hamster?",
+    "Have every movie spoiled for you or never see a movie ending again?",
+    "Drink melted ice cream or drink cold coffee?",
+    "Be able to breathe underwater or fly through space?",
+    "Live in a house made of glass or a house made of candy?",
+    "Have to hop everywhere like a frog or walk sideways like a crab?",
+    "Be 8 feet tall or 3 feet tall?",
+    "Only be able to dream in black and white or never remember your dreams?",
+    "Have a remote control that works on people or animals?",
+    "Swap lives with your boss or your pet?",
+    "Always have sticky hands or always have itchy feet?",
+    "Be able to see 5 seconds into the future or 50 years into the future?",
+    "Fight a chicken every time you enter a car or a squirrel every time you enter a house?",
+    "Live in a musical where everyone sings or a silent movie?",
+    "Have a head the size of a grapefruit or the size of a watermelon?",
+    "Always have to wear your clothes backwards or inside out?",
+    "Spend a year in the jungle or a year in the arctic?",
+    "Be able to change the color of your skin like a chameleon or regrow limbs?",
+    "Have your hands turn into giant paws or giant claws?",
+    "Only be able to eat food that is blue or food that is square-shaped?",
+    "Have a flying carpet or a submarine?",
+    "Be world-famous but hated or totally unknown but loved?",
+    "Eat a stick of butter or a gallon of hot sauce?",
+    "Be able to transform into any object or any person?",
+    "Have the ability to mute people in real life or change their volume?",
+    "Always have the 'check engine' light on or a low battery warning on your phone?",
+    "Wake up with a new tattoo every day or a new piercing every day?",
+    "Only be able to laugh like a hyena or cry like a baby?",
+    "Have a nose that grows when you lie or ears that turn red when you're nervous?",
+    "Live in a giant shoe or a giant hat?",
+    "Be able to speak to ghosts or see the future of anyone you touch?",
+    "Only be able to wash your hair once a year or your body once a year?",
+    "Have a magic wand that works 50% of the time or a magic lamp with a grumpy genie?",
+    "Have your life narrated by David Attenborough or Morgan Freeman?",
+    "Always have a song stuck in your head or always have an itch you can’t reach?",
+    "Be a professional hide-and-seek player or a professional tag player?",
+    "Never use a touch screen again or never use a keyboard again?",
+    "Have a pet dinosaur or a pet alien?",
+    "Be able to produce any sound you want from your mouth or mimic any voice?",
+    "Eat a pizza with a cereal crust or cereal with a pizza sauce base?",
+    "Be forced to wear flippers instead of shoes or oven mitts instead of gloves?",
+    "Live in a city where it’s always daytime or always nighttime?",
+    "Have eyes that glow in the dark or teeth that glow in the dark?",
+    "Be able to walk through walls or walk on water?",
+    "Always have to speak in rhymes or always have to speak in questions?",
+    "Find $10 on the ground every day or $1,000 once a year?",
+    "Have your own personal theme song play every time you enter a room?",
+    "Be able to freeze time for everyone but yourself or speed up time?",
+    "Live in a world with no trees or a world with no oceans?",
+    "Have a beard made of bees or hair made of snakes?",
+    "Only be able to travel by pogo stick or by unicycle?",
+    "Be able to summon a rainstorm or a heatwave at will?",
+    "Have your house be a giant library or a giant arcade?",
+    "Always feel like you’re about to sneeze or always feel like you have a hair in your mouth?",
+    "Be the captain of a pirate ship or the captain of a spaceship?",
+    "Have a nose that honks like a horn or knees that squeak like a door?",
+    "Know the date of your death or the cause of your death?"
+],
+        twisters: ["Peter Piper picked a peck of pickled peppers.", "Six slippery snails slid slowly seaward.", "How much wood would a woodchuck chuck?", "She sells seashells by the seashore.", "I scream, you scream, we all scream for ice cream.", "Red lorry, yellow lorry.", "Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair.", "A big black bug bit a big black bear.", "Betty Botter bought some butter.", "We surely shall see the sun shine soon.", "Which witch is which?", "Two toads, totally tired.", "Eleven benevolent elephants.", "Selfish shellfish.", "Fresh fried fish, fish fresh fried.", "Thin sticks, thick bricks.", "Irish wristwatch, Swiss wristwatch.", "He threw three free throws.", "A proper copper coffee pot.", "Black background, brown background."],
+        scramble: {
+            basic: ["APPLE", "SCHOOL", "HOUSE", "HAPPY", "WATER", "CHAIR", "TABLE", "BREAD", "RIVER", "TRAIN", "PAPER", "PENCIL", "CLOCK", "GARDEN", "WINDOW", "STREET", "FLOWER", "SUMMER", "WINTER", "SISTER"],
+            intermediate: ["ENVIRONMENT", "ADVENTURE", "CHALLENGE", "KNOWLEDGE", "BEAUTIFUL", "COMPUTER", "IMPORTANT", "DIFFERENT", "EXPERIENCE", "GOVERNMENT", "TECHNOLOGY", "UNDERSTAND", "VOCABULARY", "DICTIONARY", "NEWSPAPER", "TELEVISION", "RESTAURANT", "APARTMENT", "UNIVERSITY", "PROFESSIONAL"],
+            advanced: ["EPHEMERAL", "AMBIGUOUS", "UBIQUITOUS", "PARADIGM", "CACOPHONY", "MELLIFLUOUS", "SERENDIPITY", "ESOTERIC", "OBFUSCATE", "QUINTESSENTIAL", "IDIOSYNCRASY", "SYCOPHANT", "OSTENTATIOUS", "PERNICIOUS", "INEFFABLE", "MAGNANIMOUS", "FASTIDIOUS", "BELLIGERENT", "EPIPHANY", "UBIQUITY"]
+        },
+       wotd: {
+    basic: [
+        "Eager: Wanting to do something very much.", "Clumsy: Moving in an awkward way.", "Brave: Not afraid of danger.", "Calm: Quiet and peaceful.", "Glad: Happy.", "Huge: Very big.", "Loud: Making a lot of noise.", "Neat: Clean and organized.", "Quick: Fast.", "Tired: Needing to sleep or rest.", "Polite: Having good manners.", "Safe: Not in danger.", "Warm: A little hot.", "Cold: Not hot.", "Bright: Giving out a lot of light.", "Dark: With little or no light.", "Heavy: Weighing a lot.", "Light: Not heavy.", "Soft: Easy to press or bend.", "Hard: Not soft; difficult.",
+        "Bitter: Having a sharp, strong taste like coffee without sugar.", "Blunt: Not sharp; or speaking in a very direct way.", "Bold: Brave and confident; not afraid.", "Cheerful: Happy and optimistic.", "Dull: Not interesting or exciting; boring.", "Fancy: Decorative or expensive.", "Gentle: Calm, kind, or soft.", "Gloomy: Partially or totally dark; or feeling sad.", "Humble: Not proud or arrogant; modest.", "Jolly: Happy and cheerful.", "Lonely: Sad because one has no friends or company.", "Messy: Not clean or tidy.", "Nervous: Worried or afraid.", "Odd: Strange or unusual.", "Plain: Simple; not decorated.", "Rough: Not smooth or level.", "Shallow: Not deep.", "Stiff: Difficult to bend or move.", "Tough: Strong and able to deal with difficulty.", "Wise: Having or showing experience, knowledge, and good judgment."
+    ],
+    intermediate: [
+        "Reluctant: Unwilling and hesitant.", "Peculiar: Strange or odd; unusual.", "Crucial: Extremely important.", "Frequent: Happening often.", "Gradual: Happening slowly over time.", "Influence: The power to change someone or something.", "Locate: To find exactly where something is.", "Majority: More than half.", "Persuade: To make someone do or believe something.", "Recognize: To know someone or something because you have seen them before.", "Abundant: Existing in large quantities.", "Brief: Short in time.", "Complex: Made of many connected parts; not simple.", "Determine: To decide something.", "Evident: Clear or obvious.", "Familiar: Well known from past experience.", "Generate: To produce or create.", "Hinder: To make it difficult for someone to do something.", "Inquire: To ask for information.", "Justify: To prove that something is right or reasonable.",
+        "Accurate: Correct and true in every detail.", "Ambition: A strong desire to do or achieve something.", "Benefit: An advantage or profit gained from something.", "Capacity: The maximum amount that something can contain.", "Decline: To become smaller, fewer, or less; to decrease.", "Efficient: Achieving maximum productivity with minimum wasted effort.", "Genuine: Truly what something is said to be; authentic.", "Hazard: A danger or risk.", "Interpret: To explain the meaning of information or actions.", "Maintain: To keep something in its existing state.", "Objective: Not influenced by personal feelings; representing facts.", "Precise: Marked by exactness and accuracy.", "Reject: To dismiss as inadequate, inappropriate, or not to one's taste.", "Relevant: Closely connected or appropriate to the matter at hand.", "Sufficient: Enough; adequate.", "Thrive: To grow or develop well or vigorously.", "Urgent: Requiring immediate action or attention.", "Vague: Of uncertain, indefinite, or unclear character or meaning.", "Wander: To walk or move in a leisurely or aimless way.", "Yield: To produce or provide a natural, agricultural, or industrial product."
+    ],
+    advanced: [
+        "Pragmatic: Dealing with things sensibly and realistically.", "Alleviate: Make suffering or a problem less severe.", "Capricious: Given to sudden changes of mood or behavior.", "Dichotomy: A division or contrast between two things that are opposed.", "Enigmatic: Difficult to interpret or understand; mysterious.", "Facetious: Treating serious issues with inappropriate humor.", "Gregarious: Fond of company; sociable.", "Hubris: Excessive pride or self-confidence.", "Insidious: Proceeding in a gradual, subtle way, but with harmful effects.", "Juxtapose: Place close together for contrasting effect.", "Lethargic: Sluggish and apathetic.", "Meticulous: Showing great attention to detail.", "Nefarious: Wicked or criminal.", "Obdurate: Stubbornly refusing to change one's opinion or course of action.", "Pernicious: Having a harmful effect, especially in a gradual way.", "Quixotic: Exceedingly idealistic; unrealistic and impractical.", "Reticent: Not revealing one's thoughts or feelings readily.", "Sycophant: A person who acts obsequiously toward someone important in order to gain advantage.", "Trepidation: A feeling of fear or agitation about something that may happen.", "Zealous: Showing great energy or enthusiasm in pursuit of a cause or objective.",
+        "Anomalous: Deviating from what is standard, normal, or expected.", "Belligerent: Hostile and aggressive.", "Cacophony: A harsh, discordant mixture of sounds.", "Debilitate: To make someone very weak and infirm.", "Ephemeral: Lasting for a very short time.", "Fastidious: Very attentive to and concerned about accuracy and detail.", "Garrulous: Excessively talkative, especially on trivial matters.", "Ineffable: Too great or extreme to be expressed or described in words.", "Loquacious: Tending to talk a great deal; talkative.", "Magnanimous: Very generous or forgiving, especially toward a rival.", "Obfuscate: To render obscure, unclear, or unintelligible.", "Paradigm: A typical example or pattern of something; a model.", "Quintessential: Representing the most perfect or typical example of a quality or class.", "Recalcitrant: Having an obstinately uncooperative attitude toward authority.", "Salient: Most noticeable or important.", "Taciturn: Reserved or uncommunicative in speech; saying little.", "Ubiquitous: Present, appearing, or found everywhere.", "Venerable: Accorded a great deal of respect, especially because of age or wisdom.", "Wary: Feeling or showing caution about possible dangers or problems.", "Zenith: The time at which something is at its most powerful or successful."
+    ]
+},
+        taboo: [
+            { word: "Coffee", forbidden: ["Drink", "Morning", "Caffeine", "Starbucks", "Beans"] },
+            { word: "Smartphone", forbidden: ["App", "Call", "Screen", "Text", "Telephone"] },
+            { word: "Hospital", forbidden: ["Doctor", "Sick", "Nurse", "Medicine", "Bed"] },
+            { word: "Internet", forbidden: ["Wifi", "Online", "Website", "Computer", "Network"] },
+            { word: "Bicycle", forbidden: ["Ride", "Wheels", "Pedal", "Helmet", "Bike"] },
+            { word: "Pizza", forbidden: ["Cheese", "Italian", "Slice", "Delivery", "Crust"] },
+            { word: "Library", forbidden: ["Books", "Read", "Quiet", "Borrow", "Pages"] },
+            { word: "Movie", forbidden: ["Watch", "Cinema", "Actors", "Popcorn", "Film"] },
+            { word: "Winter", forbidden: ["Snow", "Cold", "Ice", "December", "Freeze"] },
+            { word: "Airplane", forbidden: ["Fly", "Sky", "Wings", "Pilot", "Airport"] },
+            { word: "Money", forbidden: ["Buy", "Cash", "Bank", "Pay", "Dollars"] },
+            { word: "Guitar", forbidden: ["Music", "Strings", "Play", "Instrument", "Rock"] },
+            { word: "Teacher", forbidden: ["School", "Students", "Class", "Learn", "Board"] },
+            { word: "Sun", forbidden: ["Hot", "Yellow", "Sky", "Star", "Day"] },
+            { word: "Ocean", forbidden: ["Water", "Blue", "Swim", "Fish", "Sea"] },
+            { word: "Clock", forbidden: ["Time", "Watch", "Hands", "Hour", "Tick"] },
+            { word: "Camera", forbidden: ["Photo", "Picture", "Lens", "Shoot", "Flash"] },
+            { word: "Mirror", forbidden: ["Look", "Reflection", "Glass", "Face", "See"] },
+            { word: "Shoes", forbidden: ["Feet", "Walk", "Wear", "Sneakers", "Socks"] },
+            { word: "Rain", forbidden: ["Water", "Drops", "Sky", "Wet", "Umbrella"] }
+        ]
+    };
+
+    let currentAnswer = "";
+    const display = document.getElementById('text-output');
+    const revealBtn = document.getElementById('reveal-btn');
+    const levelSelect = document.getElementById('level');
+
+    function getRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    function resetUI() {
+        revealBtn.style.display = "none";
+        currentAnswer = "";
+    }
+
+    function getTopic() {
+        resetUI();
+        display.innerText = "Topic: " + getRandom(data.topics[levelSelect.value]);
+    }
+
+    function getQuestion(type) {
+        resetUI();
+        display.innerText = type === 'silly' ? getRandom(data.questions.silly) : getRandom(data.questions.serious[levelSelect.value]);
+    }
+
+    function getWYR() { resetUI(); display.innerText = getRandom(data.wyr); }
+    function getTwister() { resetUI(); display.innerText = "Try: " + getRandom(data.twisters); }
+
+    function getScramble() {
+        resetUI();
+        const word = getRandom(data.scramble[levelSelect.value]);
+        currentAnswer = word;
+        const scrambled = word.split('').sort(() => Math.random() - 0.5).join('');
+        display.innerText = "Unscramble: " + scrambled;
+        revealBtn.style.display = "block";
+    }
+
+    function revealAnswer() {
+        display.innerText = "Answer: " + currentAnswer;
+        revealBtn.style.display = "none";
+    }
+
+    function getWOTD() {
+        resetUI();
+        display.innerText = "Word of the Day: " + getRandom(data.wotd[levelSelect.value]);
+    }
+
+    function getTaboo() {
+        resetUI();
+        const item = getRandom(data.taboo);
+        display.innerHTML = `<div class="taboo-word">${item.word}</div><div class="forbidden">Don't say: ${item.forbidden.join(', ')}</div>`;
+    }
+</script>
+
+</body>
+</html>

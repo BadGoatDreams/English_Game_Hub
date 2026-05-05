@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇺🇸 NYC Liberty Airport Hub</title>
+    <link rel="stylesheet" href="../styles/unified-theme.css">
+    <style>
+        :root {
+            --eagle-blue: #003366;
+            --eagle-red: #cc0000;
+            --liberty-black: #111;
+            --liberty-gold: #d4af37;
+            --train-blue: #004E7C;
+            --taxi-yellow: #FFD700;
+            --food-red: #d32f2f;
+            --security-navy: #0d1b2a;
+            --bg-dark: #121212;
+            --text-light: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            body { padding: 20px 10px; }
+            .menu-grid { 
+                grid-template-columns: 1fr; 
+                gap: 10px; 
+                padding: 10px;
+                margin: 20px auto;
+            }
+            .menu-btn { padding: 15px; font-size: 1rem; }
+            .game-container { margin: 10px auto; padding: 10px; }
+            .role-card { padding: 15px; margin: 10px; }
+        }
+        
+        @media (max-width: 480px) {
+            .menu-btn { padding: 12px; font-size: 0.9rem; }
+            .role-card { padding: 10px; }
+        }
+
+        /* Helper Classes */
+        .hidden { display: none; }
+        .active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Navigation Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .menu-btn {
+            padding: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-btn:hover { transform: scale(1.03); }
+        .sub-text { font-size: 0.8rem; margin-top: 5px; font-weight: normal; opacity: 0.8; }
+
+        /* Colors */
+        .btn-board { background: #333; border: 2px solid #fff; }
+        .btn-eagle { background: linear-gradient(135deg, var(--eagle-blue), var(--eagle-red)); }
+        .btn-liberty { background: linear-gradient(135deg, var(--liberty-black), var(--liberty-gold)); }
+        .btn-train { background: var(--train-blue); }
+        .btn-taxi { background: var(--taxi-yellow); color: black; }
+        .btn-security { background: var(--security-navy); border: 2px solid #4a90e2; }
+        .btn-food { background: var(--food-red); border: 2px solid orange; }
+        .btn-traveler { background: #2e7d32; }
+        .btn-back { margin: 20px; padding: 10px 20px; background: #555; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; }
+
+        /* DEPARTURE BOARD */
+        .board-container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: #000; 
+            padding: 20px; 
+            border: 8px solid #444; 
+            border-radius: 10px; 
+            min-height: 520px;
+        }
+        .board-header { 
+            display: flex; 
+            justify-content: space-between; 
+            color: #888; 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+            border-bottom: 1px solid #444; 
+            padding-bottom: 5px; 
+            font-size: 1rem; 
+        }
+        .flight-rows-container {
+            min-height: 320px;
+        }
+        .flight-row { 
+            display: flex; 
+            justify-content: space-between; 
+            border-bottom: 1px solid #222; 
+            padding: 12px 0; 
+            font-family: 'Courier New', monospace; 
+            font-size: 1.4rem; 
+            text-align: left; 
+            animation: flipIn 0.5s ease-out;
+        }
+        @keyframes flipIn {
+            0% { transform: rotateX(-90deg); opacity: 0; }
+            100% { transform: rotateX(0); opacity: 1; }
+        }
+
+        .flight-row span { flex: 1; }
+        .col-dest { flex: 1.5 !important; } 
+        
+        .st-cancel { color: #ff3333; font-weight: bold; text-shadow: 0 0 5px #ff3333; }
+        .st-open { color: #33ff33; font-weight: bold; }
+        .st-delay { color: orange; font-weight: bold; }
+        .st-taxi { color: yellow; font-weight: bold; animation: blink 1s infinite; }
+        
+        @keyframes blink { 50% { opacity: 0.5; } }
+
+        .page-indicator {
+            text-align: right;
+            color: #555;
+            font-family: 'Courier New', monospace;
+            margin-top: 10px;
+        }
+
+        /* MOBILE HIDING LOGIC */
+        .mobile-warning { display: none; }
+        
+        @media only screen and (max-width: 768px) {
+            #board-content-wrapper { display: none; }
+            .mobile-warning { 
+                display: block; 
+                padding: 40px; 
+                border: 2px dashed #ff3333; 
+                margin: 20px; 
+                background: #1a0000;
+                color: #ff3333;
+                font-weight: bold;
+                font-size: 1.5rem;
+                animation: pulse 2s infinite;
+            }
+        }
+        @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+
+
+        /* TICKET DESIGN */
+        .ticket {
+            background: white;
+            color: #333;
+            width: 90%;
+            max-width: 450px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: left;
+            position: relative;
+        }
+        .ticket-header { background: var(--eagle-blue); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .ticket-header.liberty { background: var(--liberty-black); color: var(--liberty-gold); }
+        
+        .ticket-body { padding: 20px; }
+        .ticket-row { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .ticket-label { font-size: 0.8rem; color: #777; text-transform: uppercase; }
+        .ticket-value { font-size: 1.4rem; font-weight: bold; color: #000; }
+        .ticket-dest { font-size: 2.2rem; font-weight: 900; color: #000; text-transform: uppercase; letter-spacing: 1px; word-wrap: break-word; }
+        
+        /* PAYMENT SYSTEM */
+        .pay-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed #ccc;
+            text-align: center;
+        }
+        .pay-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .pay-btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .pay-btn:active { transform: scale(0.95); }
+        
+        .pay-btn-big {
+            grid-column: span 2;
+            background: #1b5e20;
+            font-size: 1.5rem;
+            border: 2px solid #81c784;
+        }
+
+        /* Payment Overlay */
+        #payment-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(46, 125, 50, 0.95);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            display: none;
+        }
+        
+        #error-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(183, 28, 28, 0.95);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            display: none;
+        }
+
+        .pay-amount { font-size: 5rem; font-weight: bold; }
+        .pay-text { font-size: 2rem; }
+        .balance-display { font-size: 1.5rem; color: #2e7d32; font-weight: bold; border: 1px solid #ccc; padding: 5px 10px; border-radius: 5px; background: #e8f5e9; }
+
+        /* Role Card Design */
+        .role-card { background: white; color: black; padding: 25px; border-radius: 10px; text-align: left; max-width: 700px; margin: 0 auto; width: 90%; box-sizing: border-box; }
+        .inventory { background: #eee; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 5px solid #333; }
+    </style>
+</head>
+<body>
+<a href="../index.html" class="back-btn" style="position: fixed; top: 15px; left: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">← Back to Hub</a>
+
+    <div id="menu-page" class="active">
+        <h1>🇺🇸 NYC Liberty Airport Hub</h1>
+        <p>Select your station.</p>
+        <div class="menu-grid">
+            <button class="menu-btn btn-board" onclick="showPage('board-page'); startBoardCycle();">🖥️ Main Board<span class="sub-text">Projector Only</span></button>
+            <button class="menu-btn btn-traveler" onclick="showPage('traveler-page')">🧳 Traveler<span class="sub-text">Get Your Ticket</span></button>
+            
+            <button class="menu-btn btn-eagle" onclick="showPage('eagle-page')">🦅 Eagle Wings<span class="sub-text">Staff Only</span></button>
+            <button class="menu-btn btn-liberty" onclick="showPage('liberty-page')">🗽 Liberty Jets<span class="sub-text">Staff Only</span></button>
+            <button class="menu-btn btn-train" onclick="showPage('train-page')">🚆 Amtrak<span class="sub-text">Staff Only</span></button>
+            <button class="menu-btn btn-taxi" onclick="showPage('taxi-page')">🚖 Taxi<span class="sub-text">Staff Only</span></button>
+            <button class="menu-btn btn-food" onclick="showPage('food-page')">🍔 Burger Barn<span class="sub-text">Staff Only</span></button>
+            <button class="menu-btn btn-security" onclick="showPage('security-page')">👮‍♂️ Security<span class="sub-text">Staff Only</span></button>
+        </div>
+    </div>
+
+    <div id="board-page" class="hidden">
+        <h1 style="color:orange; font-family:'Courier New'; margin-bottom:5px;">DEPARTURES</h1>
+        
+        <div class="mobile-warning">
+            🚫 NO PHONES 🚫<br><br>
+            Look at the Projector Screen!<br>
+            This information is hidden on mobile devices.
+        </div>
+
+        <div id="board-content-wrapper" class="board-container">
+            <div class="board-header"><span>FLIGHT NO.</span><span class="col-dest">DESTINATION</span><span>STATUS</span></div>
+            
+            <div id="flight-display" class="flight-rows-container"></div>
+
+            <div class="page-indicator">PAGE <span id="page-num">1</span> OF 2</div>
+
+            <div style="border-top: 2px solid white; margin:15px 0 5px 0;"></div>
+            <div class="flight-row" style="font-size:1.1rem; color:#aaa;"><span>🚆 AMTRAK</span><span class="col-dest">BOSTON / DC / ATLANTA</span><span class="st-open">OPEN</span></div>
+            <div class="flight-row" style="font-size:1.1rem; color:#aaa;"><span>🍔 BURGER</span><span class="col-dest">FOOD COURT (GATE C)</span><span class="st-open">OPEN</span></div>
+        </div>
+        <button class="btn-back" onclick="stopBoardCycle(); showPage('menu-page')">Back to Menu</button>
+    </div>
+
+    <div id="eagle-page" class="hidden">
+        <div class="role-card" style="border-top: 10px solid var(--eagle-blue);">
+            <h2>🦅 Eagle Wings Agent</h2>
+            <div class="inventory">
+                <p>✅ <b>Flying to:</b> Chicago & Miami ($500).</p>
+                <p>❌ <b>Cancelled to:</b> Los Angeles, DC, Boston, Atlanta, NJ.</p>
+            </div>
+            <h3>Instructions:</h3>
+            <ul>
+                <li><b>Price:</b> Flights are <b>$500</b>.</li>
+                <li><b>Los Angeles:</b> "We are cancelled. Go to <span style="color:blue">Liberty Jets</span>."</li>
+                <li><b>Chicago / Miami:</b> "We are flying! $500 please."</li>
+                <li><b>Atlanta/DC/Boston:</b> "We are cancelled. Go to the <span style="color:green">Train</span>."</li>
+                <li><b>Payment:</b> Ensure they tap the <b>$500</b> button.</li>
+            </ul>
+        </div>
+        <button class="btn-back" onclick="showPage('menu-page')">Back to Menu</button>
+    </div>
+
+    <div id="liberty-page" class="hidden">
+        <div class="role-card" style="border-top: 10px solid var(--liberty-gold);">
+            <h2>🗽 Liberty Jets Agent</h2>
+            <div class="inventory">
+                <p>✅ <b>Flying to:</b> Los Angeles ($500).</p>
+                <p>❌ <b>Cancelled to:</b> Chicago, Miami, DC, Boston, Brooklyn.</p>
+            </div>
+            <h3>Instructions:</h3>
+            <ul>
+                <li><b>Price:</b> Flights are <b>$500</b>.</li>
+                <li><b>Chicago / Miami:</b> "We are cancelled. Go to <span style="color:red">Eagle Wings</span>."</li>
+                <li><b>Los Angeles:</b> "We are flying! $500 please."</li>
+                <li><b>Atlanta/DC/Boston:</b> "We are cancelled. Go to the <span style="color:green">Train</span>."</li>
+                <li><b>Payment:</b> Ensure they tap the <b>$500</b> button.</li>
+            </ul>
+        </div>
+        <button class="btn-back" onclick="showPage('menu-page')">Back to Menu</button>
+    </div>
+
+    <div id="train-page" class="hidden">
+        <div class="role-card" style="border-top: 10px solid var(--train-blue);">
+            <h2>🚆 Amtrak Conductor</h2>
+            <div class="inventory">
+                <p>✅ <b>Destinations:</b> Boston, DC, Atlanta ($100).</p>
+            </div>
+            <h3>Instructions:</h3>
+            <ul>
+                <li><b>DC / Boston / Atlanta:</b> "All aboard! Ticket is $100."</li>
+                <li><b>Payment:</b> Ask them to tap the <b>$100</b> button.</li>
+                <li><b>Refusal:</b> "We do NOT go to California or Miami."</li>
+            </ul>
+        </div>
+        <button class="btn-back" onclick="showPage('menu-page')">Back to Menu</button>
+    </div>
+
+    <div id="taxi-page" class="hidden">
+        <div class="role-card" style="border-top: 10px solid var(--taxi-yellow);">
+            <h2>🚖 Taxi Dispatcher</h2>
+            <div class="inventory">
+                <p>✅ <b>Destinations:</b> Brooklyn ($50), Queens ($50), New Jersey ($100).</p>
+            </div>
+            <h3>Instructions:</h3>
+            <ul>
+                <li><b>Refusal:</b> "I am not driving you to Washington DC! Take the train!"</li>
+                <li><b>Payment:</b> Ask them to tap the <b>$50</b> or <b>$100</b> button.</li>
+            </ul>
+        </div>
+        <button class="btn-back" onclick="showPage('menu-page')">Back to Menu</button>
+    </div>
+
+    <div id="food-page" class="hidden">
+        <div class="role-card" style="border-top: 10px solid var(--food-red);">
+            <h2>🍔 Burger Barn Worker</h2>
+            <div class="inventory">
+                <p>🌭 <b>MENU:</b></p>
+                <ul>
+                    <li><b>Hot Coffee:</b> $5</li>
+                    <li><b>Pizza Slice:</b> $10</li>
+                    <li><b>Gourmet Meal:</b> $50</li>
+                </ul>
+            </div>
+            <h3>Your Instructions:</h3>
+            <ul>
+                <li><b>Customers:</b> Check the bottom of their ticket! It will say what food they need.</li>
+                <li><b>Payment:</b> Make them tap the button (<b>$5, $10, or $50</b>) and show you the screen.</li>
+                <li><b>Politeness:</b> If they don't say "Please", give them a cold coffee!</li>
+            </ul>
+        </div>
+        <button class="btn-back" onclick="showPage('menu-page')">Back to Menu</button>
+    </div>
+
+    <div id="security-page" class="hidden">
+        <div class="role-card" style="border-top: 10px solid var(--security-navy);">
+            <h2>👮‍♂️ Security Officer</h2>
+            <div class="inventory">
+                <p>🛡️ <b>Mission:</b> Enforce Polite English.</p>
+            </div>
+            <h3>Your Instructions:</h3>
+            <ul>
+                <li><b>Patrol the Lines:</b> Walk up and down the lines at the Airline Desks.</li>
+                <li><b>Listen for Rudeness:</b> If you hear "I want..." or "Give me..." blow your whistle!</li>
+                <li><b>The Penalty:</b> Make them go to the BACK of the line.</li>
+            </ul>
+        </div>
+        <button class="btn-back" onclick="showPage('menu-page')">Back to Menu</button>
+    </div>
+
+    <div id="traveler-page" class="hidden">
+        <h2>Passenger Portal</h2>
+        <p>Click to retrieve your booked ticket.</p>
+        <button onclick="generateTicket()" style="padding:15px 30px; font-size:1.2rem; background:white; color:black; border-radius:8px; cursor:pointer;">🎫 Retrieve Ticket</button>
+
+        <div id="ticket-display" class="hidden">
+            <div id="ticket-card" class="ticket">
+                <div id="t-header" class="ticket-header">
+                    <span id="t-airline">EAGLE WINGS</span>
+                    <span>BOARDING PASS</span>
+                </div>
+                <div class="ticket-body">
+                    <div class="ticket-row">
+                        <div>
+                            <div class="ticket-label">Passenger</div>
+                            <div id="t-role" class="ticket-value">John Doe</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div class="ticket-label">Flight</div>
+                            <div id="t-flight" class="ticket-value">EA-101</div>
+                        </div>
+                    </div>
+                    
+                    <div class="ticket-label">Destination</div>
+                    <div id="t-dest" class="ticket-dest">LOS ANGELES</div>
+
+                    <div class="ticket-row" style="margin-top:15px;">
+                        <div>
+                            <div class="ticket-label">Date</div>
+                            <div class="ticket-value">TODAY</div>
+                        </div>
+                    </div>
+                    
+                    <div class="pay-section">
+                        <div class="ticket-label">DIGITAL WALLET (TAP TO PAY)</div>
+                        <div style="margin:10px 0;">
+                            Balance: <span id="live-balance" class="balance-display">$0</span>
+                        </div>
+                        <div class="pay-grid">
+                            <button class="pay-btn" onclick="processPayment(5)">$5</button>
+                            <button class="pay-btn" onclick="processPayment(10)">$10</button>
+                            <button class="pay-btn" onclick="processPayment(50)">$50</button>
+                            <button class="pay-btn" onclick="processPayment(100)">$100</button>
+                            <button class="pay-btn pay-btn-big" onclick="processPayment(500)">$500 (FLIGHT)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background:#333; padding:15px; border-radius:10px; margin-top:20px; text-align:left;">
+                <p><b>💰 Your Wallet:</b> <span id="t-money-desc" style="color:#4caf50; font-weight:bold;"></span></p>
+                <p><b>⚠️ Action Required:</b> Check the <b>Main Board</b>! If cancelled, find another way.</p>
+                <p style="border-top:1px solid #555; padding-top:10px; color:orange;"><b>🍔 HUNGER LEVEL:</b> <span id="t-food"></span></p>
+            </div>
+        </div>
+        <button class="btn-back" onclick="showPage('menu-page')">Back to Menu</button>
+    </div>
+
+    <div id="payment-overlay">
+        <div class="pay-text">PAYMENT SENT</div>
+        <div class="pay-amount" id="overlay-amount">$0</div>
+        <div style="font-size:1.2rem; margin-top:20px;">Remaining: <span id="overlay-remain"></span></div>
+    </div>
+
+    <div id="error-overlay">
+        <div class="pay-amount" style="font-size:4rem;">🚫</div>
+        <div class="pay-text">INSUFFICIENT FUNDS</div>
+        <div style="font-size:1.2rem; margin-top:20px;">You are broke!</div>
+    </div>
+
+    <script>
+        // GLOBAL STATE
+        let currentBalance = 0;
+
+        function showPage(pageId) {
+            document.querySelectorAll('div[id$="-page"]').forEach(div => {
+                div.classList.remove('active');
+                div.classList.add('hidden');
+            });
+            const target = document.getElementById(pageId);
+            target.classList.remove('hidden');
+            target.classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // --- PAYMENT LOGIC ---
+        function processPayment(amount) {
+            if (currentBalance >= amount) {
+                // Success
+                currentBalance -= amount;
+                updateBalanceDisplay();
+                
+                const overlay = document.getElementById('payment-overlay');
+                document.getElementById('overlay-amount').innerText = "$" + amount;
+                document.getElementById('overlay-remain').innerText = "$" + currentBalance;
+                
+                overlay.style.display = 'flex';
+                setTimeout(() => { overlay.style.display = 'none'; }, 3000);
+            } else {
+                // Fail
+                const errOverlay = document.getElementById('error-overlay');
+                errOverlay.style.display = 'flex';
+                setTimeout(() => { errOverlay.style.display = 'none'; }, 2000);
+            }
+        }
+
+        function updateBalanceDisplay() {
+            document.getElementById('live-balance').innerText = "$" + currentBalance;
+        }
+
+        // --- BOARD LOGIC ---
+        // PAGE 1: Long Distance
+        const boardPage1 = [
+            { id: "EA-101", dest: "LOS ANGELES", status: "CANCELLED", class: "st-cancel", airline: "🦅 EA" },
+            { id: "LJ-500", dest: "LOS ANGELES", status: "ON TIME", class: "st-open", airline: "🗽 LJ" },
+            { id: "EA-303", dest: "CHICAGO", status: "BOARDING", class: "st-open", airline: "🦅 EA" },
+            { id: "LJ-700", dest: "CHICAGO", status: "CANCELLED", class: "st-cancel", airline: "🗽 LJ" },
+            { id: "EA-550", dest: "MIAMI", status: "ON TIME", class: "st-open", airline: "🦅 EA" },
+            { id: "LJ-990", dest: "MIAMI", status: "CANCELLED", class: "st-cancel", airline: "🗽 LJ" }
+        ];
+
+        // PAGE 2: Short Distance
+        const boardPage2 = [
+            { id: "EA-202", dest: "WASH. DC", status: "CANCELLED", class: "st-cancel", airline: "🦅 EA" },
+            { id: "LJ-600", dest: "WASH. DC", status: "CANCELLED", class: "st-cancel", airline: "🗽 LJ" },
+            { id: "EA-404", dest: "BOSTON", status: "CANCELLED", class: "st-cancel", airline: "🦅 EA" },
+            { id: "LJ-800", dest: "BOSTON", status: "CANCELLED", class: "st-cancel", airline: "🗽 LJ" },
+            { id: "EA-090", dest: "ATLANTA", status: "CANCELLED", class: "st-cancel", airline: "🦅 EA" },
+            { id: "LJ-111", dest: "BROOKLYN", status: "CHECK TAXI", class: "st-taxi", airline: "🗽 LJ" },
+            { id: "EA-999", dest: "NEW JERSEY", status: "CHECK TAXI", class: "st-taxi", airline: "🦅 EA" }
+        ];
+
+        let cycleInterval;
+        let currentPage = 1;
+
+        function renderBoard(data, pageNum) {
+            const container = document.getElementById('flight-display');
+            container.innerHTML = ''; 
+            
+            data.forEach(flight => {
+                const row = document.createElement('div');
+                row.className = 'flight-row';
+                row.innerHTML = `<span>${flight.airline} ${flight.id}</span><span class="col-dest">${flight.dest}</span><span class="${flight.class}">${flight.status}</span>`;
+                container.appendChild(row);
+            });
+
+            document.getElementById('page-num').innerText = pageNum;
+        }
+
+        function startBoardCycle() {
+            currentPage = 1;
+            renderBoard(boardPage1, 1);
+            if(cycleInterval) clearInterval(cycleInterval);
+            cycleInterval = setInterval(() => {
+                if (currentPage === 1) { renderBoard(boardPage2, 2); currentPage = 2; } 
+                else { renderBoard(boardPage1, 1); currentPage = 1; }
+            }, 8000); 
+        }
+
+        function stopBoardCycle() { if(cycleInterval) clearInterval(cycleInterval); }
+
+        // --- TICKET GENERATOR ---
+        const roles = ["Student", "Business Exec", "Tourist", "Grandma", "Musician", "Celebrity", "Spy"];
+        
+        // WALLETS (Guarantees solvency for specific tiers)
+        const highBudgets = [
+            { name: "Black Amex", val: 5000 },
+            { name: "Company Card", val: 2000 },
+            { name: "$1000 Travel Voucher", val: 1000 }
+        ];
+        const mediumBudgets = [
+            { name: "$300 Cash", val: 300 },
+            { name: "Debit Card", val: 400 },
+            { name: "$250 + MetroCard", val: 250 }
+        ];
+        const lowBudgets = [
+            { name: "$120 Crumpled Bills", val: 120 },
+            { name: "$150 Cash", val: 150 },
+            { name: "$120 Gift Card", val: 120 }
+        ];
+
+        const scenarios = [
+            // HIGH COST (Flights $500)
+            { airline: "EAGLE WINGS", flight: "EA-101", dest: "LOS ANGELES", theme: "eagle", tier: "high" },
+            { airline: "LIBERTY JETS", flight: "LJ-700", dest: "CHICAGO", theme: "liberty", tier: "high" },
+            { airline: "LIBERTY JETS", flight: "LJ-990", dest: "MIAMI", theme: "liberty", tier: "high" },
+            
+            // MEDIUM COST (Train $100)
+            { airline: "EAGLE WINGS", flight: "EA-202", dest: "WASH. DC", theme: "eagle", tier: "medium" },
+            { airline: "LIBERTY JETS", flight: "LJ-800", dest: "BOSTON", theme: "liberty", tier: "medium" },
+            { airline: "EAGLE WINGS", flight: "EA-090", dest: "ATLANTA", theme: "eagle", tier: "medium" },
+            
+            // LOW COST (Taxi $50 - $100)
+            { airline: "LIBERTY JETS", flight: "LJ-111", dest: "BROOKLYN", theme: "liberty", tier: "low" },
+            { airline: "EAGLE WINGS", flight: "EA-999", dest: "NEW JERSEY", theme: "eagle", tier: "medium" } // NJ is $100 taxi, need medium wallet
+        ];
+
+        function generateTicket() {
+            const role = roles[Math.floor(Math.random() * roles.length)];
+            const scen = scenarios[Math.floor(Math.random() * scenarios.length)];
+            
+            let walletObj;
+            let foodTask = "";
+
+            if (scen.tier === "high") { 
+                walletObj = highBudgets[Math.floor(Math.random() * highBudgets.length)]; 
+                foodTask = "Celebrating! Buy a Gourmet Meal ($50).";
+            } 
+            else if (scen.tier === "medium") { 
+                walletObj = mediumBudgets[Math.floor(Math.random() * mediumBudgets.length)]; 
+                foodTask = "Hungry. Buy a Pizza Slice ($10).";
+            } 
+            else { 
+                walletObj = lowBudgets[Math.floor(Math.random() * lowBudgets.length)]; 
+                foodTask = "Tired. Go buy a Coffee ($5).";
+            }
+
+            // Set Global Balance
+            currentBalance = walletObj.val;
+            updateBalanceDisplay();
+
+            document.getElementById('t-airline').innerText = scen.airline;
+            document.getElementById('t-flight').innerText = scen.flight;
+            document.getElementById('t-dest').innerText = scen.dest;
+            document.getElementById('t-role').innerText = role;
+            
+            const header = document.getElementById('t-header');
+            header.className = 'ticket-header'; 
+            if (scen.theme === 'liberty') { header.classList.add('liberty'); } 
+
+            document.getElementById('t-money-desc').innerText = walletObj.name;
+            document.getElementById('t-food').innerText = foodTask;
+
+            document.getElementById('ticket-display').classList.remove('hidden');
+            document.getElementById('ticket-display').classList.add('active');
+        }
+    </script>
+</body>
+</html>

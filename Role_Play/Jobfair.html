@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Career Expo 2026</title>
+    <link rel="stylesheet" href="../styles/unified-theme.css">
+    <style>
+        body { font-family: 'Inter', 'Segoe UI', sans-serif; background-color: #f4f7f9; color: #333; margin: 0; padding: 0; }
+        .game-container { max-width: 650px; margin: 20px auto; padding: 0 20px; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); margin-bottom: 20px; border-top: 6px solid #3498db; }
+        h1, h2, h3 { text-align: center; color: #2c3e50; margin-top: 0; }
+        
+        .btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 10px; font-size: 1.1em; cursor: pointer; font-weight: bold; transition: 0.2s; text-align: center; }
+        .btn:active { transform: scale(0.98); }
+        .btn-blue { background: #3498db; color: white; }
+        .btn-green { background: #27ae60; color: white; }
+        .btn-purple { background: #8e44ad; color: white; }
+        .btn-dark { background: #2c3e50; color: white; }
+        .btn-orange { background: #e67e22; color: white; }
+        .btn-red { background: #e74c3c; color: white; }
+        .btn-police { background: #f1c40f; color: #000; border: 2px solid #000; }
+        .hidden { display: none !important; }
+
+        #slide-view { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #1a252f; z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
+        .slide { display: none; padding: 40px; text-align: center; width: 85%; max-width: 800px; }
+        .slide h1 { color: #3498db; font-size: 2.5em; }
+        .slide ul { text-align: left; font-size: 1.1em; line-height: 1.6; max-width: 700px; margin: 0 auto; columns: 2; gap: 40px; }
+        .slide-controls { margin-top: 30px; display: flex; gap: 10px; justify-content: center; }
+
+        .resume-sheet { background: #fff; border: 1px solid #ddd; padding: 25px; border-radius: 4px; font-family: 'Georgia', serif; color: #1a1a1a; box-shadow: inset 0 0 15px #f0f0f0; }
+        .resume-header { border-bottom: 2px solid #333; padding-bottom: 5px; margin-bottom: 10px; text-align: center; }
+        .resume-name { font-size: 1.6em; text-transform: uppercase; font-weight: bold; }
+        .resume-section { margin-bottom: 10px; }
+        .resume-section-title { font-weight: bold; text-transform: uppercase; border-bottom: 1px solid #ccc; font-size: 0.8em; margin-bottom: 5px; }
+        .resume-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.85em; }
+        .stat-box { background: #fcfcfc; padding: 8px; border: 1px solid #eee; border-radius: 3px; }
+        .skills-list { font-size: 0.85em; margin-top: 5px; line-height: 1.5; }
+        .history-item { margin-bottom: 5px; font-size: 0.85em; }
+
+        .tracker { background: #f8f9fa; padding: 15px; border-radius: 10px; border: 2px dashed #bdc3c7; text-align: center; margin-top: 15px; }
+        .recruiter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .flavor-text { font-style: italic; color: #444; background: #fff3cd; padding: 10px; border-radius: 8px; border-left: 5px solid #f1c40f; font-size: 0.9em; margin-top: 10px; }
+        
+        input[type="text"] { width: 100%; padding: 12px; box-sizing: border-box; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px; font-size: 1em; }
+        .ledger-list { text-align: left; font-size: 0.9em; padding-left: 20px; color: #2c3e50; margin-top: 5px; }
+    </style>
+</head>
+<body>
+<a href="../index.html" class="back-btn" style="position: fixed; top: 15px; left: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">← Back to Hub</a>
+
+    <div id="slide-view" class="hidden">
+        <div class="slide">
+            <h1>🎓 Student Expo 2026</h1>
+            <p style="font-size: 1.4em;">The Multidisciplinary Hustle</p>
+            <p>Because nobody has just one job anymore.</p>
+            <div class="slide-controls">
+                <button class="btn btn-red" style="width:150px" onclick="closeSlides()">Exit</button>
+                <button class="btn btn-blue" style="width:150px" onclick="changeSlide(1)">Next ➡️</button>
+            </div>
+        </div>
+        <div class="slide">
+            <h1>📖 The Hustle Vocab</h1>
+            <ul>
+                <li><strong>Gig Economy</strong>: Temporary, flexible jobs.</li>
+                <li><strong>Blue-Collar</strong>: Manual labor or trade jobs.</li>
+                <li><strong>White-Collar</strong>: Office or desk jobs.</li>
+                <li><strong>Transferable Skills</strong>: Abilities used in any job.</li>
+                <li><strong>Enlistment Bonus</strong>: Money paid for joining the military.</li>
+                <li><strong>Overtime</strong>: Working more than your normal hours.</li>
+                <li><strong>Graveyard Shift</strong>: Working through the night.</li>
+                <li><strong>Leverage</strong>: Using what you have to get a deal.</li>
+            </ul>
+            <div class="slide-controls">
+                <button class="btn btn-dark" onclick="changeSlide(-1)">⬅️ Prev</button>
+                <button class="btn btn-red" onclick="closeSlides()">Exit</button>
+                <button class="btn btn-blue" onclick="changeSlide(1)">Next ➡️</button>
+            </div>
+        </div>
+        <div class="slide">
+            <h1>🚨 Grammar Patrol</h1>
+            <ul>
+                <li>"I have 2 years experience" ➡️ "I have 2 years **of** experience."</li>
+                <li>"I am finding a job" ➡️ "I am **looking for** a job."</li>
+                <li>"I work as barista" ➡️ "I work as **a** barista."</li>
+                <li>"I'm graduate in..." ➡️ "I **graduated** with a degree in..."</li>
+            </ul>
+            <div class="slide-controls">
+                <button class="btn btn-dark" onclick="changeSlide(-1)">⬅️ Prev</button>
+                <button class="btn btn-red" style="width:200px" onclick="closeSlides()">❌ Start the Expo</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div id="main-menu" class="card">
+            <h1>🎓 Uni Expo 2026</h1>
+            <button class="btn btn-purple" onclick="showSlides()">📽️ View Rules & Vocab</button>
+            <hr>
+            <button class="btn btn-blue" onclick="showNameEntry()">👨‍🎓 Create Student Resume</button>
+            <button class="btn btn-dark" onclick="showRecruiterMenu()">🏢 Open Recruiter Booth</button>
+            <button class="btn btn-police" onclick="startPolice()">🚔 Grammar Police</button>
+        </div>
+
+        <div id="name-entry" class="card hidden">
+            <h2>Uni Student Registration</h2>
+            <input type="text" id="user-name" placeholder="Full Name..." maxlength="20">
+            <button class="btn btn-green" onclick="generateResume()">Generate Resume 📄</button>
+            <button class="btn btn-red" onclick="location.reload()">⬅️ Back</button>
+        </div>
+
+        <div id="resume-view" class="card hidden">
+            <div id="resume-content" class="resume-sheet"></div>
+            <p class="flavor-text"><strong>💡 Hustle Tip:</strong> Use your GPA and work history to negotiate. If you survived 2 years at a warehouse, tell the tech recruiter you have a strong work ethic.</p>
+            <button class="btn btn-red" style="margin-top:20px" onclick="location.reload()">🔄 Burn Resume / Restart</button>
+        </div>
+
+        <div id="recruiter-menu" class="card hidden">
+            <h2>Booth Selection</h2>
+            <div class="recruiter-grid">
+                <button class="btn btn-orange" onclick="launchRecruiter(0)">☕ Cafe (Entry)</button>
+                <button class="btn btn-dark" onclick="launchRecruiter(1)">💻 Tech Startup</button>
+                <button class="btn btn-blue" onclick="launchRecruiter(2)">🏨 Azure Hotel</button>
+                <button class="btn btn-red" onclick="launchRecruiter(6)">🪖 Army Recruiting</button>
+                <button class="btn btn-green" onclick="launchRecruiter(4)">🌱 NGO/Env</button>
+                <button class="btn btn-dark" onclick="launchRecruiter(5)">🏗️ Trade Apprentice</button>
+            </div>
+            <button class="btn btn-red" onclick="location.reload()">⬅️ Back</button>
+        </div>
+
+        <div id="recruiter-dashboard" class="card hidden">
+            <h2 id="booth-name"></h2>
+            <div id="booth-info"></div>
+            <div class="tracker">
+                <h3 id="hire-label">📊 Hiring Tracker</h3>
+                <p id="count-label">Staff: <span id="count-hired">0</span> / <span id="count-max"></span></p>
+                <p id="budget-label">Remaining: $<span id="budget-val"></span>k</p>
+                
+                <hr style="border:1px dashed #ccc; margin: 15px 0;">
+                
+                <input type="text" id="recruit-name" placeholder="Enter Candidate Name..." style="text-align:center; margin-bottom: 5px;">
+                <div style="display:flex; gap: 5px;">
+                    <button class="btn btn-green" id="btn-low" onclick="hire(25)">Hire @ $25k</button>
+                    <button class="btn btn-blue" id="btn-med" onclick="hire(45)">Hire @ $45k</button>
+                    <button class="btn btn-red" id="btn-high" onclick="hire(70)">Hire @ $70k</button>
+                </div>
+
+                <div class="resume-section" style="margin-top:20px; text-align: left;">
+                    <div class="resume-section-title">New Hires Ledger</div>
+                    <ul id="hired-list" class="ledger-list">
+                        <li>No one hired yet.</li>
+                    </ul>
+                </div>
+
+            </div>
+            <button class="btn btn-dark" onclick="location.reload()">🔙 Quit Booth</button>
+        </div>
+
+        <div id="police-view" class="card hidden">
+            <h2 style="color: #d35400;">🚔 GRAMMAR PATROL</h2>
+            <div id="police-box" class="hidden flavor-text" style="background:#fce4ec; border-color:#f06292;">
+                <p id="police-text"></p>
+            </div>
+            <button class="btn btn-police" onclick="issueCitation()">🚨 ISSUE CITATION</button>
+            <button class="btn btn-dark" onclick="location.reload()">🔙 Back</button>
+        </div>
+    </div>
+
+    <script>
+        const companies = [
+            { name: "☕ The Student Grind", budget: 100, spots: 5, req: "Fast service, can handle the graveyard shift.", desc: "Perfect for broke students. $25k base." },
+            { name: "💻 Technova Juniors", budget: 300, spots: 3, req: "Python, AI Prompting, Problem solving.", desc: "Junior roles. We pay more for tech talent ($70k)." },
+            { name: "🏨 Grand Azure Hotel", budget: 180, spots: 3, req: "Professional English, high-volume hospitality.", desc: "Front desk staff. Looking for students with high soft-skills." },
+            { name: "🚲 Dash-It Delivery", budget: 80, spots: 5, req: "Reliable, has a bike, fast navigation.", desc: "Gig economy. Pay is low ($20k) but hours are yours." },
+            { name: "🌱 Eco-NGO Campus", budget: 120, spots: 4, req: "Public speaking, community outreach.", desc: "Help the earth. Lower pay, high transferrable skills." },
+            { name: "🏗️ Trade Apprentice", budget: 150, spots: 3, req: "Reliable, physically fit, early riser.", desc: "Apprentice roles in construction or landscaping." },
+            { name: "🪖 Iron-Clad Battalion", budget: 500, spots: 8, req: "Citizenship, fitness, discipline.", desc: "Free college tuition + $40k base. Pitch the benefits!" }
+        ];
+
+        const uniSkills = [
+            "AI Prompt Engineering", "Python Scripting", "Data Entry & Analysis", 
+            "Latte Art & Barista Operations", "Forklift Certification", "Landscape Irrigation", 
+            "Public Speaking", "High-Volume Customer Service", "UX/UI Design Basics", 
+            "Social Media Management", "Heavy Lifting & Stamina", "Crisis De-escalation", 
+            "Blueprint Reading Basics", "Project Management", "Technical Support"
+        ];
+
+        const jobTitles = [
+            "Barista", "Data Entry Clerk", "Delivery Driver", "IT Intern", 
+            "Warehouse Associate", "Social Media Coordinator", "Landscaping Crew", 
+            "Campus Tour Guide", "Freelance Developer", "Retail Cashier"
+        ];
+
+        const employerNames = [
+            "Local Cafe", "TechCorp Campus", "Dash-It Deliveries", "University Library", 
+            "Amazon Fulfillment", "Startup Inc.", "City Parks Dept.", "Student Union", 
+            "Global Solutions LLC", "Corner Grocery"
+        ];
+
+        const universities = [
+            "State Tech University", "City College of Business", "Online Coding Academy", 
+            "Liberal Arts Institute", "Regional Trade School", "Global Open University"
+        ];
+
+        const majors = [
+            "B.S. Computer Science", "B.A. Communications", "Undeclared", 
+            "A.A. Business Administration", "B.S. Environmental Science", 
+            "Certificate in Cybersecurity", "B.A. Graphic Design"
+        ];
+
+        let bLeft = 0, sMax = 0, sHired = 0, currentSlide = 0;
+        let hiredRoster = [];
+
+        function renderSlide() {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((s, idx) => {
+                s.style.display = (idx === currentSlide) ? 'block' : 'none';
+            });
+        }
+
+        function showSlides() { 
+            document.getElementById('slide-view').classList.remove('hidden'); 
+            currentSlide = 0;
+            renderSlide();
+        }
+        
+        function closeSlides() { 
+            document.getElementById('slide-view').classList.add('hidden'); 
+        }
+        
+        function changeSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            currentSlide += n;
+            if(currentSlide >= slides.length) currentSlide = 0;
+            if(currentSlide < 0) currentSlide = slides.length - 1;
+            renderSlide();
+        }
+
+        function showNameEntry() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('name-entry').classList.remove('hidden');
+        }
+
+        function generateResume() {
+            const name = document.getElementById('user-name').value || "Anonymous Student";
+            document.getElementById('name-entry').classList.add('hidden');
+            document.getElementById('resume-view').classList.remove('hidden');
+
+            const numSkills = Math.floor(Math.random() * 4) + 2;
+            const shuffledSkills = uniSkills.sort(() => 0.5 - Math.random()).slice(0, numSkills);
+
+            const numJobs = Math.floor(Math.random() * 3) + 1;
+            let workHistoryHtml = "";
+            let totalExp = 0;
+            
+            for(let i = 0; i < numJobs; i++) {
+                const jt = jobTitles[Math.floor(Math.random() * jobTitles.length)];
+                const comp = employerNames[Math.floor(Math.random() * employerNames.length)];
+                const duration = Math.floor(Math.random() * 3) + 1;
+                totalExp += duration;
+                workHistoryHtml += `<div class="history-item"><strong>${jt}</strong> | ${comp} <em>(${duration} Year${duration > 1 ? 's' : ''})</em></div>`;
+            }
+
+            if (totalExp > 4) totalExp = 4;
+            const minPay = 20 + (totalExp * 5);
+
+            const uni = universities[Math.floor(Math.random() * universities.length)];
+            const major = majors[Math.floor(Math.random() * majors.length)];
+            const gpa = (Math.random() * (4.0 - 2.2) + 2.2).toFixed(2);
+
+            document.getElementById('resume-content').innerHTML = `
+                <div class="resume-header">
+                    <div class="resume-name">${name}</div>
+                    <div style="font-size:0.8em; color:#666;">Total Professional Experience: ${totalExp} Years</div>
+                </div>
+                
+                <div class="resume-section">
+                    <div class="resume-section-title">Education</div>
+                    <div style="font-size:0.85em;">
+                        <strong>${uni}</strong><br>
+                        ${major} | <strong>GPA:</strong> ${gpa}
+                    </div>
+                </div>
+
+                <div class="resume-grid" style="margin-bottom: 10px;">
+                    <div class="stat-box"><strong>Expected Min. Pay:</strong><br>$${minPay}k/yr</div>
+                    <div class="stat-box"><strong>Availability:</strong><br>Part-Time / Hybrid</div>
+                </div>
+
+                <div class="resume-section">
+                    <div class="resume-section-title">Work Experience</div>
+                    ${workHistoryHtml}
+                </div>
+
+                <div class="resume-section">
+                    <div class="resume-section-title">Core Skills</div>
+                    <div class="skills-list">
+                        ${shuffledSkills.map(s => `• ${s}`).join('<br>')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function showRecruiterMenu() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('recruiter-menu').classList.remove('hidden');
+        }
+
+        function launchRecruiter(idx) {
+            document.getElementById('recruiter-menu').classList.add('hidden');
+            document.getElementById('recruiter-dashboard').classList.remove('hidden');
+            const b = companies[idx];
+            bLeft = b.budget; sMax = b.spots; sHired = 0; hiredRoster = [];
+            
+            document.getElementById('booth-name').innerText = b.name;
+            document.getElementById('booth-info').innerHTML = `<p><strong>Needs:</strong> ${b.req}</p><p class="flavor-text">${b.desc}</p>`;
+            document.getElementById('recruit-name').value = "";
+            
+            if(idx === 6) {
+                document.getElementById('hire-label').innerText = "🪖 Enlistment Tracker";
+                document.getElementById('count-label').innerHTML = "Recruits: <span id='count-hired'>0</span> / <span id='count-max'></span>";
+                document.getElementById('btn-low').innerText = "Base Pay";
+                document.getElementById('btn-med').innerText = "+ Bonus";
+                document.getElementById('btn-high').innerText = "Officer";
+            } else {
+                document.getElementById('hire-label').innerText = "📊 Hiring Tracker";
+                document.getElementById('count-label').innerHTML = "Staff: <span id='count-hired'>0</span> / <span id='count-max'></span>";
+                document.getElementById('btn-low').innerText = "Hire @ $25k";
+                document.getElementById('btn-med').innerText = "Hire @ $45k";
+                document.getElementById('btn-high').innerText = "Hire @ $70k";
+            }
+            updateUI();
+        }
+
+        function hire(amt) {
+            if(sHired >= sMax) return alert("Booth is fully staffed. You cannot hire anyone else.");
+            if(amt > bLeft) return alert("You don't have enough budget left for that offer.");
+
+            let cName = document.getElementById('recruit-name').value.trim();
+            if(!cName) {
+                cName = "Unknown Applicant";
+            }
+
+            sHired++; 
+            bLeft -= amt; 
+            hiredRoster.push(`<strong>${cName}</strong> - $${amt}k offer`);
+            
+            document.getElementById('recruit-name').value = "";
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById('count-hired').innerText = sHired;
+            document.getElementById('count-max').innerText = sMax;
+            document.getElementById('budget-val').innerText = bLeft;
+
+            let listHTML = hiredRoster.map(n => `<li>${n}</li>`).join('');
+            document.getElementById('hired-list').innerHTML = listHTML || "<li>No one hired yet.</li>";
+        }
+
+        function startPolice() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('police-view').classList.remove('hidden');
+        }
+
+        function issueCitation() {
+            const box = document.getElementById('police-box');
+            box.classList.remove('hidden');
+            const twisters = ["Unique New York", "Six sticky skeletons", "Truly rural"];
+            document.getElementById('police-text').innerText = "GRAMMAR CITATION! Suspect must repeat 5 times: \n\n" + twisters[Math.floor(Math.random()*twisters.length)];
+        }
+    </script>
+</body>
+</html>

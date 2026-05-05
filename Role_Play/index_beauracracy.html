@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bureaucracy Office Simulator</title>
+    <link rel="stylesheet" href="../styles/unified-theme.css">
+    <style>
+        :root {
+            --federal-blue: #0a3161;
+            --us-red: #b31942;
+            --money-green: #27ae60;
+            --nightmare-purple: #8e44ad;
+            --warning-orange: #d35400;
+            --white: #ffffff;
+            --gray: #f4f4f4;
+            --gold: #f1c40f;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #dfe6e9;
+            margin: 0; padding: 0; color: #2d3436;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container { max-width: 600px; margin: 0 auto; padding: 15px; padding-bottom: 120px; }
+
+        /* HEADER */
+        header {
+            background: var(--federal-blue); color: white;
+            padding: 15px; text-align: center;
+            border-bottom: 5px solid var(--us-red);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        header h1 { margin: 0; font-size: 1.4em; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* CARDS */
+        .card {
+            background: white; padding: 20px; border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 15px;
+            border: 1px solid #dcdcdc;
+        }
+
+        h2 { color: var(--federal-blue); margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; font-size: 1.3em; }
+        p { line-height: 1.5; color: #636e72; }
+
+        /* BUTTONS */
+        .btn {
+            display: block; width: 100%; padding: 16px; margin: 10px 0;
+            border: none; border-radius: 6px; font-size: 1.1em; font-weight: bold;
+            cursor: pointer; color: white; text-transform: uppercase;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.1); transition: transform 0.1s;
+        }
+        .btn:active { transform: translateY(2px); box-shadow: none; }
+
+        .btn-student { background-color: var(--federal-blue); }
+        .btn-pay { background-color: var(--money-green); color: white; }
+        .btn-official { background-color: var(--us-red); }
+        .btn-vocab { background-color: var(--gold); color: #2d3436; }
+        .btn-reset { background-color: #636e72; margin-top: 30px; font-size: 0.9em;}
+
+        /* WALLET & STATUS */
+        .wallet-banner {
+            background: var(--money-green); color: white; padding: 15px;
+            border-radius: 8px; font-weight: bold; text-align: center;
+            font-size: 1.2em; margin-bottom: 10px;
+            display: flex; justify-content: space-between;
+        }
+        .wallet-low { background: var(--us-red) !important; animation: pulse 2s infinite; }
+        
+        .status-bar {
+            background: #ffeaa7; color: #d35400; padding: 10px;
+            border-radius: 8px; font-size: 0.9em; text-align: center;
+            border: 1px dashed #d35400; margin-bottom: 20px; font-style: italic;
+        }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
+
+        /* TASKS */
+        .loc-tag { 
+            font-size: 0.7em; background: #2d3436; color: white; 
+            padding: 3px 6px; border-radius: 4px; text-transform: uppercase;
+        }
+        .task-price { font-weight: bold; color: var(--money-green); }
+        
+        /* INPUTS */
+        input.code-input {
+            width: 80px; padding: 10px; font-size: 1.2em; text-align: center;
+            border: 2px solid #ccc; border-radius: 4px; margin-top: 5px;
+        }
+        input.code-input:disabled { background: #e8f8f5; border-color: var(--money-green); color: var(--money-green); font-weight: bold; }
+
+        /* PAYMENT FLASH */
+        #payment-flash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--money-green); z-index: 9999;
+            display: none; flex-direction: column;
+            justify-content: center; align-items: center; color: white;
+            animation: fadeIn 0.2s;
+        }
+        .receipt-big { font-size: 4em; font-weight: 800; }
+        .receipt-small { font-size: 1.5em; opacity: 0.9; }
+
+        /* OFFICIAL UI */
+        .stamp-box {
+            border: 4px dashed var(--us-red); background: #fff5f5;
+            color: var(--us-red); font-family: monospace; font-size: 3em;
+            padding: 15px; text-align: center; margin: 20px 0; letter-spacing: 5px;
+        }
+        .annoyance-box {
+            background: #f3e5f5; border: 2px solid var(--nightmare-purple);
+            color: var(--nightmare-purple); padding: 15px; border-radius: 8px;
+            margin-bottom: 15px; font-style: italic;
+        }
+
+        /* VOCAB SLIDES */
+        #vocab-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 5000; display: none; flex-direction: column;
+        }
+        .slide { flex: 1; padding: 30px; display: none; overflow-y: auto; text-align: center; }
+        .slide.active { display: block; }
+        
+        /* UTILS */
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+<a href="../index.html" class="back-btn" style="position: fixed; top: 15px; left: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">← Back to Hub</a>
+
+    <div id="payment-flash" onclick="closePayment()">
+        <div style="font-size: 5em;">💸</div>
+        <div class="receipt-big">PAID</div>
+        <div id="flash-amount" class="receipt-small">$0.00</div>
+        <p style="margin-top:20px;">Show this screen to the Officer</p>
+        <div style="margin-top:50px; font-size:0.8em; border:1px solid white; padding:10px; border-radius:20px;">Tap to Close</div>
+    </div>
+
+    <div id="vocab-overlay">
+        <div style="flex:1;">
+            <div class="slide active">
+                <h1>🇺🇸 Bureaucracy Vocab</h1>
+                <p>Welcome to the system.</p>
+                <hr>
+                <h3>Audit</h3>
+                <p>Проверка (When the government checks if you paid taxes).</p>
+                <br>
+                <h3>Impounded</h3>
+                <p>Конфисковано (The police took your car).</p>
+                <br>
+                <h3>Identity Theft</h3>
+                <p>Кража личности (Someone stole your information).</p>
+            </div>
+            
+            <div class="slide">
+                <h1>🏛️ Agencies</h1>
+                <hr>
+                <h3>IRS</h3>
+                <p>Tax Agency (Very scary).</p>
+                <br>
+                <h3>DMV</h3>
+                <p>Department of Motor Vehicles (Very slow).</p>
+                <br>
+                <h3>Vital Records</h3>
+                <p>Where birth/death certificates are kept (City Hall).</p>
+            </div>
+
+            <div class="slide">
+                <h1>🛑 Headaches</h1>
+                <hr>
+                <h3>"System is Down"</h3>
+                <p>Computers are not working.</p>
+                <br>
+                <h3>"Processing Fee"</h3>
+                <p>Extra money you must pay.</p>
+                <br>
+                <button class="btn btn-student" onclick="closeVocab()">START SIMULATION</button>
+            </div>
+        </div>
+        <div style="padding:15px; background:#eee; display:flex; gap:10px;">
+            <button class="btn btn-official" style="margin:0; flex:1" onclick="changeSlide(-1)">Prev</button>
+            <button class="btn btn-official" style="margin:0; flex:1" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>🇺🇸 THE SYSTEM</h1>
+    </header>
+
+    <div id="menu-screen" class="container">
+        <div class="card">
+            <h2>Welcome to America</h2>
+            <p><strong>Goal:</strong> Complete your mission before you run out of money or patience.</p>
+            <button class="btn btn-vocab" onclick="openVocab()">📖 Vocabulary List</button>
+            <hr>
+            <button class="btn btn-student" onclick="initStudent()">🎒 I am a Student (Applicant)</button>
+            <button class="btn btn-official" onclick="showScreen('official-select')">👔 I am an Official</button>
+        </div>
+    </div>
+
+    <div id="student-screen" class="container hidden">
+        <div id="wallet-bg" class="wallet-banner">
+            <span>💳 DEBIT</span>
+            <span id="wallet-balance">$0</span>
+        </div>
+        
+        <div id="bad-luck-status" class="status-bar">
+            Status: Normal
+        </div>
+
+        <div class="card" style="border-left: 5px solid var(--federal-blue);">
+            <h2 id="mission-title">Loading...</h2>
+            <p id="mission-desc">Loading...</p>
+        </div>
+
+        <h3 style="margin-left:5px;">To-Do List:</h3>
+        <div id="task-list">
+            </div>
+
+        <div id="victory-msg" class="card hidden" style="background:#d4efdf; border:2px solid var(--money-green); text-align:center;">
+            <h1>🎉 APPROVED!</h1>
+            <p>You have collected all the stamps.</p>
+            <p><strong>Go to the Final Destination immediately!</strong></p>
+        </div>
+
+        <button class="btn btn-reset" onclick="location.reload()">Quit / Restart</button>
+    </div>
+
+    <div id="official-select" class="container hidden">
+        <div class="card">
+            <h2>Select Your Agency</h2>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <button class="btn btn-official" onclick="initOfficial('bank')">🏦 BANK</button>
+                <button class="btn btn-official" onclick="initOfficial('dmv')">🚗 DMV</button>
+                <button class="btn btn-official" onclick="initOfficial('uscis')">🦅 USCIS</button>
+                <button class="btn btn-official" onclick="initOfficial('landlord')">🏠 LEASING</button>
+                <button class="btn btn-official" onclick="initOfficial('city')">🏛️ CITY HALL</button>
+                <button class="btn btn-official" onclick="initOfficial('clinic')">🏥 URGENT CARE</button>
+            </div>
+            <button class="btn btn-reset" onclick="location.reload()">Back</button>
+        </div>
+    </div>
+
+    <div id="official-dash" class="container hidden">
+        <div class="card">
+            <h2 id="office-name">AGENCY NAME</h2>
+            
+            <div id="annoyance-display" class="annoyance-box">
+                <strong>😈 Roleplay Instruction:</strong><br>
+                <span id="annoyance-text">Loading...</span>
+            </div>
+
+            <div style="background:#f8f9fa; border:1px solid #ddd; padding:10px; text-align:center; border-radius:4px;">
+                FEE: <span id="office-fee" style="font-weight:bold; color:var(--money-green); font-size:1.2em;">$0</span>
+                <div style="font-size:0.8em; color:#777;">(Check for Green Payment Screen)</div>
+            </div>
+            
+            <div style="margin-top:15px; color:var(--us-red);">
+                <strong>🚫 REJECT IF:</strong>
+                <ul id="office-rejects" style="margin-top:5px; padding-left:20px;"></ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🖨️ Stamp Code</h3>
+            <p style="text-align:center;">Give this code to approved students:</p>
+            <div id="stamp-display" class="stamp-box">---</div>
+            <button class="btn btn-student" onclick="generateStamp()">GENERATE NEW CODE</button>
+        </div>
+
+        <button class="btn btn-reset" onclick="location.reload()">End Shift</button>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const offices = {
+            'bank': { 
+                name: "Capital Bank", 
+                fee: 25, 
+                docs: "Bank Statements, Checks, Notary Service", 
+                rejects: ["ID is expired", "Signature doesn't match", "Credit Score too low"] 
+            },
+            'dmv': { 
+                name: "DMV", 
+                fee: 85, 
+                docs: "Driver's License, Vehicle Title", 
+                rejects: ["Eye Test missing", "Proof of Address missing", "Form filled out in pencil"] 
+            },
+            'uscis': { 
+                name: "USCIS (Immigration)", 
+                fee: 450, 
+                docs: "Visas, Green Cards, Work Permits", 
+                rejects: ["Medical Exam missing", "Photos wrong size", "Bank Statement missing"] 
+            },
+            'landlord': { 
+                name: "Leasing Office", 
+                fee: 950, 
+                docs: "Lease Agreement, Proof of Residency", 
+                rejects: ["Credit Check failed", "No Proof of Income", "We don't allow pets"] 
+            },
+            'city': { 
+                name: "City Hall / IRS", 
+                fee: 60, 
+                docs: "Business Permits, Birth Certs, Court Records", 
+                rejects: ["Wrong Department", "Go to Window 4", "Come back after lunch"] 
+            },
+            'clinic': { 
+                name: "Urgent Care", 
+                fee: 150, 
+                docs: "Medical Clearance, Vaccinations, Drug Test", 
+                rejects: ["Insurance declined", "No appointment", "Doctor is golfing"] 
+            }
+        };
+
+        const annoyances = [
+            "Tell the student the system is down. Make them count to 10.",
+            "Tell the student their form is wrinkled. Rejection!",
+            "Speak very, very quietly so they have to lean in.",
+            "Ask for a 'Blue Form'. (The Blue Form does not exist).",
+            "Tell them you are on lunch break. Ignore them for 20 seconds.",
+            "Ask them to spell their last name backwards.",
+            "Tell them they need TWO stamps from the Bank first.",
+            "Pretend to type on your computer for a long time."
+        ];
+
+        const badLuck = [
+            "Your shoes are wet. You are grumpy.",
+            "You have a bad headache.",
+            "You forgot your pen.",
+            "Your phone battery is at 5%.",
+            "You are very hungry.",
+            "You are late for work."
+        ];
+
+        const missions = [
+            // --- ORIGINAL 6 ---
+            {
+                title: "Mission: Rent an Apartment",
+                desc: "You just moved to the city. You need a place to sleep.",
+                tasks: [
+                    { name: "Proof of Income", loc: "bank" },
+                    { name: "Background Check", loc: "city" },
+                    { name: "Lease Agreement", loc: "landlord" }
+                ]
+            },
+            {
+                title: "Mission: Student Visa",
+                desc: "You want to attend University. Get your papers.",
+                tasks: [
+                    { name: "Bank Statement", loc: "bank" },
+                    { name: "Medical Exam", loc: "clinic" },
+                    { name: "F-1 Visa Stamp", loc: "uscis" }
+                ]
+            },
+            {
+                title: "Mission: Driver's License",
+                desc: "You bought a car. You need to drive legally.",
+                tasks: [
+                    { name: "Eye Exam", loc: "clinic" },
+                    { name: "Proof of Address", loc: "landlord" },
+                    { name: "License Card", loc: "dmv" }
+                ]
+            },
+            {
+                title: "Mission: Open a Business",
+                desc: "You are opening a Somsa shop in New York.",
+                tasks: [
+                    { name: "Business Permit", loc: "city" },
+                    { name: "Business Account", loc: "bank" },
+                    { name: "Health Inspection", loc: "clinic" }
+                ]
+            },
+            {
+                title: "Mission: The Green Card",
+                desc: "You are applying for Permanent Residency.",
+                tasks: [
+                    { name: "Birth Certificate", loc: "city" },
+                    { name: "Biometrics Fee", loc: "bank" },
+                    { name: "Green Card", loc: "uscis" }
+                ]
+            },
+            {
+                title: "Mission: Buy a Used Car",
+                desc: "Your neighbor is selling his Toyota Camry.",
+                tasks: [
+                    { name: "Withdraw Cash", loc: "bank" },
+                    { name: "Title Transfer", loc: "dmv" },
+                    { name: "Notarized Bill of Sale", loc: "city" }
+                ]
+            },
+            // --- HARD MODE ---
+            {
+                title: "Mission: Lost Passport",
+                desc: "You lost your passport on the bus. Panic mode.",
+                tasks: [
+                    { name: "Police Report", loc: "city" },
+                    { name: "Replacement Fee", loc: "bank" },
+                    { name: "New Passport", loc: "uscis" }
+                ]
+            },
+            {
+                title: "Mission: Bring Spouse to USA",
+                desc: "You want your husband/wife to join you in America.",
+                tasks: [
+                    { name: "Affidavit of Support", loc: "bank" },
+                    { name: "Marriage Cert Copy", loc: "city" },
+                    { name: "Spousal Visa", loc: "uscis" }
+                ]
+            },
+            {
+                title: "Mission: Speeding Ticket",
+                desc: "You drove too fast. Now you must pay or go to jail.",
+                tasks: [
+                    { name: "Driving Record", loc: "dmv" },
+                    { name: "Court Fee", loc: "city" },
+                    { name: "Fine Payment", loc: "bank" }
+                ]
+            },
+            {
+                title: "Mission: New Job Onboarding",
+                desc: "You got a job at Walmart! You need to prove you are clean.",
+                tasks: [
+                    { name: "Drug Test", loc: "clinic" },
+                    { name: "Direct Deposit", loc: "bank" },
+                    { name: "Work Permit", loc: "uscis" }
+                ]
+            },
+            {
+                title: "Mission: Medical Emergency",
+                desc: "You broke your leg playing soccer. No insurance!",
+                tasks: [
+                    { name: "X-Ray & Cast", loc: "clinic" },
+                    { name: "Withdraw Savings", loc: "bank" },
+                    { name: "Disability Form", loc: "city" }
+                ]
+            },
+            {
+                title: "Mission: Sublet Apartment",
+                desc: "You are leaving for summer. You need to rent your room out.",
+                tasks: [
+                    { name: "Lease Addendum", loc: "landlord" },
+                    { name: "Notary Stamp", loc: "bank" },
+                    { name: "Occupancy Permit", loc: "city" }
+                ]
+            },
+            // --- NIGHTMARE MODE (NEW) ---
+            {
+                title: "Mission: Identity Theft!",
+                desc: "Someone stole your identity. You don't exist anymore.",
+                tasks: [
+                    { name: "Fraud Report", loc: "city" },
+                    { name: "Freeze Account", loc: "bank" },
+                    { name: "Re-Issue ID", loc: "dmv" }
+                ]
+            },
+            {
+                title: "Mission: Car Impounded",
+                desc: "Your car was towed. Every hour costs more money.",
+                tasks: [
+                    { name: "Release Form", loc: "city" },
+                    { name: "Proof of Title", loc: "dmv" },
+                    { name: "Towing Fee", loc: "bank" }
+                ]
+            },
+            {
+                title: "Mission: IRS Tax Audit",
+                desc: "The government thinks you are hiding money. Prove you aren't.",
+                tasks: [
+                    { name: "10 years of Statements", loc: "bank" },
+                    { name: "Employment Verification", loc: "city" },
+                    { name: "Tax Payment", loc: "city" }
+                ]
+            },
+            {
+                title: "Mission: Eviction Notice",
+                desc: "Your landlord wants to kick you out. Fight it.",
+                tasks: [
+                    { name: "Emergency Deposit", loc: "bank" },
+                    { name: "Court Appeal", loc: "city" },
+                    { name: "Lease Renewal", loc: "landlord" }
+                ]
+            },
+            {
+                title: "Mission: Name Change",
+                desc: "You got married and want to change your name. It's a trap.",
+                tasks: [
+                    { name: "Marriage Certificate", loc: "city" },
+                    { name: "New Social Security", loc: "uscis" },
+                    { name: "New Driver License", loc: "dmv" }
+                ]
+            },
+            {
+                title: "Mission: Lost Green Card",
+                desc: "USCIS mailed your card but it never arrived.",
+                tasks: [
+                    { name: "Lost Mail Report", loc: "city" },
+                    { name: "Replacement Fee", loc: "bank" },
+                    { name: "Re-Application", loc: "uscis" }
+                ]
+            }
+        ];
+
+        // --- STATE ---
+        let wallet = 0;
+        let currentMission = null;
+        let slideIndex = 0;
+
+        // --- NAV ---
+        function showScreen(id) {
+            document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        // --- STUDENT LOGIC ---
+        function initStudent() {
+            // Random Mission
+            const rand = Math.floor(Math.random() * missions.length);
+            currentMission = missions[rand];
+            
+            // Random Wallet (Low Money Mode: $1100 - $1600)
+            wallet = Math.floor(Math.random() * 500) + 1100;
+            updateWalletDisplay();
+
+            // Random Bad Luck
+            const luck = badLuck[Math.floor(Math.random() * badLuck.length)];
+            document.getElementById('bad-luck-status').innerHTML = "<strong>⚠️ STATUS:</strong> " + luck;
+
+            // Render Mission
+            document.getElementById('mission-title').innerText = currentMission.title;
+            document.getElementById('mission-desc').innerText = currentMission.desc;
+            
+            const list = document.getElementById('task-list');
+            list.innerHTML = '';
+
+            currentMission.tasks.forEach((task, index) => {
+                const office = offices[task.loc];
+                
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.style.padding = "15px";
+                div.id = `task-card-${index}`;
+                
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between;">
+                        <div>
+                            <span class="loc-tag">${office.name}</span>
+                            <div style="font-size:1.1em; font-weight:bold; margin-top:5px;">${task.name}</div>
+                        </div>
+                        <div class="task-price">$${office.fee}</div>
+                    </div>
+                    
+                    <button id="btn-pay-${index}" class="btn btn-pay" onclick="payFee(${office.fee}, ${index})">
+                        💸 PAY FEE
+                    </button>
+                    
+                    <div id="code-area-${index}" class="hidden" style="margin-top:10px; border-top:1px solid #eee; padding-top:10px;">
+                        <label style="font-size:0.8em; color:#777;">OFFICER CODE:</label><br>
+                        <input type="number" class="code-input" placeholder="###" oninput="checkCode(this, ${index})">
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+
+            showScreen('student-screen');
+        }
+
+        function updateWalletDisplay() {
+            const el = document.getElementById('wallet-balance');
+            el.innerText = "$" + wallet;
+            if (wallet < 200) {
+                document.getElementById('wallet-bg').classList.add('wallet-low');
+            } else {
+                document.getElementById('wallet-bg').classList.remove('wallet-low');
+            }
+        }
+
+        function payFee(amount, index) {
+            if (wallet >= amount) {
+                wallet -= amount;
+                updateWalletDisplay();
+                
+                // Show Flash
+                document.getElementById('flash-amount').innerText = "$" + amount;
+                document.getElementById('payment-flash').style.display = 'flex';
+                
+                // Update UI
+                document.getElementById(`btn-pay-${index}`).classList.add('hidden');
+                document.getElementById(`code-area-${index}`).classList.remove('hidden');
+                document.getElementById(`task-card-${index}`).style.borderLeft = "5px solid var(--money-green)";
+            } else {
+                alert("🚫 CARD DECLINED! Insufficient Funds. You are broke.");
+            }
+        }
+
+        function closePayment() {
+            document.getElementById('payment-flash').style.display = 'none';
+        }
+
+        function checkCode(input, index) {
+            if (input.value.length === 3) {
+                input.disabled = true;
+                const card = document.getElementById(`task-card-${index}`);
+                card.style.background = "#f0fdf4";
+                card.style.opacity = "0.7";
+                checkVictory();
+            }
+        }
+
+        function checkVictory() {
+            const inputs = document.querySelectorAll('.code-input');
+            let allDone = true;
+            inputs.forEach(inp => {
+                if (!inp.disabled) allDone = false;
+            });
+            if (allDone) {
+                document.getElementById('victory-msg').classList.remove('hidden');
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+        }
+
+        // --- OFFICIAL LOGIC ---
+        function initOfficial(type) {
+            const office = offices[type];
+            document.getElementById('office-name').innerText = office.name;
+            document.getElementById('office-fee').innerText = "$" + office.fee;
+            
+            // Random Annoyance
+            const annoyance = annoyances[Math.floor(Math.random() * annoyances.length)];
+            document.getElementById('annoyance-text').innerText = annoyance;
+            
+            const ul = document.getElementById('office-rejects');
+            ul.innerHTML = '';
+            office.rejects.forEach(r => {
+                const li = document.createElement('li');
+                li.innerText = r;
+                ul.appendChild(li);
+            });
+
+            generateStamp();
+            showScreen('official-dash');
+        }
+
+        function generateStamp() {
+            const code = Math.floor(Math.random() * 900) + 100;
+            document.getElementById('stamp-display').innerText = code;
+        }
+
+        // --- VOCAB ---
+        function openVocab() { document.getElementById('vocab-overlay').style.display = 'flex'; showSlide(0); }
+        function closeVocab() { document.getElementById('vocab-overlay').style.display = 'none'; }
+        
+        function changeSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(s => s.classList.remove('active'));
+            slideIndex += n;
+            if (slideIndex >= slides.length) slideIndex = 0;
+            if (slideIndex < 0) slideIndex = slides.length - 1;
+            slides[slideIndex].classList.add('active');
+        }
+        function showSlide(n) { slideIndex = n; changeSlide(0); }
+
+    </script>
+</body>
+</html>

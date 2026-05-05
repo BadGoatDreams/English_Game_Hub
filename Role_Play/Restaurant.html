@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🍽️ Restaurant Club: The Full Menu (TJ Edition)</title>
+    <link rel="stylesheet" href="../styles/unified-theme.css">
+    <style>
+        /* --- CORE STYLES --- */
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: #f0f2f5; 
+            color: #333; 
+            margin: 0; 
+            padding: 0; 
+            overflow-x: hidden; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        .game-container { max-width: 100%; margin: 10px auto; padding: 0 15px; padding-bottom: 80px; }
+        .card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            margin-bottom: 20px; 
+            border-top: 6px solid #bdc3c7; 
+        }
+        .btn { 
+            display: block; width: 100%; padding: 16px; margin: 10px 0; 
+            background: #3498db; color: white; border: none; border-radius: 12px; 
+            font-size: 1.2em; cursor: pointer; text-align: center; font-weight: bold; 
+            touch-action: manipulation; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn:active { transform: scale(0.96); }
+        .btn-green { background: #27ae60; } 
+        .btn-red { background: #e74c3c; } 
+        .btn-gold { background: #f1c40f; color: #000; } 
+        .btn-dark { background: #2c3e50; } 
+        .btn-purple { background: #8e44ad; } 
+
+        .hidden { display: none !important; }
+        .stat-row { 
+            display: flex; justify-content: space-between; 
+            border-bottom: 2px solid #eee; padding: 12px 0; font-size: 1.1em;
+        }
+        .flavor-text { 
+            font-style: italic; color: #555; background: #fff3cd; 
+            padding: 12px; border-radius: 8px; border-left: 5px solid #f1c40f; 
+            margin-top: 15px; font-size: 1em;
+        }
+
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
+        .menu-item { 
+            background: #ecf0f1; padding: 12px 5px; border-radius: 8px; 
+            text-align: center; border: 2px solid #bdc3c7; font-size: 1.1em; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: transform 0.1s;
+        }
+        .menu-item:active { background: #bdc3c7; transform: scale(0.98); }
+        .menu-price { font-size: 0.9em; color: #27ae60; font-weight: bold; margin-top: 4px; }
+
+        /* --- ADVANCED SYSTEMS UI --- */
+        .reservation-badge {
+            background: #e67e22; color: white; padding: 5px 10px; 
+            border-radius: 5px; font-size: 0.8em; margin-top: 5px; display: inline-block;
+        }
+        .tip-selector {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin: 10px 0;
+        }
+        .btn-tip { font-size: 0.8em; padding: 10px; background: #95a5a6; border-radius: 8px; color: white; border: none; }
+        .btn-tip.selected { background: #f1c40f; color: black; font-weight: bold; }
+
+        /* --- OVERLAYS --- */
+        #payment-overlay, #reservation-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); z-index: 2000; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+        }
+        .pay-box { background: white; padding: 30px; border-radius: 20px; width: 85%; text-align: center; }
+        .pay-input { 
+            font-size: 2.5em; width: 100%; padding: 15px; margin: 20px 0; 
+            text-align: center; border: 3px solid #3498db; border-radius: 12px; box-sizing: border-box;
+        }
+
+        /* --- SLIDE DECK --- */
+        #slide-deck-view { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #2c3e50; z-index: 1000; overflow: hidden; }
+        .slide { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            background: #ecf0f1; transition: transform 0.3s; transform: translateX(100%); 
+            padding: 10px; box-sizing: border-box; text-align: center;
+        }
+        .slide.active { transform: translateX(0); }
+        .slide.prev { transform: translateX(-100%); }
+        .slide h1 { font-size: 2em; color: #2980b9; margin-bottom: 15px; }
+        .slide ul { font-size: 1.1em; text-align: left; list-style: none; width: 95%; padding: 0; }
+        .slide li { margin-bottom: 10px; border-bottom: 1px solid #bdc3c7; padding-bottom: 5px; }
+        .ru { color: #7f8c8d; font-size: 0.85em; display: block; }
+        .controls { position: absolute; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 15px; z-index: 1010; }
+        .controls button { padding: 15px 30px; font-size: 1.5em; border-radius: 50px; border: none; background: rgba(0,0,0,0.5); color: white; }
+        .wallet-display { background: #2c3e50; color: #2ecc71; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
+        .wallet-amount { font-size: 3em; font-weight: bold; font-family: monospace; }
+    </style>
+</head>
+<body>
+<a href="../index.html" class="back-btn" style="position: fixed; top: 15px; left: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">← Back to Hub</a>
+
+    <div id="reservation-overlay" class="hidden">
+        <div class="pay-box">
+            <h2>📅 Reservation Desk</h2>
+            <p>The Gilded Fork requires a booking fee.</p>
+            <button class="btn btn-gold" onclick="makeReservation()">✨ Book Table ($50)</button>
+            <button class="btn btn-red" onclick="closeReservation()">❌ Nevermind</button>
+        </div>
+    </div>
+
+    <div id="payment-overlay" class="hidden">
+        <div class="pay-box">
+            <h2>💳 Payment</h2>
+            <input type="number" id="pay-amount" class="pay-input" placeholder="$0">
+            <button class="btn btn-green" onclick="processPayment()">💸 TAP TO PAY</button>
+            <button class="btn btn-red" onclick="closePayment()">❌ Cancel</button>
+        </div>
+    </div>
+
+    <div id="slide-deck-view" class="hidden">
+        <div class="slide active" style="background: #e67e22; color: white;">
+            <h1>🍽️ Restaurant Master</h1>
+            <p>Advanced Edition (EN/RU)</p>
+        </div>
+
+        <div class="slide" style="background: #fdf2e9;">
+            <h1>✨ Cooking Adjectives</h1>
+            <ul>
+                <li>🍯 <strong>Infused</strong> <span class="ru">Настоянный (на травах/масле)</span></li>
+                <li>🔥 <strong>Seared</strong> <span class="ru">Припущенный / Быстро обжаренный</span></li>
+                <li>🧪 <strong>Reduction</strong> <span class="ru">Уваренный соус</span></li>
+                <li>🌿 <strong>Artisanal</strong> <span class="ru">Ремесленный / Ручной работы</span></li>
+                <li>🍋 <strong>Zesty</strong> <span class="ru">Пикантный / С кислинкой</span></li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>🗣️ Useful Phrases</h1>
+            <ul>
+                <li>📅 <strong>"I have a reservation."</strong> <span class="ru">У меня забронировано.</span></li>
+                <li>🍷 <strong>"What do you recommend?"</strong> <span class="ru">Что вы посоветуете?</span></li>
+                <li>🥡 <strong>"To go, please."</strong> <span class="ru">С собой, пожалуйста.</span></li>
+                <li>🧾 <strong>"The bill, please."</strong> <span class="ru">Счёт, пожалуйста.</span></li>
+            </ul>
+        </div>
+
+        <div class="controls">
+            <button onclick="changeSlide(-1)">⬅️</button>
+            <button onclick="changeSlide(1)">➡️</button>
+            <button style="background: #c0392b;" onclick="closeSlides()">❌ PLAY</button>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div id="setup" class="card">
+            <h1>👨‍🍳 Choose Role</h1>
+            <button class="btn btn-purple" onclick="showSlides()">📽️ View Vocabulary</button>
+            <hr>
+            <button class="btn" onclick="generateCustomer()">🙍 I am a Customer</button>
+            <button class="btn btn-dark" onclick="showRestaurantList()">🍷 I am a Waiter</button>
+        </div>
+
+        <div id="customer-view" class="card hidden">
+            <h2>👛 My Wallet</h2>
+            <div class="wallet-display">
+                <div class="wallet-amount">$<span id="wallet-balance">0</span></div>
+                <div id="res-status"></div>
+            </div>
+            <div id="customer-stats"></div>
+            <p class="flavor-text"><strong>Mission:</strong> Order correctly and don't go broke!</p>
+            <button class="btn btn-gold" onclick="openReservation()">📅 Book Fancy Table</button>
+            <button class="btn btn-green" style="padding: 25px; font-size: 1.5em;" onclick="openPayment()">💳 PAY BILL</button>
+            <button class="btn btn-dark" onclick="location.reload()">🔄 New Character</button>
+        </div>
+
+        <div id="restaurant-list" class="card hidden">
+            <h2>Select Restaurant</h2>
+            <div id="rest-buttons"></div>
+            <button class="btn btn-red" onclick="location.reload()">⬅️ Back</button>
+        </div>
+
+        <div id="restaurant-dash" class="card hidden">
+            <h2 id="rest-title" style="font-size: 2em;"></h2>
+            <div class="stat-row">
+                <span>💰 Sales: $<strong id="money-made">0</strong></span>
+                <span>⭐ Tips: $<strong id="tips-total">0</strong></span>
+            </div>
+
+            <hr>
+            <h3>📝 Order Pad</h3>
+            <div id="menu-area" class="menu-grid"></div>
+            
+            <div style="background: #2c3e50; color: white; padding: 20px; border-radius: 12px; margin-top: 20px; text-align: center;">
+                <div style="font-size: 1.2em;">Current Bill: <strong style="color: #f1c40f;">$<span id="current-bill">0</span></strong></div>
+                
+                <p style="font-size: 0.8em; margin-top: 10px;">Select Tip % Based on Service:</p>
+                <div class="tip-selector">
+                    <button class="btn-tip" id="tip-1" onclick="selectTip(0.05, 'tip-1')">5% (Bad)</button>
+                    <button class="btn-tip selected" id="tip-2" onclick="selectTip(0.15, 'tip-2')">15% (Good)</button>
+                    <button class="btn-tip" id="tip-3" onclick="selectTip(0.25, 'tip-3')">25% (Elite)</button>
+                </div>
+
+                <div style="display:flex; gap: 10px; margin-top: 15px;">
+                    <button class="btn btn-red" style="margin:0;" onclick="clearBill()">❌ Clear</button>
+                    <button class="btn btn-green" style="margin:0;" onclick="cashOut()">✅ Show Total</button>
+                </div>
+            </div>
+            <button class="btn btn-dark" style="margin-top:20px" onclick="location.reload()">🔄 Close Shop</button>
+        </div>
+    </div>
+
+    <script>
+        const restaurants = [
+            { 
+                name: "The Gilded Fork", emoji: "✨", isFancy: true,
+                menu: [
+                    {name: "🥇 Gold Wagyu", price: 250}, {name: "🍷 1945 Reserve", price: 500}, 
+                    {name: "🍄 Truffle Foam", price: 85}, {name: "🐚 Saffron Scallops", price: 120},
+                    {name: "🍮 Gold Leaf Flan", price: 60}
+                ] 
+            },
+            { 
+                name: "Le Petit Snob", emoji: "🍷", menu: [
+                    {name: "🐌 Escargots", price: 25}, {name: "🥩 Steak Tartare", price: 45}, 
+                    {name: "🦞 Lobster Bisque", price: 35}, {name: "🍄 Truffle Pasta", price: 50}
+                ] 
+            },
+            { 
+                name: "Grease Bucket", emoji: "🍔", menu: [
+                    {name: "🍔 Mega Burger", price: 8}, {name: "🍟 Soggy Fries", price: 3}, 
+                    {name: "🥤 Cola", price: 4}, {name: "🍗 Family Bucket", price: 25}
+                ] 
+            },
+            { 
+                name: "Luigi's", emoji: "🍕", menu: [
+                    {name: "🍕 Pepperoni", price: 18}, {name: "🍝 Spaghetti", price: 16}, 
+                    {name: "🥖 Garlic Bread", price: 8}, {name: "🥘 Lasagna", price: 20}
+                ] 
+            },
+            { 
+                name: "Hipster Kale", emoji: "🥗", menu: [
+                    {name: "🥑 Avo Toast", price: 22}, {name: "🍳 Tofu Scramble", price: 19}, 
+                    {name: "🍏 Green Juice", price: 12}, {name: "🫐 Acai Bowl", price: 15}
+                ] 
+            }
+        ];
+
+        const personas = [
+            { type: "Student", budget: 40, trait: "Starving 😫" },
+            { type: "Food Critic", budget: 500, trait: "Judging every bite ✍️" },
+            { type: "Rich Tourist", budget: 300, trait: "Loves photos 📸" },
+            { type: "Vegan", budget: 60, trait: "Very picky 🥦" }
+        ];
+
+        let myBalance = 0;
+        let hasReservation = false;
+        let selectedTipPercent = 0.15;
+        let totalSales = 0;
+        let totalTips = 0;
+        let currentBill = 0;
+
+        // --- CUSTOMER LOGIC ---
+        function generateCustomer() {
+            document.getElementById('setup').classList.add('hidden');
+            document.getElementById('customer-view').classList.remove('hidden');
+            const p = personas[Math.floor(Math.random() * personas.length)];
+            myBalance = p.budget + Math.floor(Math.random() * 20);
+            updateWallet();
+            document.getElementById('customer-stats').innerHTML = `<div class="stat-row">🎭 Role: <strong>${p.type}</strong></div><div class="stat-row">💡 Trait: ${p.trait}</div>`;
+        }
+
+        function openReservation() { document.getElementById('reservation-overlay').classList.remove('hidden'); }
+        function closeReservation() { document.getElementById('reservation-overlay').classList.add('hidden'); }
+        
+        function makeReservation() {
+            if (myBalance >= 50) {
+                myBalance -= 50;
+                hasReservation = true;
+                updateWallet();
+                alert("📅 Reservation confirmed!");
+                closeReservation();
+            } else {
+                alert("Insufficient funds for the booking fee!");
+            }
+        }
+
+        function updateWallet() {
+            document.getElementById('wallet-balance').innerText = myBalance;
+            document.getElementById('res-status').innerHTML = hasReservation ? 
+                `<span class="reservation-badge">RESERVATION SECURED</span>` : "";
+        }
+
+        // --- WAITER LOGIC ---
+        function showRestaurantList() {
+            document.getElementById('setup').classList.add('hidden');
+            document.getElementById('restaurant-list').classList.remove('hidden');
+            const container = document.getElementById('rest-buttons');
+            container.innerHTML = '';
+            restaurants.forEach((r, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn ' + (r.isFancy ? 'btn-gold' : 'btn-dark');
+                btn.innerHTML = `${r.emoji} ${r.name}`;
+                btn.onclick = () => {
+                    if (r.isFancy) {
+                        if (!confirm("Is this guest on the list? (Requires Reservation)")) return;
+                    }
+                    startRestaurant(i);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function startRestaurant(index) {
+            document.getElementById('restaurant-list').classList.add('hidden');
+            document.getElementById('restaurant-dash').classList.remove('hidden');
+            const r = restaurants[index];
+            document.getElementById('rest-title').innerText = `${r.emoji} ${r.name}`;
+            const menuArea = document.getElementById('menu-area');
+            menuArea.innerHTML = '';
+            r.menu.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'menu-item';
+                div.innerHTML = `<span>${item.name}</span><span class="menu-price">$${item.price}</span>`;
+                div.onclick = () => {
+                    currentBill += item.price;
+                    document.getElementById('current-bill').innerText = currentBill;
+                };
+                menuArea.appendChild(div);
+            });
+        }
+
+        function selectTip(val, id) {
+            selectedTipPercent = val;
+            document.querySelectorAll('.btn-tip').forEach(b => b.classList.remove('selected'));
+            document.getElementById(id).classList.add('selected');
+        }
+
+        function cashOut() {
+            if (currentBill === 0) return;
+            const tip = Math.floor(currentBill * selectedTipPercent);
+            const total = currentBill + tip;
+            alert(`🧾 TOTAL: $${total}\n(Food: $${currentBill} + Tip: $${tip})`);
+            totalSales += currentBill;
+            totalTips += tip;
+            document.getElementById('money-made').innerText = totalSales;
+            document.getElementById('tips-total').innerText = totalTips;
+            clearBill();
+        }
+
+        function clearBill() {
+            currentBill = 0;
+            document.getElementById('current-bill').innerText = 0;
+        }
+
+        // --- OVERLAYS ---
+        function openPayment() { document.getElementById('payment-overlay').classList.remove('hidden'); }
+        function closePayment() { document.getElementById('payment-overlay').classList.add('hidden'); }
+        function processPayment() {
+            const amt = parseInt(document.getElementById('pay-amount').value);
+            if (!amt) return;
+            if (amt > myBalance) { alert("🚫 DECLINED!"); }
+            else { myBalance -= amt; updateWallet(); closePayment(); alert(`✅ Paid $${amt}`); }
+        }
+
+        // --- SLIDES ---
+        let currentSlide = 0;
+        function showSlides() { document.getElementById('slide-deck-view').classList.remove('hidden'); }
+        function closeSlides() { document.getElementById('slide-deck-view').classList.add('hidden'); }
+        function changeSlide(dir) {
+            const slides = document.querySelectorAll('.slide');
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + dir + slides.length) % slides.length;
+            slides.forEach(s => { s.classList.remove('active', 'prev'); s.style.transform = ''; });
+            slides[currentSlide].classList.add('active');
+            for(let i=0; i<currentSlide; i++) slides[i].classList.add('prev');
+        }
+    </script>
+</body>
+</html>

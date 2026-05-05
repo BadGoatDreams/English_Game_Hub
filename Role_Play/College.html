@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Admissions & Career Simulator 2026</title>
+    <link rel="stylesheet" href="../styles/unified-theme.css">
+    <style>
+        /* --- GAME STYLES --- */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 0; }
+        .game-container { max-width: 600px; margin: 20px auto; padding: 0 20px; }
+        h1, h2, h3 { text-align: center; color: #2c3e50; }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .btn { display: block; width: 100%; padding: 15px; margin: 8px 0; background: #3498db; color: white; border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; text-align: center; font-weight: bold; transition: transform 0.1s;}
+        .btn:active { transform: scale(0.98); }
+        .btn:hover { background: #2980b9; }
+        .btn-red { background: #e74c3c; }
+        .btn-green { background: #27ae60; }
+        .btn-purple { background: #8e44ad; }
+        .btn-dark { background: #34495e; } 
+        .btn-police { background: #2c3e50; border: 2px solid #f1c40f; } 
+        .hidden { display: none !important; }
+        
+        .stat-row { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0; font-size: 1.05em;}
+        .stat-label { font-weight: bold; }
+        .flavor-text { font-style: italic; color: #555; margin-top: 15px; font-size: 0.95em; background: #fff3cd; padding: 10px; border-radius: 5px; border-left: 4px solid #f1c40f;}
+        .tracker { background: #ecf0f1; padding: 15px; border-radius: 8px; text-align: center; margin-top: 15px; border: 2px dashed #bdc3c7;}
+        .req-box { background: #e8f6f3; padding: 10px; border-radius: 5px; margin-top: 10px; border: 1px solid #1abc9c; }
+        .police-box { background: #2c3e50; color: white; padding: 10px; border-radius: 5px; margin-top: 10px; }
+        .poem-display { background: #fff; color: #000; padding: 15px; border: 2px solid #c0392b; margin-top: 10px; font-family: 'Georgia', serif; font-size: 1.1em; line-height: 1.4; display: none; }
+        
+        .tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.8em; color: white; margin-left: 5px;}
+        .hard { background: #c0392b; }
+        .med { background: #f39c12; }
+        .easy { background: #27ae60; }
+        .job { background: #7f8c8d; }
+        .police { background: #000; color: #f1c40f; }
+        .recruiter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        /* --- SLIDE DECK STYLES --- */
+        #slide-deck-view { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #2c3e50; z-index: 1000; overflow: hidden; }
+        .slide { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            background: #ecf0f1; transition: transform 0.4s ease-in-out; transform: translateX(100%); 
+            padding: 40px; box-sizing: border-box;
+        }
+        .slide.active { transform: translateX(0); }
+        .slide.prev { transform: translateX(-100%); }
+        
+        #slide-deck-view h1 { font-size: 2.5em; color: #2980b9; margin-bottom: 20px; text-align: center; }
+        #slide-deck-view h2 { color: #e74c3c; margin-bottom: 15px; font-size: 1.5em; text-align: center; }
+        #slide-deck-view ul { font-size: 1.2em; line-height: 1.5; max-width: 800px; color: #333; }
+        #slide-deck-view li { margin-bottom: 12px; }
+        .highlight { color: #27ae60; font-weight: bold; }
+        .wrong { color: #c0392b; text-decoration: line-through; }
+        .note { font-size: 0.8em; color: #7f8c8d; font-style: italic; margin-top: 20px;}
+        
+        /* Table Styles */
+        .stat-table { width: 90%; max-width: 700px; border-collapse: collapse; margin-top: 20px; font-size: 1em; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .stat-table th { background: #34495e; color: white; padding: 10px; text-align: left; }
+        .stat-table td { padding: 10px; border-bottom: 1px solid #eee; color: #333;}
+        .good-score { color: #27ae60; font-weight: bold; }
+        .bad-score { color: #c0392b; font-weight: bold; }
+
+        /* Role Boxes */
+        .role-box { border: 2px dashed #7f8c8d; padding: 20px; background: #f9f9f9; border-radius: 10px; margin-top: 10px; width: 80%; max-width: 700px; }
+
+        /* Controls */
+        .controls { position: absolute; bottom: 20px; right: 20px; z-index: 10; display: flex; gap: 10px; }
+        .controls button { padding: 10px 20px; font-size: 1em; cursor: pointer; border: none; background: #34495e; color: white; border-radius: 5px; }
+        .controls button:hover { background: #2c3e50; }
+        .controls .btn-exit { background: #e74c3c; }
+
+        /* Specific Slide Styles */
+        .intro-slide { background: #3498db; color: white; }
+        .intro-slide h1 { color: white; }
+        .police-slide { background: #2c3e50; color: #f1c40f; }
+        .police-slide h1 { color: #e74c3c; border-bottom: 3px solid #f1c40f; }
+        .police-slide ul { color: #ecf0f1; }
+        .stats-slide { background: #dff9fb; }
+        .job-slide { background: #fab1a0; }
+    </style>
+</head>
+<body>
+<a href="../index.html" class="back-btn" style="position: fixed; top: 15px; left: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">← Back to Hub</a>
+
+    <div id="slide-deck-view" class="hidden">
+        <div class="slide active intro-slide">
+            <h1>🎓 Admissions Simulator</h1>
+            <h2>ESL Edition</h2>
+            <p style="font-size: 2em; color:white;">Press ➡️ to Begin</p>
+        </div>
+
+        <div class="slide">
+            <h1>📚 Vocabulary: The Basics</h1>
+            <ul>
+                <li><strong>Tuition</strong> 💰: The money you pay to study.</li>
+                <li><strong>Quota</strong> 📊: The maximum number of students allowed.</li>
+                <li><strong>Financial Aid / Bonus</strong> 🤝: Free money from the school/job.</li>
+                <li><strong>Vibe Check</strong> 😎: Judging someone by personality, not grades.</li>
+                <li><strong>Recruiter</strong> 🧑‍💼: The person who decides your future.</li>
+            </ul>
+        </div>
+
+        <div class="slide stats-slide">
+            <h1>📊 The Numbers (Stats)</h1>
+            <h2>Are you smart or do you need luck?</h2>
+            <table class="stat-table">
+                <tr>
+                    <th>Test</th>
+                    <th>What is it?</th>
+                    <th>Good Score 🤩</th>
+                    <th>Bad Score 😱</th>
+                </tr>
+                <tr>
+                    <td><strong>GPA</strong></td>
+                    <td>School Grades</td>
+                    <td class="good-score">3.5 - 4.0</td>
+                    <td class="bad-score">Below 2.5</td>
+                </tr>
+                <tr>
+                    <td><strong>SAT</strong></td>
+                    <td>Logic/Math Test</td>
+                    <td class="good-score">1300+</td>
+                    <td class="bad-score">Below 1000</td>
+                </tr>
+                <tr>
+                    <td><strong>TOEFL</strong></td>
+                    <td>English Level</td>
+                    <td class="good-score">100+</td>
+                    <td class="bad-score">Below 60</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="slide">
+            <h1>🏛️ Types of Schools</h1>
+            <ul>
+                <li><strong>The Elites (Ivy League)</strong> 🦄<br>Requires perfect grades (4.0). Very expensive.</li>
+                <li><strong>State College</strong> 🏫<br>Average requirements. Good for normal students.</li>
+                <li><strong>Party School</strong> 🎉<br>Grades don't matter. Just have money and be fun.</li>
+                <li><strong>The Workplace</strong> 🍔<br>Flight Attendant, Military, or Burgers. No grades needed.</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>🎯 Student Goals</h1>
+            <ul>
+                <li><strong>The CEO</strong> 💼: Wants <em>Business School</em>. Wants to be rich.</li>
+                <li><strong>The Artist</strong> 🎨: Wants <em>Liberal Arts</em>. Wants to be unique.</li>
+                <li><strong>The Survivor</strong> 🧟: Just wants a Visa. Will go anywhere.</li>
+                <li><strong>The Athlete</strong> ⚽: Wants <em>Sports Academy</em>. GPA is low, but plays ball.</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>🧑‍💼 Instructions: College Recruiters</h1>
+            <h2>(Ivy League, State, Business, Arts)</h2>
+            <div class="role-box">
+                <ul>
+                    <li><strong>1. Check the Stats:</strong> Does the student meet your requirements (GPA/SAT)? If not, reject them.</li>
+                    <li><strong>2. Check the Money:</strong> Can they pay full price? 🤑</li>
+                    <li><strong>3. Use your Aid:</strong> You have a limited budget for scholarships. Give it <em>only</em> to the best students.</li>
+                    <li><strong>4. Watch the Quota:</strong> You only have a few spots (e.g., 2 or 4). Don't fill them too fast!</li>
+                </ul>
+            </div>
+            <p class="note"><strong>Strategy:</strong> Be picky. Make them beg.</p>
+        </div>
+
+        <div class="slide job-slide">
+            <h1>🛠️ Instructions: Job Recruiters</h1>
+            <h2>(Flight Attendant, Military & Burger Shop)</h2>
+            <div class="role-box">
+                <ul>
+                    <li><strong>1. Ignore Grades:</strong> You don't care about SAT or GPA. 🚮</li>
+                    <li><strong>2. Check the Body/Vibe:</strong> Are they healthy? Friendly? Alive?</li>
+                    <li><strong>3. The Pitch:</strong> Tell them: <em>"College is a waste of money. Come get a salary with us!"</em></li>
+                    <li><strong>4. Steal Students:</strong> Look for students who were rejected by colleges. They are your targets.</li>
+                </ul>
+            </div>
+            <p class="note"><strong>Strategy:</strong> Find the desperate students.</p>
+        </div>
+
+        <div class="slide">
+            <h1>🗣️ Student Dialogue</h1>
+            <h2>Goal: Convince the Recruiter</h2>
+            <ul>
+                <li>"My GPA is 4.0 and I love studying." 🤓</li>
+                <li>"My grades are bad, but my budget is <span class="highlight">unlimited</span>." 🤑</li>
+                <li>"Please! I have nowhere else to go!" 😭</li>
+                <li>"I see your tuition is high. Do you have <span class="highlight">Financial Aid</span>?" 💸</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>🧐 Recruiter Dialogue</h1>
+            <h2>Goal: Fill spots, save money.</h2>
+            <ul>
+                <li>"Your SAT score is tragic. Next!" 📉</li>
+                <li>"We can accept you, but you must pay <span class="highlight">Full Tuition</span>." 🏦</li>
+                <li>"I can offer a $20k scholarship. Take it or leave it." 🤝</li>
+                <li>"Sorry, we have reached our <span class="highlight">Quota</span>." 🚫</li>
+            </ul>
+        </div>
+
+        <div class="slide police-slide">
+            <h1>🚨 THE GRAMMAR POLICE 🚨</h1>
+            <ul>
+                <li><strong>Goal:</strong> Catch bad grammar.</li>
+                <li><strong>Punishment:</strong> Force them to read a Poem/Tongue Twister.</li>
+                <li>"Freeze! ✋ Did you just say 'I <em>go</em>'?"</li>
+                <li>"That is a violation. Code 404: Bad English."</li>
+                <li>"Read this poem LOUDLY or go to the back of the line!"</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>⛔ Common Traps</h1>
+            <ul>
+                <li><span class="wrong">"I am agree."</span> ➡️ <span class="highlight">"I agree."</span></li>
+                <li><span class="wrong">"It depends of..."</span> ➡️ <span class="highlight">"It depends ON..."</span></li>
+                <li><span class="wrong">"I have 20 years old."</span> ➡️ <span class="highlight">"I AM 20 years old."</span></li>
+                <li><span class="wrong">"He work here."</span> ➡️ <span class="highlight">"He workS here."</span></li>
+            </ul>
+            <p class="note">If you make these mistakes, the Police will catch you!</p>
+        </div>
+
+        <div class="controls">
+            <button onclick="changeSlide(-1)">⬅️ Prev</button>
+            <button onclick="changeSlide(1)">Next ➡️</button>
+            <button class="btn-exit" onclick="closeSlides()">❌ Exit to Game</button>
+        </div>
+    </div>
+
+
+    <div class="game-container">
+        <div id="setup" class="card">
+            <h1>🎓 Admissions Day 🏫</h1>
+            <p style="text-align: center;">Choose your destiny 👇</p>
+            <button class="btn btn-purple" onclick="showSlides()">📽️ View Intro Slides / Rules</button>
+            <hr>
+            <button class="btn" onclick="generateStudent()">👨‍🎓 I am a Student 👩‍🎓</button>
+            <button class="btn btn-red" onclick="showRecruiterList()">📋 I am a Recruiter / Police 👮</button>
+        </div>
+
+        <div id="student-view" class="card hidden">
+            <h2>👤 Student Profile</h2>
+            <div id="student-stats"></div>
+            <button class="btn btn-red" onclick="location.reload()">🔄 Reset / New Role</button>
+        </div>
+
+        <div id="recruiter-list-view" class="card hidden">
+            <h2>Select Role</h2>
+            <p style="text-align: center;">Who are you representing?</p>
+            <div id="recruiter-buttons" class="recruiter-grid"></div>
+            <button class="btn btn-red" style="margin-top:20px" onclick="location.reload()">⬅️ Back</button>
+        </div>
+
+        <div id="recruiter-dashboard" class="card hidden">
+            <h2 id="college-name"></h2>
+            <div id="college-stats"></div>
+            
+            <div id="standard-controls" class="tracker hidden">
+                <h3 id="tracker-title">📊 Admissions Tracker</h3>
+                <p>👥 Spots: <span id="quota-count">0</span> / <span id="quota-max"></span></p>
+                <p id="budget-label-text">💰 Budget Used: $<span id="aid-spent">0</span> / $<span id="aid-max"></span>k</p>
+                <hr>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-green" style="flex:1" onclick="recruitStudent(0)">✅ Accept<br><span style="font-size:0.8em" id="btn-txt-1">(Full Pay)</span></button>
+                    <button class="btn" style="flex:1" onclick="recruitStudent(20)">🤝 Offer<br><span style="font-size:0.8em" id="btn-txt-2">($20k Aid)</span></button>
+                    <button class="btn" style="flex:1" onclick="recruitStudent(40)">🎁 Big Offer<br><span style="font-size:0.8em" id="btn-txt-3">($40k Aid)</span></button>
+                </div>
+            </div>
+
+            <div id="police-controls" class="tracker hidden" style="background-color: #fab1a0; border-color: #c0392b;">
+                <h3>🚨 Violation Tracker 🚨</h3>
+                <p>👮 Students Caught: <span id="police-count">0</span></p>
+                
+                <div id="poem-box" class="poem-display">
+                    <strong style="display:block; margin-bottom:5px; text-decoration:underline;">READ THIS ALOUD:</strong>
+                    <span id="poem-text"></span>
+                </div>
+
+                <hr>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-red" style="flex:1" onclick="assignPoem()">📜 FORCE TO READ<br><span style="font-size:0.8em">(Generate Poem)</span></button>
+                    <button class="btn btn-dark" style="flex:1" onclick="policeAction(0)">🔙 To The Back!<br><span style="font-size:0.8em">(Send to end of line)</span></button>
+                </div>
+            </div>
+
+            <button class="btn btn-red" style="margin-top:20px" onclick="location.reload()">🔄 Reset / New Role</button>
+        </div>
+    </div>
+
+    <script>
+        // ============================
+        // === SLIDE DECK LOGIC ===
+        // ============================
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const slideDeck = document.getElementById('slide-deck-view');
+
+        function showSlides() {
+            slideDeck.classList.remove('hidden');
+        }
+
+        function closeSlides() {
+            slideDeck.classList.add('hidden');
+        }
+
+        function changeSlide(dir) {
+            slides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.add(dir > 0 ? 'prev' : 'next');
+            if(dir < 0) slides[currentSlide].classList.remove('prev');
+
+            currentSlide += dir;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+
+            slides.forEach(s => { s.classList.remove('active', 'prev'); s.style.transform = ''; });
+            
+            slides[currentSlide].classList.add('active');
+            for(let i=0; i<currentSlide; i++) {
+                slides[i].classList.add('prev');
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            // Only use arrow keys if slides are open
+            if (!slideDeck.classList.contains('hidden')) {
+                if (e.key === 'ArrowRight') changeSlide(1);
+                if (e.key === 'ArrowLeft') changeSlide(-1);
+                if (e.key === 'Escape') closeSlides();
+            }
+        });
+
+        // ============================
+        // === GAME LOGIC ===
+        // ============================
+
+        const goals = [
+            "🤑 Become a CEO (Business)", "🗣️ Learn English Fluently", "💍 Find a rich spouse", "🎉 Party for 4 years", 
+            "🩺 Become a Doctor", "🎮 Design Video Games", "🐋 Save the Whales", "🛂 Get a Visa", 
+            "⚽ Play Football (Pro)", "🗳️ Become a Politician", "🤔 Study Philosophy (Unemployed)", 
+            "🚀 Start a Startup", "🏠 Avoid working for parents", "📸 Instagram Influencer", "🥂 Network with elites",
+            "🍳 Learn to cook", "🤖 Build Robots", "📚 Write a Novel", "🍺 Join a Frat/Sorority", "🧟 Just survive"
+        ];
+
+        const punishments = [
+            "Peter Piper picked a peck of pickled peppers. A peck of pickled peppers Peter Piper picked.",
+            "She sells seashells by the seashore. The shells she sells are seashells, I'm sure.",
+            "Through three cheese trees three free fleas flew. While these fleas flew, freezy breeze blew.",
+            "Betty Botter bought some butter but she said the butter's bitter.",
+            "I saw a kitten eating chicken in the kitchen.",
+            "How much wood would a woodchuck chuck if a woodchuck could chuck wood?",
+            "Pad kid poured curd pulled cod. (Repeat 3 times fast!)",
+            "Lesser leather never weathered wetter weather better.",
+            "I wish to wash my Irish wristwatch.",
+            "Red lorry, yellow lorry. (Repeat 5 times!)",
+            "Dearest creature in creation, study English pronunciation. I will teach you in my verse, sounds like corpse, corps, horse, and worse."
+        ];
+
+        // 10 Colleges + 3 Jobs + 1 Police = ~40 Spots
+        const institutions = [
+            // COLLEGES
+            { name: "🏛️ Ivy League Elite", diff: 2, cost: 80000, quota: 1, aid: 200, reqs: {gpa: "3.9+", sat: "1500+", toefl: "110+", vibe: "Must have saved a village"}, desc: "Only 1 spot. Perfection required. 🧐" },
+            { name: "🦄 Stanford of the East", diff: 2, cost: 78000, quota: 1, aid: 180, reqs: {gpa: "3.8+", sat: "1450+", toefl: "105+", vibe: "Startup Founder Energy"}, desc: "Only 1 spot. Looking for unicorns. 🤓" },
+            { name: "🤵 Business School", diff: 2, cost: 70000, quota: 2, aid: 120, reqs: {gpa: "3.5+", sat: "1300+", toefl: "100+", vibe: "Leadership / Rich Parents"}, desc: "2 spots. We want future CEOs. 📈" },
+            { name: "🎨 Liberal Arts & Crafts", diff: 1, cost: 60000, quota: 2, aid: 150, reqs: {gpa: "3.2+", sat: "1250+", toefl: "95+", vibe: "Unique / Artistic"}, desc: "2 spots. Look for 'unique' personalities. 🖌️" },
+            { name: "🏆 Sports Academy", diff: 1, cost: 50000, quota: 2, aid: 200, reqs: {gpa: "1.8+", sat: "None", toefl: "None", vibe: "Can throw a ball"}, desc: "2 spots. Only accept them if they play sports. 🏈" },
+            { name: "⚙️ State Tech Univ", diff: 1, cost: 40000, quota: 3, aid: 100, reqs: {gpa: "3.0+", sat: "1200+", toefl: "80+", vibe: "Good at math"}, desc: "3 spots. We need smart kids who can pay. 💻" },
+            { name: "🏫 Generic State College", diff: 1, cost: 25000, quota: 4, aid: 50, reqs: {gpa: "2.5+", sat: "1000+", toefl: "70+", vibe: "Alive"}, desc: "4 spots. We take almost anyone with a pulse. 🤷" },
+            { name: "🎉 Party Central U", diff: 0, cost: 35000, quota: 4, aid: 20, reqs: {gpa: "2.0+", sat: "N/A", toefl: "50+", vibe: "Fun at parties"}, desc: "4 spots. GPA? What's that? Cash upfront. 🍻" },
+            { name: "🚍 Community College", diff: 0, cost: 5000, quota: 5, aid: 10, reqs: {gpa: "Open", sat: "None", toefl: "None", vibe: "Willing to learn"}, desc: "5 spots. A great stepping stone. Very cheap. 🧱" },
+            { name: "💻 Online Diploma Mill", diff: 0, cost: 15000, quota: 4, aid: 0, reqs: {gpa: "0.0+", sat: "0+", toefl: "0+", vibe: "Has a Credit Card"}, desc: "4 spots. Accept everyone. No refunds. 🖨️" },
+            
+            // JOBS (Diff 3) - 'cost' here represents SALARY
+            { name: "✈️ Intl. Flight Attendant", diff: 3, cost: 55000, quota: 3, aid: 10, reqs: {gpa: "N/A", sat: "N/A", toefl: "Fluent", vibe: "Tall & Smiley"}, desc: "3 spots. GOOD JOB! Travel the world. $55k Salary. 🗺️" },
+            { name: "🪖 Military Recruiter", diff: 3, cost: 45000, quota: 4, aid: 50, reqs: {gpa: "N/A", sat: "N/A", toefl: "Basic", vibe: "Can do 10 pushups"}, desc: "4 spots. $45k Salary + Benefits. Get them while they're young. 🎖️" },
+            { name: "🍔 Burger Flipper Inc.", diff: 3, cost: 25000, quota: 5, aid: 5, reqs: {gpa: "N/A", sat: "N/A", toefl: "Basic", vibe: "Has two hands"}, desc: "5 spots. $25k Salary. No degree needed. Hard work. 🍟" },
+            
+            // POLICE (Diff 4)
+            { name: "🚨 GRAMMAR POLICE", diff: 4, cost: 0, quota: 999, aid: 0, reqs: {gpa: "N/A", sat: "N/A", toefl: "Native", vibe: "Ruthless"}, desc: "Walk around. Listen. Punish bad English with POETRY. 🚓" }
+        ];
+
+        function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1) ) + min; }
+
+        function generateStudent() {
+            document.getElementById('setup').classList.add('hidden');
+            document.getElementById('student-view').classList.remove('hidden');
+
+            const goal = goals[Math.floor(Math.random() * goals.length)];
+            const gpa = (Math.random() * (4.0 - 1.8) + 1.8).toFixed(2);
+            const isSmart = gpa > 3.5;
+            const sat = isSmart ? randInt(1300, 1600) : randInt(700, 1300);
+            const toefl = randInt(50, 120);
+            const budget = randInt(5, 100) * 1000; 
+            
+            const activities = [
+                "🙀 Saved a cat from a tree", "♟️ President of Chess Club", "🏈 Captain of Football Team", 
+                "📺 Watched Netflix professionally", "🥣 Volunteered at Soup Kitchen (once)", "📉 Started a failed business",
+                "😴 None (I slept a lot)", "🎤 Debate Team Champion", "🤖 Robotics Club", "🤳 Influencer (12 followers)"
+            ];
+            const activity = activities[Math.floor(Math.random() * activities.length)];
+
+            let html = `
+                <div class="stat-row"><span class="stat-label">🎯 Goal:</span> <span>${goal}</span></div>
+                <div class="stat-row"><span class="stat-label">🧠 GPA:</span> <span>${gpa}</span></div>
+                <div class="stat-row"><span class="stat-label">📝 SAT Score:</span> <span>${sat}</span></div>
+                <div class="stat-row"><span class="stat-label">🌏 TOEFL:</span> <span>${toefl}</span></div>
+                <div class="stat-row"><span class="stat-label">💸 Budget (Max):</span> <span>$${budget.toLocaleString()}</span></div>
+                <div class="stat-row"><span class="stat-label">🏆 Top Activity:</span> <span>${activity}</span></div>
+                <p class="flavor-text"><strong>💡 Strategy:</strong> College too expensive? Check the ✈️ Flight Attendant or 🪖 Military for a salary! Watch out for the Grammar Police! 🚓</p>
+            `;
+            document.getElementById('student-stats').innerHTML = html;
+        }
+
+        function showRecruiterList() {
+            document.getElementById('setup').classList.add('hidden');
+            document.getElementById('recruiter-list-view').classList.remove('hidden');
+
+            const container = document.getElementById('recruiter-buttons');
+            container.innerHTML = ''; // Clear prev
+
+            institutions.forEach((inst, index) => {
+                let btnClass = 'btn';
+                if (inst.diff === 3) btnClass = 'btn-dark';
+                if (inst.diff === 4) btnClass = 'btn-police';
+
+                let btn = document.createElement('button');
+                btn.className = `btn ${btnClass}`;
+                btn.innerText = inst.diff === 4 ? inst.name : `${inst.name} (${inst.quota})`;
+                btn.onclick = () => startRecruiterMode(index);
+                container.appendChild(btn);
+            });
+        }
+
+        // Recruiter State
+        let currentQuota = 0;
+        let maxQuota = 0;
+        let aidSpent = 0;
+        let maxAid = 0;
+        let policeCount = 0;
+
+        function startRecruiterMode(index) {
+            document.getElementById('recruiter-list-view').classList.add('hidden');
+            document.getElementById('recruiter-dashboard').classList.remove('hidden');
+
+            const inst = institutions[index];
+            
+            // 1. HEADER
+            let diffTag;
+            if (inst.diff === 2) diffTag = '<span class="tag hard">Hard 🥵</span>';
+            else if (inst.diff === 1) diffTag = '<span class="tag med">Medium 🤔</span>';
+            else if (inst.diff === 0) diffTag = '<span class="tag easy">Easy 😎</span>';
+            else if (inst.diff === 3) diffTag = '<span class="tag job">JOB 💼</span>';
+            else diffTag = '<span class="tag police">LAW 👮</span>';
+            
+            document.getElementById('college-name').innerHTML = `${inst.name}<br>${diffTag}`;
+
+            // 2. CHECK ROLE TYPE
+            if (inst.diff === 4) {
+                // --- POLICE MODE ---
+                document.getElementById('standard-controls').classList.add('hidden');
+                document.getElementById('police-controls').classList.remove('hidden');
+                
+                let html = `
+                    <div class="police-box">
+                        <strong>🚓 CITATION GUIDE (Catch them saying this):</strong><br>
+                        <ul>
+                            <li>"He go" ❌ -> "He goes" ✅</li>
+                            <li>"I eated" ❌ -> "I ate" ✅</li>
+                            <li>"Married with" ❌ -> "Married to" ✅</li>
+                            <li>Slang ("Rizz", "Skibidi", "Bruh")</li>
+                        </ul>
+                    </div>
+                    <p class="flavor-text"><strong>📣 Orders:</strong> Listen. If they fail grammar, click "FORCE TO READ". Show them the screen. Make them read it LOUD.</p>
+                `;
+                document.getElementById('college-stats').innerHTML = html;
+
+            } else {
+                // --- STANDARD MODE (College OR Job) ---
+                document.getElementById('standard-controls').classList.remove('hidden');
+                document.getElementById('police-controls').classList.add('hidden');
+
+                // State
+                maxQuota = inst.quota;
+                maxAid = inst.aid;
+                currentQuota = 0; 
+                aidSpent = 0;
+
+                // Update Tracker UI
+                document.getElementById('quota-max').innerText = maxQuota;
+                document.getElementById('aid-max').innerText = maxAid;
+                document.getElementById('quota-count').innerText = 0;
+                document.getElementById('aid-spent').innerText = 0;
+
+                // DYNAMIC LABELS (Job vs College)
+                let costLabel = inst.diff === 3 ? "💰 Starting Salary" : "💵 Tuition";
+                let aidLabelText = inst.diff === 3 ? "Signing Bonus Budget" : "Scholarship Budget";
+                
+                // Update Button Labels for Jobs vs College
+                if (inst.diff === 3) {
+                    // Job Labels
+                    document.getElementById('tracker-title').innerText = "💼 Hiring Tracker";
+                    document.getElementById('budget-label-text').innerHTML = `💰 Bonus Budget Used: $<span id="aid-spent">0</span> / $<span id="aid-max"></span>k`;
+                    document.getElementById('btn-txt-1').innerText = "(Hire Standard)";
+                    document.getElementById('btn-txt-2').innerText = "($20k Sign Bonus)";
+                    document.getElementById('btn-txt-3').innerText = "($40k Sign Bonus)";
+                } else {
+                    // College Labels
+                    document.getElementById('tracker-title').innerText = "📊 Admissions Tracker";
+                    document.getElementById('budget-label-text').innerHTML = `💰 Aid Budget Used: $<span id="aid-spent">0</span> / $<span id="aid-max"></span>k`;
+                    document.getElementById('btn-txt-1').innerText = "(Full Pay)";
+                    document.getElementById('btn-txt-2').innerText = "($20k Aid)";
+                    document.getElementById('btn-txt-3').innerText = "($40k Aid)";
+                }
+
+                let html = `
+                    <div class="stat-row"><span class="stat-label">${costLabel}:</span> <span>$${inst.cost.toLocaleString()}/yr</span></div>
+                    <div class="stat-row"><span class="stat-label">🪑 Spots:</span> <span>${inst.quota}</span></div>
+                    <div class="stat-row"><span class="stat-label">🏦 ${aidLabelText}:</span> <span>$${inst.aid}k</span></div>
+                    
+                    <div class="req-box">
+                        <strong>📋 Target Requirements:</strong><br>
+                        <small>GPA:</small> ${inst.reqs.gpa} | <small>SAT:</small> ${inst.reqs.sat}<br>
+                        <small>TOEFL:</small> ${inst.reqs.toefl}<br>
+                        <small>Vibe Check:</small> <em>${inst.reqs.vibe}</em>
+                    </div>
+
+                    <p class="flavor-text"><strong>📣 Orders:</strong> ${inst.desc}</p>
+                `;
+                document.getElementById('college-stats').innerHTML = html;
+            }
+        }
+
+        function recruitStudent(aidAmount) {
+            if (currentQuota >= maxQuota) {
+                alert("⛔ STOP! You are full/staffed up!");
+                return;
+            }
+            if (aidSpent + aidAmount > maxAid) {
+                alert("💸 STOP! You are out of budget!");
+                return;
+            }
+            currentQuota++;
+            aidSpent += aidAmount;
+            
+            document.getElementById('quota-count').innerText = currentQuota;
+            const aidSpan = document.getElementById('aid-spent'); 
+            if(aidSpan) aidSpan.innerText = aidSpent;
+        }
+
+        function assignPoem() {
+            policeCount++;
+            document.getElementById('police-count').innerText = policeCount;
+            const poem = punishments[Math.floor(Math.random() * punishments.length)];
+            const displayBox = document.getElementById('poem-box');
+            displayBox.style.display = 'block';
+            document.getElementById('poem-text').innerText = poem;
+        }
+
+        function policeAction(amount) {
+            alert("🔙 SENT BACK! Tell them: 'Go to the back of the line!'");
+        }
+
+    </script>
+</body>
+</html>

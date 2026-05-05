@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Market Roleplay</title>
+    <link rel="stylesheet" href="../styles/unified-theme.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            body { padding: 15px 10px; }
+            .container { 
+                max-width: 100%; 
+                margin: 0 auto; 
+                padding: 15px;
+            }
+            button { 
+                width: 100%; 
+                margin: 8px 0; 
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.4rem; }
+        }
+        
+        @media (max-width: 480px) {
+            body { padding: 10px 5px; }
+            .container { padding: 10px; }
+            button { padding: 12px 15px; font-size: 0.9rem; }
+            h1 { font-size: 1.5rem; }
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2c3e50; }
+        h2 { color: #34495e; border-bottom: 2px solid #eee; padding-bottom: 10px;}
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            margin: 10px;
+            font-size: 20px; /* Larger for emojis */
+            border-radius: 8px;
+            cursor: pointer;
+            width: 85%;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        button:hover { background-color: #2980b9; }
+        button.secondary { background-color: #95a5a6; }
+        button.danger { background-color: #e74c3c; }
+        
+        .hidden { display: none; }
+        
+        .role-card, .buyer-card {
+            text-align: left;
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .price-list {
+            list-style: none;
+            padding: 0;
+        }
+        .price-list li {
+            background: white;
+            margin: 5px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #bdc3c7;
+            font-size: 18px;
+        }
+        
+        .wallet-box {
+            background: #2ecc71;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 0 #27ae60;
+        }
+        .wallet-amount { font-size: 40px; font-weight: bold; margin-top: 5px;}
+        
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .control-btn { width: auto; padding: 10px 15px; font-size: 16px; }
+
+        .personality {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-style: italic;
+            border-left: 5px solid #ffeeba;
+        }
+        ul li { margin-bottom: 5px; font-size: 18px; }
+    </style>
+</head>
+<body>
+<a href="../index.html" class="back-btn" style="position: fixed; top: 15px; left: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; z-index: 10000; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">← Back to Hub</a>
+
+<div class="container" id="main-menu">
+    <h1>🛒 Market Day Roleplay</h1>
+    <p>Choose your role to begin:</p>
+    <center>
+        <button onclick="startBuyer()">🛍️ I am a BUYER</button>
+        <button onclick="showSellerMenu()">🏪 I am a SELLER</button>
+    </center>
+</div>
+
+<div class="container hidden" id="buyer-section">
+    <h2>🎒 Buyer Dashboard</h2>
+    
+    <div class="buyer-card">
+        <h3>🎯 Your Mission:</h3>
+        <p id="mission-text" style="font-size: 1.2em; font-weight: bold;">Loading...</p>
+        <h4>📝 Shopping List:</h4>
+        <ul id="shopping-list"></ul>
+    </div>
+
+    <div class="wallet-box">
+        <div>💰 Current Wallet</div>
+        <div class="wallet-amount">$<span id="wallet-val">0</span></div>
+    </div>
+
+    <div class="control-panel">
+        <button class="danger control-btn" onclick="changeMoney(-1)">💸 Pay $1</button>
+        <button class="danger control-btn" onclick="changeMoney(-5)">💸 Pay $5</button>
+        <button class="danger control-btn" onclick="changeMoney(-10)">💸 Pay $10</button>
+    </div>
+    <div class="control-panel">
+        <button class="secondary control-btn" onclick="changeMoney(1)">➕ Get Change ($1)</button>
+        <button class="secondary control-btn" onclick="changeMoney(5)">➕ Get Change ($5)</button>
+    </div>
+
+    <br>
+    <center>
+        <button class="secondary" onclick="resetApp()">🔄 Quit / Reset</button>
+    </center>
+</div>
+
+<div class="container hidden" id="seller-menu">
+    <h2>🏘️ Select Your Shop</h2>
+    <center>
+        <div id="seller-buttons"></div>
+        <button class="secondary" onclick="resetApp()">⬅️ Back</button>
+    </center>
+</div>
+
+<div class="container hidden" id="seller-dashboard">
+    <h2 id="shop-title">Shop Name</h2>
+    <div class="personality">
+        <strong>🎭 Acting Tip:</strong> <span id="shop-personality"></span>
+    </div>
+    
+    <h3>🏷️ Price List</h3>
+    <ul class="price-list" id="shop-items"></ul>
+    
+    <center>
+        <button class="secondary" onclick="showSellerMenu()">🔄 Choose Different Shop</button>
+    </center>
+</div>
+
+<script>
+    // --- DATA ---
+    const buyers = [
+        // --- FOOD & PARTIES ---
+        {
+            mission: "🍽️ Host a Fancy Dinner Party",
+            list: ["🥩 Steak (Butcher)", "🥔 Potatoes (Grocer)", "🍷 Wine (Grocer)", "🥖 Bread (Baker)"],
+            budget: 65
+        },
+        {
+            mission: "🎂 Baking a Birthday Cake",
+            list: ["🥡 Flour (Discount Grocer)", "🥚 Eggs (Discount Grocer)", "🥧 Pie Dish (Hardware)", "🕯️ Candles (Discount Grocer)"],
+            budget: 35
+        },
+        {
+            mission: "🌭 Backyard BBQ",
+            list: ["🌭 Sausages (Butcher)", "🍞 Burger Buns (Baker)", "🍅 Ketchup (Grocer)", "🥤 Soda (Grocer)"],
+            budget: 50
+        },
+        {
+            mission: "🥪 Picnic in the Park",
+            list: ["🥖 Baguette (Baker)", "🧀 Cheese (Grocer)", "🍖 Ham (Butcher)", "🍎 Apples (Grocer)"],
+            budget: 40
+        },
+        {
+            mission: "🍳 Breakfast in Bed",
+            list: ["🥓 Bacon (Butcher)", "🥚 Eggs (Discount Grocer)", "🥐 Croissant (Baker)", "☕ Coffee (Cafe)"],
+            budget: 45
+        },
+
+        // --- HOUSE & HOME ---
+        {
+            mission: "🛠️ Fix a Broken Shelf",
+            list: ["🔨 Hammer (Hardware)", "🔩 Nails (Hardware)", "🩹 Bandages (Pharmacy)", "🥤 Cold Soda (Grocer)"],
+            budget: 40
+        },
+        {
+            mission: "🎨 Painting the Bedroom",
+            list: ["🎨 Paint (Hardware)", "👕 Old T-Shirt (Clothing)", "🥪 Sandwich (Cafe)", "🪜 Step Ladder (Hardware)"],
+            budget: 85
+        },
+        {
+            mission: "🌷 Spring Cleaning",
+            list: ["🧤 Rubber Gloves (Hardware)", "🧼 Soap (Pharmacy)", "🗑️ Trash Bags (Grocer)", "🧣 Head Scarf (Clothing)"],
+            budget: 35
+        },
+        {
+            mission: "💡 Power Outage Prep",
+            list: ["🔦 Flashlight (Hardware)", "🥫 Canned Soup (Grocer)", "🧥 Warm Jacket (Clothing)", "🔋 Batteries (Hardware)"],
+            budget: 60
+        },
+
+        // --- HEALTH & PERSONAL ---
+        {
+            mission: "🤒 Sick Day at Home",
+            list: ["🧪 Cough Syrup (Pharmacy)", "🍵 Hot Tea (Cafe)", "🥣 Soup (Grocer)", "📰 Magazine (Newsstand)"],
+            budget: 40
+        },
+        {
+            mission: "💼 Job Interview Prep",
+            list: ["👔 Nice Shirt (Clothing)", "📰 Newspaper (Newsstand)", "🍬 Breath Mints (Pharmacy)", "☕ Coffee (Cafe)"],
+            budget: 55
+        },
+        {
+            mission: "🏖️ Going to the Beach",
+            list: ["🕶️ Sunglasses (Clothing)", "👒 Hat (Clothing)", "🍦 Ice Cream (Cafe)", "📰 Magazine (Newsstand)"],
+            budget: 50
+        },
+        {
+            mission: "🤕 Minor Accident",
+            list: ["🩹 Bandages (Pharmacy)", "💊 Painkillers (Pharmacy)", "🍫 Chocolate (Newsstand)", "🧊 Ice Pack (Grocer)"],
+            budget: 30
+        },
+
+        // --- TRAVEL & ACTIVITY ---
+        {
+            mission: "🚗 Car Trouble",
+            list: ["🛢️ Oil Change (Mechanic)", "🛠️ Wrench (Hardware)", "🗺️ Map (Newsstand)", "☕ Espresso (Cafe)"],
+            budget: 90
+        },
+        {
+            mission: "⛺ Camping Trip",
+            list: ["🥩 Dried Meat (Butcher)", "🔦 Flashlight (Hardware)", "🧣 Warm Scarf (Clothing)", "💊 Bug Spray (Pharmacy)"],
+            budget: 70
+        },
+        {
+            mission: "🚌 School Field Trip",
+            list: ["🥪 Sandwich (Cafe)", "🍎 Apple (Grocer)", "👕 School T-Shirt (Clothing)", "🎒 Backpack (Clothing)"],
+            budget: 45
+        },
+        {
+            mission: "🏔️ Hiking Adventure",
+            list: ["👒 Sun Hat (Clothing)", "🍫 Energy Bar (Newsstand)", "🗺️ Trail Map (Newsstand)", "💧 Water Bottle (Grocer)"],
+            budget: 40
+        },
+
+        // --- RANDOM / FUN ---
+        {
+            mission: "🕵️ Private Detective",
+            list: ["📰 Newspaper (Newsstand)", "🕶️ Dark Glasses (Clothing)", "🍩 Donut (Baker)", "☕ Black Coffee (Cafe)"],
+            budget: 50
+        },
+        {
+            mission: "🐶 New Puppy",
+            list: ["🍖 Bones (Butcher)", "🧹 Cleaning Supplies (Hardware)", "🎾 Tennis Ball (Newsstand)", "📸 Camera Film (Pharmacy)"],
+            budget: 60
+        },
+        {
+            mission: "🧟 Zombie Apocalypse",
+            list: ["🔨 Hammer (Hardware)", "🥫 Canned Food (Grocer)", "💊 Antibiotics (Pharmacy)", "👢 Sturdy Boots (Clothing)"],
+            budget: 100
+        }
+    ];
+
+    const sellers = [
+        {
+            name: "🍎 Main St. Grocer",
+            personality: "Friendly and chatty! 😄 Ask about the weather.",
+            items: { 
+                "🍎 Apples": "$2/lb", "🥔 Potatoes": "$3/bag", "🥛 Milk": "$4", "🥫 Soup": "$2", 
+                "🍷 Wine": "$12", "🍅 Ketchup": "$3", "🥤 Soda": "$2", "🧀 Cheese": "$6",
+                "🗑️ Trash Bags": "$5", "🧊 Ice Pack": "$3", "💧 Water Bottle": "$2"
+            }
+        },
+        {
+            name: "🏷️ Discount Grocer",
+            personality: "Grumpy 😠. In a rush. Wants cash only!",
+            items: { 
+                "🍏 Old Apples": "$1/lb", "🥚 Eggs": "$2", "🥡 Flour": "$3", "🍪 Snacks": "$1",
+                "🕯️ Candles": "$4", "🍜 Instant Noodles": "$1"
+            }
+        },
+        {
+            name: "🥩 The Butcher",
+            personality: "Loud! 📢 Shouts about how fresh the meat is!",
+            items: { 
+                "🥩 Steak": "$15", "🍗 Chicken": "$10", "🌭 Sausages": "$8", "🍖 Ham": "$12",
+                "🥓 Bacon": "$9", "🥩 Dried Meat": "$8", "🍖 Bones": "$3"
+            }
+        },
+        {
+            name: "🥖 The Baker",
+            personality: "Sweet and motherly 👵. Offers free smells.",
+            items: { 
+                "🍞 Bread Loaf": "$4", "🥐 Croissant": "$3", "🥧 Pie": "$10", "🧁 Muffins": "$2",
+                "🍔 Burger Buns": "$4", "🥖 Baguette": "$3", "🍩 Donut": "$2"
+            }
+        },
+        {
+            name: "🔨 Hardware Store",
+            personality: "Knowledgeable 🤓 but speaks very slowly.",
+            items: { 
+                "🔨 Hammer": "$12", "🔩 Nails": "$5", "🧤 Gloves": "$8", "🎨 Paint": "$20",
+                "🥧 Pie Dish": "$8", "🪜 Step Ladder": "$25", "🔦 Flashlight": "$10", "🔋 Batteries": "$6",
+                "🛠️ Wrench": "$9", "🧹 Cleaning Supplies": "$12"
+            }
+        },
+        {
+            name: "🔧 The Mechanic",
+            personality: "Covered in grease 🛢️. Wipes hands before shaking.",
+            items: { "🛢️ Oil Change": "$30", "🚗 Tire Check": "$10", "💧 Wiper Fluid": "$5", "🛠️ Repairs": "$50" }
+        },
+        {
+            name: "👗 Clothing Boutique",
+            personality: "Very posh 💅. Thinks everyone has bad fashion.",
+            items: { 
+                "🕶️ Sunglasses": "$15", "👒 Hat": "$20", "🧣 Scarf": "$12", "👕 T-Shirt": "$25",
+                "🧥 Warm Jacket": "$35", "🎒 Backpack": "$20", "👢 Sturdy Boots": "$40"
+            }
+        },
+        {
+            name: "💊 Pharmacy",
+            personality: "Professional and serious 🧐. Whispers.",
+            items: { 
+                "🧪 Cough Syrup": "$8", "💊 Vitamins": "$12", "🤕 Bandages": "$4", "🌡️ Medicine": "$10",
+                "🧼 Soap": "$3", "🍬 Breath Mints": "$2", "💊 Painkillers": "$8", "💊 Bug Spray": "$7",
+                "💊 Antibiotics": "$15", "📸 Camera Film": "$10"
+            }
+        },
+        {
+            name: "📰 Newsstand",
+            personality: "Reads the paper while talking to you. Distracted 😒.",
+            items: { 
+                "📰 Newspaper": "$2", "📖 Magazine": "$5", "🍫 Candy Bar": "$1", "🗺️ Map": "$4",
+                "🍫 Energy Bar": "$3", "🗺️ Trail Map": "$6", "🎾 Tennis Ball": "$3"
+            }
+        },
+        {
+            name: "☕ Cafe Owner",
+            personality: "Energetic! ⚡ Runs around. High on caffeine.",
+            items: { 
+                "☕ Coffee": "$3", "🥪 Sandwich": "$8", "🍵 Tea": "$2", "🍰 Cake Slice": "$4",
+                "🍦 Ice Cream": "$4", "☕ Espresso": "$3"
+            }
+        }
+    ];
+
+    // --- LOGIC ---
+    let currentWallet = 0;
+
+    function resetApp() {
+        document.getElementById('main-menu').classList.remove('hidden');
+        document.getElementById('buyer-section').classList.add('hidden');
+        document.getElementById('seller-menu').classList.add('hidden');
+        document.getElementById('seller-dashboard').classList.add('hidden');
+    }
+
+    // BUYER LOGIC
+    function startBuyer() {
+        const randomTask = buyers[Math.floor(Math.random() * buyers.length)];
+        
+        document.getElementById('mission-text').innerText = randomTask.mission;
+        const listEl = document.getElementById('shopping-list');
+        listEl.innerHTML = "";
+        randomTask.list.forEach(item => {
+            let li = document.createElement('li');
+            li.innerText = item;
+            listEl.appendChild(li);
+        });
+
+        currentWallet = randomTask.budget;
+        updateWalletDisplay();
+
+        document.getElementById('main-menu').classList.add('hidden');
+        document.getElementById('buyer-section').classList.remove('hidden');
+    }
+
+    function changeMoney(amount) {
+        if (currentWallet + amount < 0) {
+            alert("🚫 You don't have enough money!");
+            return;
+        }
+        currentWallet += amount;
+        updateWalletDisplay();
+    }
+
+    function updateWalletDisplay() {
+        document.getElementById('wallet-val').innerText = currentWallet;
+    }
+
+    // SELLER LOGIC
+    function showSellerMenu() {
+        const container = document.getElementById('seller-buttons');
+        container.innerHTML = "";
+        
+        sellers.forEach((shop, index) => {
+            let btn = document.createElement('button');
+            btn.innerText = shop.name;
+            btn.onclick = () => openShop(index);
+            container.appendChild(btn);
+        });
+
+        document.getElementById('main-menu').classList.add('hidden');
+        document.getElementById('seller-dashboard').classList.add('hidden');
+        document.getElementById('seller-menu').classList.remove('hidden');
+    }
+
+    function openShop(index) {
+        const shop = sellers[index];
+        document.getElementById('shop-title').innerText = shop.name;
+        document.getElementById('shop-personality').innerHTML = shop.personality;
+        
+        const list = document.getElementById('shop-items');
+        list.innerHTML = "";
+        
+        for (const [item, price] of Object.entries(shop.items)) {
+            let li = document.createElement('li');
+            li.innerHTML = `<span>${item}</span> <span>${price}</span>`;
+            list.appendChild(li);
+        }
+
+        document.getElementById('seller-menu').classList.add('hidden');
+        document.getElementById('seller-dashboard').classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>
