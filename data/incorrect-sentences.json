@@ -1,0 +1,372 @@
+{
+  "sentences": {
+    "elementary": {
+      "family": [
+        { "wrong": "She have two brother.", "correct": "She has two brothers.", "error": "subject-verb agreement & plural form" },
+        { "wrong": "My mother cook dinner every day.", "correct": "My mother cooks dinner every day.", "error": "third-person singular -s" },
+        { "wrong": "He is more tall than his sister.", "correct": "He is taller than his sister.", "error": "comparative adjective form" },
+        { "wrong": "The children is playing in the garden.", "correct": "The children are playing in the garden.", "error": "subject-verb agreement (plural)" },
+        { "wrong": "She don't like to clean her room.", "correct": "She doesn't like to clean her room.", "error": "third-person singular don't → doesn't" },
+        { "wrong": "I have two childs.", "correct": "I have two children.", "error": "irregular plural" },
+        { "wrong": "My parents is very kind.", "correct": "My parents are very kind.", "error": "plural subject needs 'are'" },
+        { "wrong": "He go to school with his sister.", "correct": "He goes to school with his sister.", "error": "third-person singular verb" }
+      ],
+      "travel": [
+        { "wrong": "I go to the beach yesterday.", "correct": "I went to the beach yesterday.", "error": "past tense form" },
+        { "wrong": "She travel to many country.", "correct": "She travels to many countries.", "error": "verb form + plural noun" },
+        { "wrong": "The plane is more fast than the car.", "correct": "The plane is faster than the car.", "error": "comparative form" },
+        { "wrong": "We stay in a hotel last summer.", "correct": "We stayed in a hotel last summer.", "error": "past tense -ed" },
+        { "wrong": "He have visited Paris.", "correct": "He has visited Paris.", "error": "present perfect auxiliary" },
+        { "wrong": "They doesn't like long trips.", "correct": "They don't like long trips.", "error": "don't/doesn't agreement" },
+        { "wrong": "I am going to the airport tomorrow morning at 6 oclock.", "correct": "I am going to the airport tomorrow morning at 6 o'clock.", "error": "apostrophe in o'clock" },
+        { "wrong": "There is many people on the beach.", "correct": "There are many people on the beach.", "error": "there is/are with plural" }
+      ],
+      "food": [
+        { "wrong": "I like eat pizza.", "correct": "I like to eat pizza.", "error": "infinitive after 'like'" },
+        { "wrong": "She don't like vegetables.", "correct": "She doesn't like vegetables.", "error": "third-person negative" },
+        { "wrong": "The apple are red and sweet.", "correct": "The apple is red and sweet.", "error": "singular subject needs 'is'" },
+        { "wrong": "He drink milk every morning.", "correct": "He drinks milk every morning.", "error": "third-person singular -s" },
+        { "wrong": "There is many fruits in the basket.", "correct": "There are many fruits in the basket.", "error": "there is/are" },
+        { "wrong": "I am not liking spicy food.", "correct": "I don't like spicy food.", "error": "stative verb not used with -ing" },
+        { "wrong": "She can cooks very well.", "correct": "She can cook very well.", "error": "bare infinitive after modal" },
+        { "wrong": "The children wants more dessert.", "correct": "The children want more dessert.", "error": "plural subject verb agreement" }
+      ],
+      "technology": [
+        { "wrong": "I use my phone every days.", "correct": "I use my phone every day.", "error": "every + singular noun" },
+        { "wrong": "She don't have a computer.", "correct": "She doesn't have a computer.", "error": "third-person negative" },
+        { "wrong": "The video game are very fun.", "correct": "The video game is very fun.", "error": "singular subject needs 'is'" },
+        { "wrong": "He can plays the game well.", "correct": "He can play the game well.", "error": "bare infinitive after modal" },
+        { "wrong": "I spend too many time on screen.", "correct": "I spend too much time on screen.", "error": "much with uncountable, many with countable" },
+        { "wrong": "They is watching TV now.", "correct": "They are watching TV now.", "error": "present continuous with plural subject" },
+        { "wrong": "She have a new tablet.", "correct": "She has a new tablet.", "error": "third-person singular have → has" },
+        { "wrong": "Children under 10 shouldn't has a phone.", "correct": "Children under 10 shouldn't have a phone.", "error": "bare infinitive after modal" }
+      ],
+      "education": [
+        { "wrong": "He go to school everyday.", "correct": "He goes to school every day.", "error": "third-person singular; every day (two words)" },
+        { "wrong": "I am study English for two years.", "correct": "I have studied English for two years.", "error": "present perfect for duration" },
+        { "wrong": "She don't like her homework.", "correct": "She doesn't like her homework.", "error": "third-person negative" },
+        { "wrong": "The students is in the classroom.", "correct": "The students are in the classroom.", "error": "plural subject needs 'are'" },
+        { "wrong": "I need informations about the course.", "correct": "I need information about the course.", "error": "information is uncountable" },
+        { "wrong": "He can speaks three languages.", "correct": "He can speak three languages.", "error": "bare infinitive after modal" },
+        { "wrong": "She is more smart than her classmates.", "correct": "She is smarter than her classmates.", "error": "comparative form" },
+        { "wrong": "I am going to school by bus usually.", "correct": "I usually go to school by bus.", "error": "adverb placement" }
+      ],
+      "culture": [
+        { "wrong": "He don't celebrate Christmas.", "correct": "He doesn't celebrate Christmas.", "error": "third-person negative" },
+        { "wrong": "She wear a beautiful traditional dress.", "correct": "She wears a beautiful traditional dress.", "error": "third-person singular -s" },
+        { "wrong": "People in my country is very friendly.", "correct": "People in my country are very friendly.", "error": "people is plural" },
+        { "wrong": "I have seen many different festivals last year.", "correct": "I saw many different festivals last year.", "error": "simple past with specific time" },
+        { "wrong": "There is many traditions in this country.", "correct": "There are many traditions in this country.", "error": "there is/are" },
+        { "wrong": "She can to speak three languages.", "correct": "She can speak three languages.", "error": "no 'to' after modal" },
+        { "wrong": "Everyone wear special clothes for the holiday.", "correct": "Everyone wears special clothes for the holiday.", "error": "everyone takes singular verb" },
+        { "wrong": "We should to learn about other cultures.", "correct": "We should learn about other cultures.", "error": "no 'to' after modal" }
+      ],
+      "nature": [
+        { "wrong": "The tree are very tall.", "correct": "The tree is very tall.", "error": "singular subject needs 'is'" },
+        { "wrong": "She don't like rainy weather.", "correct": "She doesn't like rainy weather.", "error": "third-person negative" },
+        { "wrong": "There is many animals in the forest.", "correct": "There are many animals in the forest.", "error": "there is/are" },
+        { "wrong": "The flowers is beautiful in spring.", "correct": "The flowers are beautiful in spring.", "error": "plural subject verb agreement" },
+        { "wrong": "He go hiking every weekend.", "correct": "He goes hiking every weekend.", "error": "third-person singular -s" },
+        { "wrong": "I have saw a beautiful bird this morning.", "correct": "I saw a beautiful bird this morning.", "error": "simple past form" },
+        { "wrong": "People should to take care of the environment.", "correct": "People should take care of the environment.", "error": "no 'to' after modal" },
+        { "wrong": "It are raining outside.", "correct": "It is raining outside.", "error": "dummy 'it' always takes 'is'" }
+      ],
+      "arts": [
+        { "wrong": "She paint beautiful pictures.", "correct": "She paints beautiful pictures.", "error": "third-person singular -s" },
+        { "wrong": "He don't like modern art.", "correct": "He doesn't like modern art.", "error": "third-person negative" },
+        { "wrong": "The painting are very colorful.", "correct": "The painting is very colorful.", "error": "singular subject needs 'is'" },
+        { "wrong": "I like to make a crafts.", "correct": "I like to make crafts.", "error": "no article with plural general" },
+        { "wrong": "She can draws very well.", "correct": "She can draw very well.", "error": "bare infinitive after modal" },
+        { "wrong": "Music and art is important subjects.", "correct": "Music and art are important subjects.", "error": "compound subject takes plural" },
+        { "wrong": "He have a beautiful voice.", "correct": "He has a beautiful voice.", "error": "third-person singular have → has" },
+        { "wrong": "There is many famous paintings in the museum.", "correct": "There are many famous paintings in the museum.", "error": "there is/are" }
+      ],
+      "health": [
+        { "wrong": "She don't eat healthy food.", "correct": "She doesn't eat healthy food.", "error": "third-person negative" },
+        { "wrong": "He exercise every morning.", "correct": "He exercises every morning.", "error": "third-person singular -es" },
+        { "wrong": "Drinking water are important for health.", "correct": "Drinking water is important for health.", "error": "gerund subject takes singular" },
+        { "wrong": "The children doesn't brush their teeth.", "correct": "The children don't brush their teeth.", "error": "plural subject uses don't" },
+        { "wrong": "I have a headache since yesterday.", "correct": "I have had a headache since yesterday.", "error": "present perfect with since" },
+        { "wrong": "She must to see a doctor.", "correct": "She must see a doctor.", "error": "no 'to' after modal" },
+        { "wrong": "Too many sugar is bad for you.", "correct": "Too much sugar is bad for you.", "error": "much with uncountable" },
+        { "wrong": "He need to rest more.", "correct": "He needs to rest more.", "error": "third-person singular -s" }
+      ]
+    },
+    "basic": {
+      "family": [
+        { "wrong": "She is married with a teacher.", "correct": "She is married to a teacher.", "error": "preposition: married to, not with" },
+        { "wrong": "I have two old brothers.", "correct": "I have two older brothers.", "error": "older/elder, not 'old' for siblings" },
+        { "wrong": "He is working in this company since 2018.", "correct": "He has been working in this company since 2018.", "error": "present perfect continuous with since" },
+        { "wrong": "My parents they are very supportive.", "correct": "My parents are very supportive.", "error": "double subject" },
+        { "wrong": "She told me that she will come yesterday.", "correct": "She told me that she would come yesterday.", "error": "reported speech backshift" },
+        { "wrong": "I suggest her to study harder.", "correct": "I suggest that she study harder.", "error": "suggest + that clause" },
+        { "wrong": "Despite of the rain, we went out.", "correct": "Despite the rain, we went out.", "error": "despite without 'of'" },
+        { "wrong": "Neither my parents or my brother knows the answer.", "correct": "Neither my parents nor my brother knows the answer.", "error": "neither...nor" }
+      ],
+      "travel": [
+        { "wrong": "I have been in Paris last summer.", "correct": "I went to Paris last summer.", "error": "simple past with specific time" },
+        { "wrong": "She suggested me to visit the museum.", "correct": "She suggested that I visit the museum.", "error": "suggest + that clause" },
+        { "wrong": "The flight was delayed for two hours cause of the storm.", "correct": "The flight was delayed for two hours because of the storm.", "error": "because of, not cause of" },
+        { "wrong": "I look forward to see you.", "correct": "I look forward to seeing you.", "error": "look forward to + gerund" },
+        { "wrong": "We had a wonderful travel to Japan.", "correct": "We had a wonderful trip to Japan.", "error": "travel (verb/uncountable) vs trip (countable noun)" },
+        { "wrong": "The hotel where we stayed at was expensive.", "correct": "The hotel where we stayed was expensive.", "error": "extra preposition with 'where'" },
+        { "wrong": "I wish I have more time to travel.", "correct": "I wish I had more time to travel.", "error": "wish + past tense for present unreal" },
+        { "wrong": "It is a very long journey to go there with train.", "correct": "It is a very long journey to go there by train.", "error": "preposition: by train, not with train" }
+      ],
+      "food": [
+        { "wrong": "There is a lot of foods on the table.", "correct": "There is a lot of food on the table.", "error": "food is uncountable" },
+        { "wrong": "I am allergic from peanuts.", "correct": "I am allergic to peanuts.", "error": "preposition: allergic to" },
+        { "wrong": "She eats less vegetables than she should.", "correct": "She eats fewer vegetables than she should.", "error": "fewer with countable nouns" },
+        { "wrong": "The restaurant which we ate was great.", "correct": "The restaurant where we ate was great.", "error": "relative pronoun: where for places" },
+        { "wrong": "I stopped to eat junk food because it's unhealthy.", "correct": "I stopped eating junk food because it's unhealthy.", "error": "stop + gerund (quit) vs stop + infinitive (pause to do)" },
+        { "wrong": "This is the best pizza I have ever ate.", "correct": "This is the best pizza I have ever eaten.", "error": "past participle: eaten, not ate" },
+        { "wrong": "Could you recommend me a good restaurant?", "correct": "Could you recommend a good restaurant?", "error": "recommend without indirect object pronoun" },
+        { "wrong": "The food was not enough hot.", "correct": "The food was not hot enough.", "error": "word order: adjective + enough" }
+      ],
+      "technology": [
+        { "wrong": "I am using this phone since two years.", "correct": "I have been using this phone for two years.", "error": "present perfect continuous with for" },
+        { "wrong": "Despite of the internet being slow, I finished the download.", "correct": "Despite the internet being slow, I finished the download.", "error": "despite without 'of'" },
+        { "wrong": "If I would have known, I would have told you.", "correct": "If I had known, I would have told you.", "error": "third conditional: if + had + past participle" },
+        { "wrong": "He asked me what am I doing.", "correct": "He asked me what I was doing.", "error": "reported question word order" },
+        { "wrong": "The computer is not strong enough to run this game.", "correct": "The computer is not powerful enough to run this game.", "error": "strong → powerful for machines" },
+        { "wrong": "I don't have many informations about this app.", "correct": "I don't have much information about this app.", "error": "information is uncountable" },
+        { "wrong": "She is used to getting up early, so it's no problem.", "correct": "She is used to getting up early, so it's no problem. (correct!)", "error": "This sentence is actually correct — be used to + gerund" },
+        { "wrong": "My phone is more better than yours.", "correct": "My phone is better than yours.", "error": "double comparative" }
+      ],
+      "education": [
+        { "wrong": "I am studying English from three years.", "correct": "I have been studying English for three years.", "error": "present perfect continuous + for" },
+        { "wrong": "She explained me the grammar rule.", "correct": "She explained the grammar rule to me.", "error": "explain + to someone" },
+        { "wrong": "I am agree with your opinion.", "correct": "I agree with your opinion.", "error": "agree is a verb, not an adjective" },
+        { "wrong": "He is one of the best student in the class.", "correct": "He is one of the best students in the class.", "error": "one of + plural noun" },
+        { "wrong": "I need to do my homeworks.", "correct": "I need to do my homework.", "error": "homework is uncountable" },
+        { "wrong": "Despite he studied hard, he didn't pass.", "correct": "Despite studying hard, he didn't pass.", "error": "despite + noun/gerund, not clause" },
+        { "wrong": "The teacher asked that we submit our essays on time.", "correct": "The teacher asked us to submit our essays on time.", "error": "ask + object + infinitive" },
+        { "wrong": "I am looking forward to meet your teacher.", "correct": "I am looking forward to meeting your teacher.", "error": "look forward to + gerund" }
+      ],
+      "culture": [
+        { "wrong": "She is very good in dancing traditional dances.", "correct": "She is very good at dancing traditional dances.", "error": "preposition: good at" },
+        { "wrong": "I have visited many country in Asia.", "correct": "I have visited many countries in Asia.", "error": "plural after 'many'" },
+        { "wrong": "He is belonging to a traditional family.", "correct": "He belongs to a traditional family.", "error": "belong is stative, no continuous" },
+        { "wrong": "The culture of my country is different than yours.", "correct": "The culture of my country is different from yours.", "error": "different from, not different than" },
+        { "wrong": "I am interesting in learning about other cultures.", "correct": "I am interested in learning about other cultures.", "error": "-ed vs -ing adjective" },
+        { "wrong": "It is depended on the situation.", "correct": "It depends on the situation.", "error": "depend is a verb, use active voice" },
+        { "wrong": "She said me about the festival.", "correct": "She told me about the festival.", "error": "tell + person, say + to + person" },
+        { "wrong": "I used to living in a small town, but now I live in a city.", "correct": "I used to live in a small town, but now I live in a city.", "error": "used to + infinitive (past habit)" }
+      ],
+      "nature": [
+        { "wrong": "Climate change is more worst than we thought.", "correct": "Climate change is worse than we thought.", "error": "irregular comparative: bad-worse-worst" },
+        { "wrong": "We should take care about the environment.", "correct": "We should take care of the environment.", "error": "preposition: take care of" },
+        { "wrong": "There are less trees now than before.", "correct": "There are fewer trees now than before.", "error": "fewer with countable nouns" },
+        { "wrong": "The pollution is damaging the nature.", "correct": "Pollution is damaging nature.", "error": "no article needed; pollution/nature without 'the' generally" },
+        { "wrong": "If we will not act now, it will be too late.", "correct": "If we do not act now, it will be too late.", "error": "first conditional: if + present simple" },
+        { "wrong": "Many animals are in danger to become extinct.", "correct": "Many animals are in danger of becoming extinct.", "error": "in danger of + gerund" },
+        { "wrong": "We are responsible of protecting the planet.", "correct": "We are responsible for protecting the planet.", "error": "preposition: responsible for" },
+        { "wrong": "The earth is getting more hot every year.", "correct": "The earth is getting hotter every year.", "error": "comparative form of one-syllable adjective" }
+      ],
+      "arts": [
+        { "wrong": "She is talented in playing the piano.", "correct": "She is talented at playing the piano.", "error": "preposition: talented at" },
+        { "wrong": "The movie was very interested.", "correct": "The movie was very interesting.", "error": "-ed vs -ing adjective" },
+        { "wrong": "I prefer classical music than pop music.", "correct": "I prefer classical music to pop music.", "error": "prefer X to Y" },
+        { "wrong": "He has been acting since he was child.", "correct": "He has been acting since he was a child.", "error": "article needed" },
+        { "wrong": "This painting is considered as a masterpiece.", "correct": "This painting is considered a masterpiece.", "error": "consider without 'as'" },
+        { "wrong": "I am not used to perform in front of audiences.", "correct": "I am not used to performing in front of audiences.", "error": "be used to + gerund" },
+        { "wrong": "The book was so bored that I fell asleep.", "correct": "The book was so boring that I fell asleep.", "error": "-ed vs -ing adjective" },
+        { "wrong": "She suggested to go to the art gallery.", "correct": "She suggested going to the art gallery.", "error": "suggest + gerund" }
+      ],
+      "health": [
+        { "wrong": "I have a high blood pressure.", "correct": "I have high blood pressure.", "error": "no article with conditions/illnesses generally" },
+        { "wrong": "She goes to the gym for keeping fit.", "correct": "She goes to the gym to keep fit.", "error": "infinitive of purpose" },
+        { "wrong": "I stopped to smoke two years ago.", "correct": "I stopped smoking two years ago.", "error": "stop + gerund (quit activity)" },
+        { "wrong": "He is suffering from stress.", "correct": "He is suffering from stress. (correct, but suffers from without continuous is more natural)", "error": "suffer is stative, simple form preferred" },
+        { "wrong": "Doing exercise is good for the health.", "correct": "Doing exercise is good for your health.", "error": "possessive with health" },
+        { "wrong": "She shouldn't to eat so much sugar.", "correct": "She shouldn't eat so much sugar.", "error": "no 'to' after modal" },
+        { "wrong": "I have an headache.", "correct": "I have a headache.", "error": "article: a headache (silent h is pronounced)" },
+        { "wrong": "The doctor adviced me to rest.", "correct": "The doctor advised me to rest.", "error": "spelling: advised, not adviced" }
+      ]
+    },
+    "intermediate": {
+      "family": [
+        { "wrong": "Had I known earlier, I would have came.", "correct": "Had I known earlier, I would have come.", "error": "past participle: come, not came" },
+        { "wrong": "It's high time the government takes action on housing.", "correct": "It's high time the government took action on housing.", "error": "it's high time + past tense" },
+        { "wrong": "She insisted on her son to become a doctor.", "correct": "She insisted on her son becoming a doctor.", "error": "insist on + gerund" },
+        { "wrong": "Not only they lost their home, but they also lost their savings.", "correct": "Not only did they lose their home, but they also lost their savings.", "error": "inversion after 'not only'" },
+        { "wrong": "I would rather she doesn't come to the party.", "correct": "I would rather she didn't come to the party.", "error": "would rather + past tense for others" },
+        { "wrong": "The number of single-parent families are increasing.", "correct": "The number of single-parent families is increasing.", "error": "'the number' takes singular verb" },
+        { "wrong": "A large amount of parents work from home now.", "correct": "A large number of parents work from home now.", "error": "number for countable, amount for uncountable" },
+        { "wrong": "She recommended me that I should take the job.", "correct": "She recommended that I take the job.", "error": "recommend + that + subjunctive (no 'should')" }
+      ],
+      "travel": [
+        { "wrong": "Barely had I arrived when the hotel called about the reservation.", "correct": "Hardly had I arrived when the hotel called about the reservation.", "error": "hardly/barely — 'hardly...when' is the fixed pattern" },
+        { "wrong": "It's essential that he books the tickets in advance.", "correct": "It's essential that he book the tickets in advance.", "error": "subjunctive after 'it's essential that'" },
+        { "wrong": "I regret to spend so much money on that tour.", "correct": "I regret spending so much money on that tour.", "error": "regret + gerund (past action)" },
+        { "wrong": "Only after the flight took off I realized I forgot my passport.", "correct": "Only after the flight took off did I realize I forgot my passport.", "error": "inversion after 'only after'" },
+        { "wrong": "No sooner the plane landed, the passengers started clapping.", "correct": "No sooner had the plane landed than the passengers started clapping.", "error": "no sooner + had + subject + past participle + than" },
+        { "wrong": "The tour guide, that was from Italy, spoke excellent English.", "correct": "The tour guide, who was from Italy, spoke excellent English.", "error": "who for people in non-restrictive clause" },
+        { "wrong": "Were it not for the travel insurance, I would pay a fortune.", "correct": "Were it not for the travel insurance, I would have paid a fortune.", "error": "mixed conditional: past consequence" },
+        { "wrong": "I wish I didn't go there last year.", "correct": "I wish I hadn't gone there last year.", "error": "wish + past perfect for past regrets" }
+      ],
+      "food": [
+        { "wrong": "Supposing that you would be allergic to nuts, what would you do?", "correct": "Supposing that you were allergic to nuts, what would you do?", "error": "supposing + past subjunctive" },
+        { "wrong": "The chef demanded that the kitchen is cleaned immediately.", "correct": "The chef demanded that the kitchen be cleaned immediately.", "error": "demand + that + subjunctive (be)" },
+        { "wrong": "It's time you try this new recipe.", "correct": "It's time you tried this new recipe.", "error": "it's time + past tense" },
+        { "wrong": "I'd just as soon to eat at home tonight.", "correct": "I'd just as soon eat at home tonight.", "error": "would just as soon + bare infinitive" },
+        { "wrong": "Neither the appetizer nor the main course were satisfactory.", "correct": "Neither the appetizer nor the main course was satisfactory.", "error": "neither...nor + verb agrees with nearest subject" },
+        { "wrong": "The restaurant, whose chef is famous, are always full.", "correct": "The restaurant, whose chef is famous, is always full.", "error": "subject is 'restaurant', singular" },
+        { "wrong": "It's pointless to try changing his eating habits.", "correct": "It's pointless trying to change his eating habits.", "error": "it's pointless + gerund" },
+        { "wrong": "By the time we arrived, the food had already been ate.", "correct": "By the time we arrived, the food had already been eaten.", "error": "past participle: eaten" }
+      ],
+      "technology": [
+        { "wrong": "The amount of devices connected to the internet are staggering.", "correct": "The number of devices connected to the internet is staggering.", "error": "number for countable; 'the number' is singular" },
+        { "wrong": "If technology wouldn't exist, life would be very different.", "correct": "If technology didn't exist, life would be very different.", "error": "second conditional: if + past simple" },
+        { "wrong": "It's vital that every student has access to a computer.", "correct": "It's vital that every student have access to a computer.", "error": "subjunctive after 'it's vital that'" },
+        { "wrong": "Who's phone is this on the table?", "correct": "Whose phone is this on the table?", "error": "whose vs who's" },
+        { "wrong": "I never have been to a tech conference before.", "correct": "I have never been to a tech conference before.", "error": "adverb placement: have + adverb + past participle" },
+        { "wrong": "Not until I saw the reviews I decided to buy it.", "correct": "Not until I saw the reviews did I decide to buy it.", "error": "inversion after 'not until'" },
+        { "wrong": "The AI, that everyone talks about, is actually overhyped.", "correct": "The AI, which everyone talks about, is actually overhyped.", "error": "which for non-restrictive clauses" },
+        { "wrong": "Seldom we see such rapid innovation.", "correct": "Seldom do we see such rapid innovation.", "error": "inversion after negative adverb" }
+      ],
+      "education": [
+        { "wrong": "It's imperative that the curriculum is updated annually.", "correct": "It's imperative that the curriculum be updated annually.", "error": "subjunctive after 'it's imperative that'" },
+        { "wrong": "Were I the principal, I will abolish homework.", "correct": "Were I the principal, I would abolish homework.", "error": "second conditional: would, not will" },
+        { "wrong": "I suggested that he submits the essay earlier.", "correct": "I suggested that he submit the essay earlier.", "error": "suggest + that + subjunctive" },
+        { "wrong": "Many a student have struggled with this concept.", "correct": "Many a student has struggled with this concept.", "error": "'many a' takes singular verb" },
+        { "wrong": "She is one of those teachers who inspires students.", "correct": "She is one of those teachers who inspire students.", "error": "who refers to 'teachers' (plural)" },
+        { "wrong": "I couldn't help but to admire her dedication.", "correct": "I couldn't help but admire her dedication.", "error": "can't help but + bare infinitive" },
+        { "wrong": "Hardly the lesson had started when the fire alarm rang.", "correct": "Hardly had the lesson started when the fire alarm rang.", "error": "inversion after 'hardly'" },
+        { "wrong": "He is used to have his own office, so sharing is difficult.", "correct": "He is used to having his own office, so sharing is difficult.", "error": "be used to + gerund" }
+      ],
+      "culture": [
+        { "wrong": "Were it for the cultural exchange program, I never would have visited Japan.", "correct": "Were it not for the cultural exchange program, I would never have visited Japan.", "error": "third conditional inversion: were it not for" },
+        { "wrong": "She demanded that her traditions are respected.", "correct": "She demanded that her traditions be respected.", "error": "demand + that + subjunctive" },
+        { "wrong": "It's high time we preserve our cultural heritage.", "correct": "It's high time we preserved our cultural heritage.", "error": "it's high time + past tense" },
+        { "wrong": "Rarely you find such diversity in one city.", "correct": "Rarely do you find such diversity in one city.", "error": "inversion after 'rarely'" },
+        { "wrong": "My parents would rather I don't date outside our culture.", "correct": "My parents would rather I didn't date outside our culture.", "error": "would rather + past tense for others" },
+        { "wrong": "One of the most interesting aspects of this culture are its festivals.", "correct": "One of the most interesting aspects of this culture is its festivals.", "error": "subject is 'one', singular" },
+        { "wrong": "Cultural diversity, together with immigration, have shaped this city.", "correct": "Cultural diversity, together with immigration, has shaped this city.", "error": "subject is 'diversity', singular" },
+        { "wrong": "It's no use to complain about cultural differences.", "correct": "It's no use complaining about cultural differences.", "error": "it's no use + gerund" }
+      ],
+      "nature": [
+        { "wrong": "Had we taken action sooner, the damage would be less.", "correct": "Had we taken action sooner, the damage would have been less.", "error": "third conditional: would have + past participle" },
+        { "wrong": "It is urgent that the government acts on climate change.", "correct": "It is urgent that the government act on climate change.", "error": "subjunctive after 'it is urgent that'" },
+        { "wrong": "Not only pollution harms wildlife, but it also affects humans.", "correct": "Not only does pollution harm wildlife, but it also affects humans.", "error": "inversion after 'not only'" },
+        { "wrong": "So severe is the drought, many farmers have left the land.", "correct": "So severe is the drought that many farmers have left the land.", "error": "so...that structure" },
+        { "wrong": "The majority of scientists agrees on climate change.", "correct": "The majority of scientists agree on climate change.", "error": "majority + plural verb with plural complement" },
+        { "wrong": "At no point humans have faced such environmental challenges.", "correct": "At no point have humans faced such environmental challenges.", "error": "inversion after 'at no point'" },
+        { "wrong": "I'd sooner invest in renewable energy.", "correct": "I'd sooner invest in renewable energy. (correct!)", "error": "This is correct — 'd sooner + bare infinitive" },
+        { "wrong": "Only when we stop polluting we can save the planet.", "correct": "Only when we stop polluting can we save the planet.", "error": "inversion in main clause after 'only when'" }
+      ],
+      "arts": [
+        { "wrong": "No other artist has influenced me as much as he did.", "correct": "No other artist has influenced me as much as he has.", "error": "parallel auxiliary: has...has" },
+        { "wrong": "The museum, which admission is free on Sundays, is always crowded.", "correct": "The museum, whose admission is free on Sundays, is always crowded.", "error": "whose for possession (of which)" },
+        { "wrong": "She recommended that I should see the new exhibition.", "correct": "She recommended that I see the new exhibition.", "error": "recommend + that + subjunctive (no should)" },
+        { "wrong": "It's crucial that the funding for arts is maintained.", "correct": "It's crucial that the funding for arts be maintained.", "error": "subjunctive after 'it's crucial that'" },
+        { "wrong": "Seldom a film has moved me so deeply.", "correct": "Seldom has a film moved me so deeply.", "error": "inversion after 'seldom'" },
+        { "wrong": "I wish I could have attend the concert.", "correct": "I wish I could have attended the concert.", "error": "past participle after 'could have'" },
+        { "wrong": "Neither the director nor the actors was happy with the result.", "correct": "Neither the director nor the actors were happy with the result.", "error": "neither...nor: verb agrees with nearest subject" },
+        { "wrong": "This is the artist whose work I was telling you about about.", "correct": "This is the artist whose work I was telling you about.", "error": "repeated preposition" }
+      ],
+      "health": [
+        { "wrong": "I wish I would have taken better care of myself.", "correct": "I wish I had taken better care of myself.", "error": "wish + past perfect (not would have)" },
+        { "wrong": "It's about time that healthcare becomes universal.", "correct": "It's about time that healthcare became universal.", "error": "it's about time + past tense" },
+        { "wrong": "Were I healthier, I would have participate in the marathon.", "correct": "Were I healthier, I would have participated in the marathon.", "error": "past participle in perfect" },
+        { "wrong": "The doctor recommended that I am getting more sleep.", "correct": "The doctor recommended that I get more sleep.", "error": "recommend + that + subjunctive" },
+        { "wrong": "Little people realize how important sleep is.", "correct": "Few people realize how important sleep is.", "error": "few for countable; little for uncountable" },
+        { "wrong": "On no account you should ignore chest pain.", "correct": "On no account should you ignore chest pain.", "error": "inversion after 'on no account'" },
+        { "wrong": "A number of studies has shown the benefits of exercise.", "correct": "A number of studies have shown the benefits of exercise.", "error": "'a number of' takes plural verb" },
+        { "wrong": "Had I knew about the side effects, I wouldn't have taken it.", "correct": "Had I known about the side effects, I wouldn't have taken it.", "error": "past participle: known" }
+      ]
+    },
+    "advanced": {
+      "family": [
+        { "wrong": "But for his intervention, the family would have fell apart years ago.", "correct": "But for his intervention, the family would have fallen apart years ago.", "error": "past participle: fallen" },
+        { "wrong": "The parents, having been divorced for years, they continue to co-parent effectively.", "correct": "The parents, having been divorced for years, continue to co-parent effectively.", "error": "double subject" },
+        { "wrong": "Were it that easy to raise children, parenting books wouldn't exist.", "correct": "Were it that easy to raise children, parenting books wouldn't exist. (acceptable)", "error": "This is acceptable but is actually a mixed conditional — fine for advanced" },
+        { "wrong": "Far be it for me to criticize, but their family dynamic seems toxic.", "correct": "Far be it from me to criticize, but their family dynamic seems toxic.", "error": "preposition: far be it from" },
+        { "wrong": "The generation gap, as it were, has never been wider.", "correct": "The generation gap, as it were, has never been wider. (correct!)", "error": "This is correct — 'as it were' is a fixed subjunctive phrase" },
+        { "wrong": "Had I of known about the reunion, I would have attended.", "correct": "Had I known about the reunion, I would have attended.", "error": "never 'had I of' — drop the 'of'" },
+        { "wrong": "Inasmuch as family traditions are important, they should evolve.", "correct": "Inasmuch as family traditions are important, they should evolve. (correct!)", "error": "inasmuch as = because/since, correctly used" },
+        { "wrong": "Suffice to say, the family reunion was a disaster.", "correct": "Suffice it to say, the family reunion was a disaster.", "error": "fixed phrase: suffice it to say" }
+      ],
+      "travel": [
+        { "wrong": "Be it resolved that tourism benefits outweigh its costs.", "correct": "Be it resolved that tourism's benefits outweigh its costs.", "error": "possessive needed" },
+        { "wrong": "Lest we forget the environmental cost of mass tourism, we must act.", "correct": "Lest we forget the environmental cost of mass tourism, we must act. (correct!)", "error": "lest + subjunctive, correct usage" },
+        { "wrong": "Albeit the journey was exhausting, the destination made up for it.", "correct": "Albeit exhausting, the journey was worth it.", "error": "albeit + adjective/phrase, not clause" },
+        { "wrong": "Rather than to fly, we opted to take the train.", "correct": "Rather than fly, we opted to take the train.", "error": "bare infinitive after 'rather than'" },
+        { "wrong": "There being no flights available, we had to stay another night.", "correct": "There being no flights available, we had to stay another night. (correct!)", "error": "absolute construction, correct usage" },
+        { "wrong": "No matter how experienced a traveler you are, culture shock can strike you.", "correct": "No matter how experienced a traveler you may be, culture shock can strike.", "error": "parallel structure" },
+        { "wrong": "It goes without saying that travel broadens one's horizon.", "correct": "It goes without saying that travel broadens one's horizons.", "error": "plural: horizons" },
+        { "wrong": "For all the planning, the trip went awry.", "correct": "For all the planning, the trip went awry. (correct!)", "error": "for all + noun = despite, correct usage" }
+      ],
+      "food": [
+        { "wrong": "Be that as it may, the restaurant's hygiene standards were appalling.", "correct": "Be that as it may, the restaurant's hygiene standards were appalling. (correct!)", "error": "correct idiom: be that as it may = nevertheless" },
+        { "wrong": "Such was the complexity of the dish, even experienced chefs struggled.", "correct": "Such was the complexity of the dish that even experienced chefs struggled.", "error": "such...that structure" },
+        { "wrong": "In no other country you will find such diverse cuisine.", "correct": "In no other country will you find such diverse cuisine.", "error": "inversion after negative adverbial" },
+        { "wrong": "The more one experiments with food, the more adventurous one becomes.", "correct": "The more one experiments with food, the more adventurous one becomes. (correct!)", "error": "parallel comparative structure" },
+        { "wrong": "To say nothing of the presentation, the taste was divine.", "correct": "To say nothing of the presentation, the taste was divine. (correct!)", "error": "to say nothing of = not to mention, correct usage" },
+        { "wrong": "Were the Michelin inspectors to visit, they be impressed.", "correct": "Were the Michelin inspectors to visit, they would be impressed.", "error": "subjunctive inversion needs 'would' in main clause" },
+        { "wrong": "The provenance of the ingredients, not just the preparation, determine quality.", "correct": "The provenance of the ingredients, not just the preparation, determines quality.", "error": "subject is 'provenance', singular" },
+        { "wrong": "It's not so much the food as the ambiance that make this place special.", "correct": "It's not so much the food as the ambiance that makes this place special.", "error": "subject is 'the ambiance', singular" }
+      ],
+      "technology": [
+        { "wrong": "Such is the pace of innovation, society struggles to keep up.", "correct": "Such is the pace of innovation that society struggles to keep up.", "error": "such...that structure" },
+        { "wrong": "Under no circumstances technology should replace human judgment.", "correct": "Under no circumstances should technology replace human judgment.", "error": "inversion after 'under no circumstances'" },
+        { "wrong": "Be what may, we must regulate AI development.", "correct": "Come what may, we must regulate AI development.", "error": "fixed phrase: come what may" },
+        { "wrong": "Nowhere the digital divide is more apparent than in rural schools.", "correct": "Nowhere is the digital divide more apparent than in rural schools.", "error": "inversion after 'nowhere'" },
+        { "wrong": "As a corollary of automation, many workers will displaced.", "correct": "As a corollary of automation, many workers will be displaced.", "error": "passive voice: will be displaced" },
+        { "wrong": "To the extent that algorithms decide, human agency is diminished.", "correct": "To the extent that algorithms decide, human agency is diminished. (correct!)", "error": "this is grammatically correct" },
+        { "wrong": "Not that I disagree with the premise, but the execution was flawed.", "correct": "Not that I disagree with the premise, but the execution was flawed. (correct!)", "error": "not that = it's not that, correct usage" },
+        { "wrong": "The fewer the regulations, the more innovation there is.", "correct": "The fewer the regulations, the more innovation there is. (correct!)", "error": "correct 'the more...the more' structure" }
+      ],
+      "education": [
+        { "wrong": "That the system is broken is beyond dispute; what to do about it less clear.", "correct": "That the system is broken is beyond dispute; what to do about it is less clear.", "error": "missing verb 'is'" },
+        { "wrong": "As pedagogical methods go, this one is decidedly antiquated.", "correct": "As pedagogical methods go, this one is decidedly antiquated. (correct!)", "error": "'as X go' is a correct idiomatic structure" },
+        { "wrong": "Equally as important as academic skills are social skills.", "correct": "Equally important as academic skills are social skills.", "error": "redundant: equally OR as, not both" },
+        { "wrong": "Not until we address inequality can we claim that education is fair.", "correct": "Not until we address inequality can we claim that education is fair. (correct!)", "error": "correct inversion after 'not until'" },
+        { "wrong": "It's not the grades per say that matter, but the learning process.", "correct": "It's not the grades per se that matter, but the learning process.", "error": "per se, not per say" },
+        { "wrong": "All things being equal, a degree from a prestigious university would advantage one.", "correct": "All things being equal, a degree from a prestigious university would give one an advantage.", "error": "advantage is a noun, not a verb in this context" },
+        { "wrong": "The rationale behind standardized testing, however well-intentioned, are flawed.", "correct": "The rationale behind standardized testing, however well-intentioned, is flawed.", "error": "subject is 'rationale', singular" },
+        { "wrong": "To what extent education should be liberal is a matter of debate.", "correct": "To what extent education should be liberal is a matter of debate. (correct!)", "error": "correct usage" }
+      ],
+      "culture": [
+        { "wrong": "Perish the thought that globalization might homogenize all cultures.", "correct": "Perish the thought that globalization might homogenize all cultures. (correct!)", "error": "perish the thought = heaven forbid, correct usage" },
+        { "wrong": "Would that we could preserve every endangered language.", "correct": "Would that we could preserve every endangered language. (correct!)", "error": "would that... = if only..., correct subjunctive" },
+        { "wrong": "The cultural artifacts, regardless of where they currently reside, belongs to their country of origin.", "correct": "The cultural artifacts, regardless of where they currently reside, belong to their country of origin.", "error": "subject is 'artifacts', plural" },
+        { "wrong": "Such is the diversity of the city that one can hear dozens of languages daily.", "correct": "Such is the diversity of the city that one can hear dozens of languages daily. (correct!)", "error": "correct 'such...that' structure" },
+        { "wrong": "As it were, cultural exchange is a two-way street.", "correct": "As it were, cultural exchange is a two-way street. (correct!)", "error": "as it were = so to speak, correct usage" },
+        { "wrong": "By dint of immigration, the city's culinary scene transformed.", "correct": "By dint of immigration, the city's culinary scene was transformed.", "error": "passive or intransitive: needs 'was transformed' or 'has been transformed'" },
+        { "wrong": "Insofar as culture defines identity, losing one's culture is traumatic.", "correct": "Insofar as culture defines identity, losing one's culture is traumatic. (correct!)", "error": "correct usage of insofar as = to the extent that" },
+        { "wrong": "If ever there was a melting pot, this city is it.", "correct": "If ever there was a melting pot, this city is it. (correct!)", "error": "correct idiomatic usage" }
+      ],
+      "nature": [
+        { "wrong": "Gone are the days when we could ignore climate science.", "correct": "Gone are the days when we could ignore climate science. (correct!)", "error": "correct inversion for emphasis" },
+        { "wrong": "Be the solution technological or behavioral, action must be swift.", "correct": "Be the solution technological or behavioral, action must be swift.", "error": "though old-fashioned, this is grammatically correct — be = whether it be" },
+        { "wrong": "Were it not for the Amazon rainforest, global temperatures would skyrocketed.", "correct": "Were it not for the Amazon rainforest, global temperatures would skyrocket.", "error": "would + bare infinitive, not past participle" },
+        { "wrong": "So dire is the situation as inaction is no longer an option.", "correct": "So dire is the situation that inaction is no longer an option.", "error": "so...that structure, not as" },
+        { "wrong": "The biodiversity of the region, along with its unique ecosystems, are under threat.", "correct": "The biodiversity of the region, along with its unique ecosystems, is under threat.", "error": "subject is 'biodiversity', singular" },
+        { "wrong": "Never before has humanity faced a challenge of this magnitude.", "correct": "Never before has humanity faced a challenge of this magnitude. (correct!)", "error": "correct inversion" },
+        { "wrong": "To blame are not just corporations but also consumers.", "correct": "To blame are not just corporations but also consumers. (correct!)", "error": "correct inverted structure" },
+        { "wrong": "Little did scientists realized the full extent of the damage.", "correct": "Little did scientists realize the full extent of the damage.", "error": "bare infinitive after 'did'" }
+      ],
+      "arts": [
+        { "wrong": "Far from being obsolete, the novel has evolved in the digital age.", "correct": "Far from being obsolete, the novel has evolved in the digital age. (correct!)", "error": "correct 'far from being' structure" },
+        { "wrong": "Be it theatre or cinema, live performance has a unique power.", "correct": "Be it theatre or cinema, live performance has a unique power. (correct!)", "error": "correct subjunctive: be it = whether it be" },
+        { "wrong": "That the painting is a forgery is neither here nor there; its beauty remains.", "correct": "That the painting is a forgery is neither here nor there; its beauty remains. (correct!)", "error": "correct: neither here nor there = irrelevant" },
+        { "wrong": "Not for nothing did Picasso once say that art is a lie that makes us realize truth.", "correct": "Not for nothing did Picasso once say that art is a lie that makes us realize truth. (correct!)", "error": "correct 'not for nothing' + inversion" },
+        { "wrong": "The less commercialized art becomes, the more authentic it is.", "correct": "The less commercialized art becomes, the more authentic it is. (correct!)", "error": "correct comparative structure" },
+        { "wrong": "Were the gallery to exhibit my work, I would be thrill.", "correct": "Were the gallery to exhibit my work, I would be thrilled.", "error": "adjective form: thrilled, not thrill" },
+        { "wrong": "All the more reason to support emerging artists.", "correct": "All the more reason to support emerging artists. (correct!)", "error": "correct idiomatic expression" },
+        { "wrong": "Masterpiece though it may be, the film lacks emotional depth.", "correct": "Masterpiece though it may be, the film lacks emotional depth. (correct!)", "error": "correct 'noun + though + subject + may be' structure" }
+      ],
+      "health": [
+        { "wrong": "Far be it for me to dispense medical advice, but you should see a doctor.", "correct": "Far be it from me to dispense medical advice, but you should see a doctor.", "error": "preposition: far be it from" },
+        { "wrong": "So deleterious are the effects of stress that it can literally shorten one's lifespan.", "correct": "So deleterious are the effects of stress that they can literally shorten one's lifespan.", "error": "pronoun agreement: effects → they" },
+        { "wrong": "Be that as it may, one cannot ignore the correlation between diet and longevity.", "correct": "Be that as it may, one cannot ignore the correlation between diet and longevity. (correct!)", "error": "correct idiom" },
+        { "wrong": "For all the advances in medicine, lifestyle diseases are on the rise.", "correct": "For all the advances in medicine, lifestyle diseases are on the rise. (correct!)", "error": "for all = despite all, correct usage" },
+        { "wrong": "It is indeed a paradox that the wealthier a society becomes, the unhealthier its citizens are.", "correct": "It is indeed a paradox that the wealthier a society becomes, the less healthy its citizens are.", "error": "unhealthier is awkward — use 'less healthy'" },
+        { "wrong": "Nowhere is the link between poverty and poor health more stark.", "correct": "Nowhere is the link between poverty and poor health more stark. (correct!)", "error": "correct inversion" },
+        { "wrong": "Would that governments invested more in preventative healthcare.", "correct": "Would that governments invested more in preventative healthcare. (correct!)", "error": "would that = if only, correct subjunctive" },
+        { "wrong": "To the extent which social determinants affect health, policy must address them.", "correct": "To the extent that social determinants affect health, policy must address them.", "error": "to the extent that" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏫 Classroom English Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ======================================== */
+        /* CSS Reset & Base */
+        /* ======================================== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0f0f1a;
+            --surface: #1a1a2e;
+            --surface2: #222240;
+            --text: #e8e8f0;
+            --text-dim: #9999bb;
+            --accent: #7c5cfc;
+            --accent2: #ff6b9d;
+            --gold: #ffd700;
+            --green: #00e676;
+            --red: #ff5252;
+            --radius: 14px;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 20% 20%, rgba(124,92,252,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(255,107,157,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 0%, #0f0f1a 100%);
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ======================================== */
+        /* Header */
+        /* ======================================== */
+        .hub-header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding-top: 10px;
+        }
+        .hub-header h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), #ffa441);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            text-shadow: none;
+        }
+        .hub-header .tagline {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        /* ======================================== */
+        /* Top Bar: Level + Theme + Timer */
+        /* ======================================== */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .level-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface);
+            padding: 6px 8px;
+            border-radius: 30px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+        .level-group .label {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0 8px;
+            white-space: nowrap;
+        }
+        .level-btn {
+            background: transparent;
+            color: var(--text-dim);
+            border: 2px solid transparent;
+            padding: 8px 16px;
+            border-radius: 22px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .level-btn:hover {
+            color: var(--text);
+            background: var(--surface2);
+        }
+        .level-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(124,92,252,0.4);
+        }
+
+        /* Theme Dropdown */
+        .theme-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface);
+            padding: 6px 8px;
+            border-radius: 30px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+        .theme-group .label {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0 8px;
+            white-space: nowrap;
+        }
+        .theme-select {
+            background: var(--surface2);
+            color: var(--text);
+            border: 2px solid transparent;
+            padding: 8px 14px;
+            border-radius: 22px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+            min-width: 170px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239999bb' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 32px;
+        }
+        .theme-select:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 16px rgba(124,92,252,0.25);
+        }
+        .theme-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(124,92,252,0.35);
+        }
+        .theme-select option {
+            background: var(--surface);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            padding: 8px;
+        }
+
+        /* Timer */
+        .timer-widget {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface);
+            padding: 8px 14px;
+            border-radius: 30px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+        .timer-icon { font-size: 1.2rem; }
+        .timer-display {
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            color: var(--gold);
+            min-width: 60px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .timer-display.flash {
+            animation: timerFlash 0.5s ease 3;
+        }
+        @keyframes timerFlash {
+            0%, 100% { color: var(--gold); transform: scale(1); }
+            50% { color: var(--red); transform: scale(1.3); }
+        }
+        .timer-btn {
+            background: var(--surface2);
+            color: var(--text);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 18px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .timer-btn:hover { background: var(--accent); color: #fff; }
+        .timer-btn.primary {
+            background: var(--accent);
+            color: #fff;
+            padding: 6px 16px;
+        }
+        .timer-presets {
+            display: flex;
+            gap: 4px;
+        }
+
+        /* ======================================== */
+        /* Active Theme Badge */
+        /* ======================================== */
+        .active-theme-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--surface);
+            border: 1px solid var(--surface2);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+        .active-theme-badge.has-theme {
+            opacity: 1;
+            color: var(--text);
+        }
+
+        /* ======================================== */
+        /* Container */
+        /* ======================================== */
+        .hub-container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* ======================================== */
+        /* Section Headers */
+        /* ======================================== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+        .section-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.3px;
+        }
+        .section-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            border-radius: 1px;
+        }
+
+        /* ======================================== */
+        /* Activity Button Grid */
+        /* ======================================== */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 10px;
+        }
+
+        .act-btn {
+            background: var(--surface);
+            color: var(--text);
+            border: 2px solid transparent;
+            padding: 14px 10px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            line-height: 1.3;
+            border-left: 3px solid var(--accent2);
+        }
+        .act-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            opacity: 0;
+            transition: opacity var(--transition);
+            border-radius: var(--radius);
+        }
+        .act-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+        }
+        .act-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+        .act-btn .icon { font-size: 1.6rem; transition: transform var(--transition); position: relative; z-index: 1; }
+        .act-btn:hover .icon { transform: scale(1.15); }
+        .act-btn .label { font-size: 0.72rem; position: relative; z-index: 1; }
+
+        /* ======================================== */
+        /* Result Display */
+        /* ======================================== */
+        .result-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2), var(--gold));
+        }
+        .result-card .result-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .result-card .result-text {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.6;
+            transition: opacity 0.3s ease;
+        }
+        .result-card .result-text.fade {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        .result-card .result-text.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .new-btn {
+            margin-top: 12px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 14px rgba(124,92,252,0.3);
+        }
+        .new-btn:hover {
+            background: #9b7fff;
+            box-shadow: 0 6px 20px rgba(124,92,252,0.5);
+            transform: translateY(-2px);
+        }
+
+        /* No-results fallback */
+        .no-result-hint {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+        .fallback-btn {
+            margin-top: 6px;
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 4px 14px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .fallback-btn:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .reveal-btn {
+            margin-top: 8px;
+            background: transparent;
+            color: #f39c12;
+            border: 1px solid #f39c12;
+            padding: 6px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: none;
+        }
+        .reveal-btn:hover {
+            background: #f39c12;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(243,156,18,0.4);
+        }
+
+        .answer-hidden {
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        .answer-revealed {
+            animation: revealPop 0.3s ease;
+        }
+
+        @keyframes revealPop {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* ======================================== */
+        /* Footer / Roleplay Link */
+        /* ======================================== */
+        .footer-links {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 4px;
+            margin-bottom: 30px;
+        }
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.82rem;
+            padding: 8px 16px;
+            background: var(--surface);
+            border-radius: 20px;
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .footer-links a:hover {
+            color: var(--text);
+            background: var(--surface2);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+            transform: translateY(-2px);
+        }
+
+        /* ======================================== */
+        /* Responsive */
+        /* ======================================== */
+        @media (max-width: 768px) {
+            .hub-header h1 { font-size: 1.8rem; }
+            .btn-grid { grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 8px; }
+            .act-btn { padding: 10px 8px; }
+            .act-btn .icon { font-size: 1.3rem; }
+            .act-btn .label { font-size: 0.68rem; }
+            .result-card .result-text { font-size: 1.1rem; }
+            .top-bar { gap: 10px; }
+            .level-btn { padding: 6px 12px; font-size: 0.75rem; }
+            .theme-select { min-width: 140px; font-size: 0.78rem; }
+            .theme-group { padding: 4px 6px; }
+        }
+
+        @media (max-width: 500px) {
+            .btn-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+            .level-group { flex-wrap: wrap; justify-content: center; }
+            .top-bar { flex-direction: column; align-items: stretch; }
+            .theme-group, .level-group, .timer-widget { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Home Nav -->
+    <a href="index.html" style="position:fixed;top:20px;left:20px;color:var(--text-dim);text-decoration:none;font-size:0.85rem;font-weight:600;padding:8px 16px;background:var(--surface);border-radius:20px;transition:var(--transition);z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.3);">🏠 Home</a>
+
+    <!-- Header -->
+    <div class="hub-header">
+        <h1>🏫 Classroom English Hub</h1>
+        <p class="tagline">One-click topics. Zero awkward silence.</p>
+    </div>
+
+    <!-- Top Bar: Level + Theme + Timer -->
+    <div class="top-bar">
+        <div class="level-group">
+            <span class="label">🎯 Level:</span>
+            <button class="level-btn active" data-level="elementary">Elementary</button>
+            <button class="level-btn" data-level="basic">Basic</button>
+            <button class="level-btn" data-level="intermediate">Intermediate</button>
+            <button class="level-btn" data-level="advanced">Advanced</button>
+        </div>
+
+        <div class="theme-group">
+            <span class="label">🏷 Theme:</span>
+            <select id="themeSelect" class="theme-select">
+                <option value="">🌐 All Themes</option>
+                <!-- Populated by JS -->
+            </select>
+        </div>
+
+        <div class="timer-widget">
+            <span class="timer-icon">⏱</span>
+            <span id="timerDisplay" class="timer-display">00:00</span>
+            <div class="timer-presets">
+                <button class="timer-btn" data-time="30">30s</button>
+                <button class="timer-btn" data-time="60">1m</button>
+                <button class="timer-btn" data-time="120">2m</button>
+                <button class="timer-btn" data-time="300">5m</button>
+                <button class="timer-btn" data-time="600">10m</button>
+            </div>
+            <button id="timerToggle" class="timer-btn primary">▶ Start</button>
+            <button id="timerReset" class="timer-btn">↺</button>
+        </div>
+    </div>
+
+    <!-- Main Hub -->
+    <div class="hub-container">
+
+        <!-- ACTIVITY TYPES -->
+        <div>
+            <div class="section-header">
+                <h2>🎲 Activity Types</h2>
+                <span id="themeBadge" class="active-theme-badge">🌐 All Themes</span>
+                <div class="section-line"></div>
+            </div>
+            <div class="btn-grid" id="activityGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- RESULT DISPLAY -->
+        <div class="result-card" id="resultCard">
+            <span class="result-label" id="resultLabel">Pick an activity</span>
+            <span class="result-text show" id="resultText">Select a theme above, then click any activity button!</span>
+            <button class="reveal-btn" id="revealBtn" style="display:none;">👁 Reveal Answer</button>
+            <span class="result-text" id="hiddenAnswer" style="display:none;"></span>
+            <button class="new-btn" id="newBtn" style="display:none;">🔄 New One</button>
+            <span class="no-result-hint" id="noResultHint" style="display:none;"></span>
+            <button class="fallback-btn" id="fallbackBtn" style="display:none;">🎲 Show Random Instead</button>
+        </div>
+
+    </div>
+
+    <!-- Data Source Scripts -->
+    <script src="classroom-data.js"></script>
+
+    <script>
+    /* ======================================================== */
+    /* ENGLISH HUB - Main Logic (Theme-Integrated)             */
+    /* ======================================================== */
+    (function() {
+        'use strict';
+
+        // ---- State ----
+        const state = {
+            level: 'elementary',
+            theme: '',            // current theme key ('' = All Themes)
+            lastResult: null,
+            lastActivity: null,
+            timerSeconds: 0,
+            timerInterval: null,
+            timerRunning: false
+        };
+
+        // ---- Cached external data ----
+        window._debateData = null;
+        window._incorrectData = null;
+
+        // ---- Category/Theme definitions ---- //
+        const categoryDefs = [
+            { key: 'family',      icon: '👨‍👩‍👧', label: 'Family',       color: '#00B894' },
+            { key: 'travel',      icon: '✈️', label: 'Travel',       color: '#4A90D9' },
+            { key: 'food',        icon: '🍔', label: 'Food',         color: '#E17055' },
+            { key: 'technology',  icon: '💻', label: 'Technology',   color: '#6C5CE7' },
+            { key: 'education',   icon: '🎓', label: 'Education',    color: '#74B9FF' },
+            { key: 'culture',     icon: '🎭', label: 'Culture',      color: '#FD79A8' },
+            { key: 'nature',      icon: '🌿', label: 'Nature',       color: '#00CEC9' },
+            { key: 'arts',        icon: '🎨', label: 'Arts',         color: '#E84393' },
+            { key: 'health',      icon: '💪', label: 'Health',       color: '#FF7675' }
+        ];
+
+        // Activity definitions
+        const activityDefs = [
+            { key: 'silly',      icon: '🤪', label: 'Silly Qs' },
+            { key: 'serious',    icon: '🤔', label: 'Serious Qs' },
+            { key: 'wyr',        icon: '🤷', label: 'Would You Rather' },
+            { key: 'topic',      icon: '📝', label: 'Random Topic' },
+            { key: 'debate',     icon: '⚖️', label: 'Debate' },
+            { key: 'twister',    icon: '👅', label: 'Tongue Twisters' },
+            { key: 'scramble',   icon: '🔤', label: 'Word Scramble' },
+            { key: 'wotd',       icon: '📖', label: 'Word of Day' },
+            { key: 'taboo',      icon: '🚫', label: 'Vocab Taboo' },
+            { key: 'incorrect',  icon: '❌', label: 'Incorrect' }
+        ];
+
+        // ---- Init ---- //
+        async function init() {
+            populateThemeDropdown();
+            buildActivityGrid();
+            bindLevelButtons();
+            bindTimerButtons();
+            bindThemeChange();
+            loadSavedLevel();
+            loadSavedTheme();
+            await preloadExternalData();
+        }
+
+        // ---- Preload external JSON data ---- //
+        async function preloadExternalData() {
+            // Debate topics
+            try {
+                const resp = await fetch('data/debate-topics.json');
+                if (resp.ok) window._debateData = await resp.json();
+            } catch(e) { console.warn('Could not load debate-topics.json'); }
+
+            // Incorrect sentences
+            try {
+                const resp = await fetch('data/incorrect-sentences.json');
+                if (resp.ok) window._incorrectData = await resp.json();
+            } catch(e) { console.warn('Could not load incorrect-sentences.json'); }
+        }
+
+        // ---- Theme Dropdown ---- //
+        function populateThemeDropdown() {
+            const select = document.getElementById('themeSelect');
+            // Clear existing options except "All Themes"
+            while (select.options.length > 1) select.remove(1);
+            categoryDefs.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat.key;
+                opt.textContent = `${cat.icon} ${cat.label}`;
+                opt.style.color = cat.color;
+                select.appendChild(opt);
+            });
+        }
+
+        function bindThemeChange() {
+            document.getElementById('themeSelect').addEventListener('change', function() {
+                state.theme = this.value;
+                updateThemeBadge();
+                saveTheme();
+                // Re-roll if a result is showing
+                if (state.lastResult && state.lastActivity) {
+                    handleActivityClick(state.lastActivity);
+                }
+            });
+        }
+
+        function updateThemeBadge() {
+            const badge = document.getElementById('themeBadge');
+            if (state.theme) {
+                const cat = categoryDefs.find(c => c.key === state.theme);
+                badge.textContent = cat ? `${cat.icon} ${cat.label}` : state.theme;
+                badge.classList.add('has-theme');
+                badge.style.borderColor = cat ? cat.color : '';
+                badge.style.color = cat ? cat.color : '';
+            } else {
+                badge.textContent = '🌐 All Themes';
+                badge.classList.remove('has-theme');
+                badge.style.borderColor = '';
+                badge.style.color = '';
+            }
+        }
+
+        function getCurrentThemeInfo() {
+            if (!state.theme) return null;
+            return categoryDefs.find(c => c.key === state.theme) || null;
+        }
+
+        // ---- Activity Grid ---- //
+        function buildActivityGrid() {
+            const grid = document.getElementById('activityGrid');
+            grid.innerHTML = '';
+            activityDefs.forEach(act => {
+                const btn = document.createElement('button');
+                btn.className = 'act-btn';
+                btn.dataset.act = act.key;
+                btn.innerHTML = `<span class="icon">${act.icon}</span><span class="label">${act.label}</span>`;
+                btn.addEventListener('click', () => handleActivityClick(act.key));
+                grid.appendChild(btn);
+            });
+        }
+
+        // ---- Theme Filtering Logic ---- //
+        function keywordMatch(text, themeKey) {
+            if (!window.data || !window.data.themeKeywords) return false;
+            const keywords = window.data.themeKeywords[themeKey];
+            if (!keywords || keywords.length === 0) return false;
+            const lower = text.toLowerCase();
+            return keywords.some(kw => lower.includes(kw.toLowerCase()));
+        }
+
+        function filterByTheme(pool, themeKey) {
+            if (!themeKey || !pool || pool.length === 0) return pool; // no filter
+            const filtered = pool.filter(item => {
+                const text = typeof item === 'string' ? item : (item.text || item.word || item.roles || '');
+                return keywordMatch(text, themeKey);
+            });
+            return filtered.length > 0 ? filtered : null; // null = no matches
+        }
+
+        // ---- Handlers ---- //
+        function handleActivityClick(actKey) {
+            state.lastActivity = actKey;
+            const result = getActivityResult(actKey, state.level, state.theme);
+            const actLabel = activityDefs.find(a => a.key === actKey)?.label || actKey;
+            const themeInfo = getCurrentThemeInfo();
+            const displayLabel = themeInfo
+                ? `${themeInfo.icon} ${themeInfo.label} • ${actLabel}`
+                : actLabel;
+            displayResult(displayLabel, result.text, result.filtered, result.hiddenAnswer || null);
+        }
+
+        function getActivityResult(actKey, level, theme) {
+            if (!window.data) return { text: 'Data not loaded. Check your connection.', filtered: false };
+
+            // ---- Question-based types (keyword-filterable) ---- //
+            if (actKey === 'silly' || actKey === 'serious') {
+                const qKey = actKey === 'silly' ? 'silly' : 'serious';
+                const pool = (window.data.questions[qKey][level] && window.data.questions[qKey][level].length > 0)
+                    ? window.data.questions[qKey][level]
+                    : (window.data.questions[qKey].basic || []);
+
+                const filteredPool = filterByTheme(pool, theme);
+                if (filteredPool === null && theme) {
+                    const fallback = randomPick(pool);
+                    return {
+                        text: fallback || 'No questions found. Try another theme!',
+                        filtered: false
+                    };
+                }
+                const chosen = randomPick(filteredPool || pool);
+                return { text: chosen || '(No question available)', filtered: !!theme };
+            }
+
+            // ---- Would You Rather (keyword-filterable) ---- //
+            if (actKey === 'wyr') {
+                const pool = (window.data.wyr[level] && window.data.wyr[level].length > 0)
+                    ? window.data.wyr[level]
+                    : (window.data.wyr.basic || []);
+                const filteredPool = filterByTheme(pool, theme);
+                if (filteredPool === null && theme) {
+                    const fallback = randomPick(pool);
+                    return { text: fallback || 'Would you rather be a cat or a dog?', filtered: false };
+                }
+                const chosen = randomPick(filteredPool || pool);
+                return { text: chosen || 'Would you rather be a cat or a dog?', filtered: !!theme };
+            }
+
+            // ---- Random Topic — pull from categories.json first, then fallback ---- //
+            if (actKey === 'topic') {
+                // If theme is set, try categories.json for that theme+level
+                if (theme && window._categoriesData) {
+                    const cat = window._categoriesData.categories[theme];
+                    if (cat && cat.levels[level] && cat.levels[level].length > 0) {
+                        const chosen = randomPick(cat.levels[level]);
+                        return { text: `🗣️ Discuss: ${chosen}`, filtered: true };
+                    }
+                }
+                // Fallback: generic topics from classroom-data.js
+                const pool = (window.data.topics[level] && window.data.topics[level].length > 0)
+                    ? window.data.topics[level]
+                    : (window.data.topics.basic || []);
+                const filteredPool = filterByTheme(pool, theme);
+                if (filteredPool === null && theme) {
+                    const fallback = randomPick(pool);
+                    return { text: `🗣️ Discuss: ${fallback || 'Anything you like!'}`, filtered: false };
+                }
+                const chosen = randomPick(filteredPool || pool);
+                return { text: `🗣️ Discuss: ${chosen || 'Anything you like!'}`, filtered: !!theme };
+            }
+
+            // ---- DEBATE (new!) ---- //
+            if (actKey === 'debate') {
+                // Try debate-topics.json first
+                // Structure: debates → {elementary/basic/intermediate/advanced} → {family/travel/...} → [topics]
+                if (theme && window._debateData && window._debateData.debates) {
+                    const lvlData = window._debateData.debates[level];
+                    if (lvlData && lvlData[theme] && lvlData[theme].length > 0) {
+                        const chosen = randomPick(lvlData[theme]);
+                        return { text: `⚖️ DEBATE: ${chosen}`, filtered: true };
+                    }
+                    // Try basic level if current level not found
+                    const basicData = window._debateData.debates.basic;
+                    if (basicData && basicData[theme] && basicData[theme].length > 0) {
+                        const chosen = randomPick(basicData[theme]);
+                        return { text: `⚖️ DEBATE: ${chosen}`, filtered: true };
+                    }
+                }
+                // Fallback: pick from any theme at current level
+                if (window._debateData && window._debateData.debates) {
+                    const lvlData = window._debateData.debates[level];
+                    if (lvlData) {
+                        const allDebates = [];
+                        for (const cat in lvlData) {
+                            allDebates.push(...(lvlData[cat] || []));
+                        }
+                        if (allDebates.length > 0) {
+                            const chosen = randomPick(allDebates);
+                            return { text: `⚖️ DEBATE: ${chosen}`, filtered: !!theme };
+                        }
+                    }
+                    // Try any level
+                    for (const lvl of ['basic','intermediate','advanced','elementary']) {
+                        const ld = window._debateData.debates[lvl];
+                        if (ld) {
+                            const all = [];
+                            for (const cat in ld) { all.push(...(ld[cat] || [])); }
+                            if (all.length > 0) {
+                                const chosen = randomPick(all);
+                                return { text: `⚖️ DEBATE: ${chosen}`, filtered: false };
+                            }
+                        }
+                    }
+                }
+                return { text: '⚖️ DEBATE: Should students wear uniforms?', filtered: false };
+            }
+
+            // ---- Tongue Twisters (no theme filtering) ---- //
+            if (actKey === 'twister') {
+                const twister = randomPick(window.data.twisters || ['She sells seashells by the seashore']);
+                return { text: `👅 Try saying: ${twister}`, filtered: false };
+            }
+
+            // ---- Word Scramble (no theme filtering) ---- //
+            if (actKey === 'scramble') {
+                const pool = (window.data.scramble[level] && window.data.scramble[level].length > 0)
+                    ? window.data.scramble[level]
+                    : (window.data.scramble.basic || []);
+                const word = randomPick(pool) || 'ENGLISH';
+                const scrambled = scrambleWord(word);
+                return {
+                    text: `🔤 Unscramble: ${scrambled}`,
+                    hiddenAnswer: `✅ Answer: ${word.toUpperCase()}`,
+                    filtered: false
+                };
+            }
+
+            // ---- Word of the Day (no theme filtering) ---- //
+            if (actKey === 'wotd') {
+                const pool = (window.data.wotd[level] && window.data.wotd[level].length > 0)
+                    ? window.data.wotd[level]
+                    : (window.data.wotd.basic || []);
+                return { text: `📖 ${randomPick(pool) || 'Learn something new today!'}`, filtered: false };
+            }
+
+            // ---- Vocab Taboo (no theme filtering) ---- //
+            if (actKey === 'taboo') {
+                const taboo = randomPick(window.data.taboo || [{word: 'Umbrella', forbidden: ['rain', 'wet', 'open', 'close']}]);
+                return { text: `🚫 TABOO: "${taboo.word}" — Forbidden: ${taboo.forbidden.join(', ')}`, filtered: false };
+            }
+
+            // ---- INCORRECT SENTENCE (new!) ---- //
+            if (actKey === 'incorrect') {
+                if (theme && window._incorrectData && window._incorrectData.sentences) {
+                    const lvlData = window._incorrectData.sentences[level];
+                    if (lvlData && lvlData[theme] && lvlData[theme].length > 0) {
+                        const chosen = randomPick(lvlData[theme]);
+                        return {
+                            text: `❌ Find the mistake: "${chosen.wrong}"`,
+                            hiddenAnswer: `✅ Correct: "${chosen.correct}"\n💡 Error: ${chosen.error}`,
+                            filtered: true
+                        };
+                    }
+                }
+                // Fallback: pick from any theme at current level
+                if (window._incorrectData && window._incorrectData.sentences) {
+                    const lvlData = window._incorrectData.sentences[level];
+                    if (lvlData) {
+                        const all = [];
+                        for (const cat in lvlData) {
+                            all.push(...(lvlData[cat] || []));
+                        }
+                        if (all.length > 0) {
+                            const chosen = randomPick(all);
+                            return {
+                                text: `❌ Find the mistake: "${chosen.wrong}"`,
+                                hiddenAnswer: `✅ Correct: "${chosen.correct}"\n💡 Error: ${chosen.error}`,
+                                filtered: !!theme
+                            };
+                        }
+                    }
+                    // Try any level
+                    for (const lvl of ['basic','intermediate','advanced','elementary']) {
+                        const ld = window._incorrectData.sentences[lvl];
+                        if (ld) {
+                            const all = [];
+                            for (const cat in ld) { all.push(...(ld[cat] || [])); }
+                            if (all.length > 0) {
+                                const chosen = randomPick(all);
+                                return {
+                                    text: `❌ Find the mistake: "${chosen.wrong}"`,
+                                    hiddenAnswer: `✅ Correct: "${chosen.correct}"\n💡 Error: ${chosen.error}`,
+                                    filtered: false
+                                };
+                            }
+                        }
+                    }
+                }
+                return { text: '❌ No incorrect sentences loaded. Check data/incorrect-sentences.json', filtered: false };
+            }
+
+            // fallback
+            return { text: 'Unknown activity.', filtered: false };
+        }
+
+        // ---- Display ---- //
+        function displayResult(label, text, isFiltered, hiddenAnswer) {
+            const labelEl = document.getElementById('resultLabel');
+            const textEl = document.getElementById('resultText');
+            const newBtn = document.getElementById('newBtn');
+            const noHint = document.getElementById('noResultHint');
+            const fallbackBtn = document.getElementById('fallbackBtn');
+            const revealBtn = document.getElementById('revealBtn');
+            const hiddenEl = document.getElementById('hiddenAnswer');
+
+            textEl.classList.remove('show');
+            textEl.classList.add('fade');
+
+            noHint.style.display = 'none';
+            fallbackBtn.style.display = 'none';
+            revealBtn.style.display = 'none';
+            hiddenEl.style.display = 'none';
+            hiddenEl.classList.remove('answer-revealed');
+
+            setTimeout(() => {
+                labelEl.textContent = label.toUpperCase();
+                textEl.textContent = text;
+                textEl.classList.remove('fade');
+                textEl.classList.add('show');
+            }, 150);
+
+            state.lastResult = text;
+            newBtn.style.display = 'inline-block';
+
+            // Handle reveal button for activities with hidden answers
+            if (hiddenAnswer) {
+                revealBtn.style.display = 'inline-block';
+                revealBtn.textContent = '👁 Reveal Answer';
+                hiddenEl.textContent = hiddenAnswer;
+                revealBtn.onclick = function() {
+                    hiddenEl.style.display = 'block';
+                    hiddenEl.classList.add('answer-revealed');
+                    revealBtn.style.display = 'none';
+                };
+            }
+
+            // If theme was set but filtering produced no match, show hint
+            if (state.theme && !isFiltered && state.lastActivity) {
+                const actKey = state.lastActivity;
+                const filterableTypes = ['silly', 'serious', 'wyr', 'topic', 'debate', 'incorrect'];
+                if (filterableTypes.includes(actKey)) {
+                    noHint.style.display = 'block';
+                    const themeInfo = getCurrentThemeInfo();
+                    const themeLabel = themeInfo ? `${themeInfo.icon} ${themeInfo.label}` : state.theme;
+                    const actLabel = activityDefs.find(a => a.key === actKey)?.label || actKey;
+                    noHint.textContent = `⚠ No ${actLabel.toLowerCase()} found for ${themeLabel}. Showing a random one instead.`;
+                    fallbackBtn.style.display = 'inline-block';
+                    fallbackBtn.onclick = () => {
+                        // Clear theme and re-roll
+                        state.theme = '';
+                        document.getElementById('themeSelect').value = '';
+                        updateThemeBadge();
+                        saveTheme();
+                        handleActivityClick(actKey);
+                    };
+                }
+            }
+        }
+
+        function refreshResult() {
+            if (state.lastActivity) {
+                handleActivityClick(state.lastActivity);
+            }
+        }
+
+        // ---- Level ---- //
+        function setLevel(level) {
+            state.level = level;
+            document.querySelectorAll('.level-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.level === level);
+            });
+            saveLevel();
+            if (state.lastResult) {
+                refreshResult();
+            }
+        }
+
+        function bindLevelButtons() {
+            document.querySelectorAll('.level-btn').forEach(btn => {
+                btn.addEventListener('click', () => setLevel(btn.dataset.level));
+            });
+        }
+
+        function loadSavedLevel() {
+            try {
+                const saved = localStorage.getItem('hubLevel');
+                if (saved && ['elementary','basic','intermediate','advanced'].includes(saved)) {
+                    setLevel(saved);
+                }
+            } catch(e) {}
+        }
+
+        function saveLevel() {
+            try { localStorage.setItem('hubLevel', state.level); } catch(e) {}
+        }
+
+        function loadSavedTheme() {
+            try {
+                const saved = localStorage.getItem('hubTheme');
+                if (saved) {
+                    state.theme = saved;
+                    document.getElementById('themeSelect').value = saved;
+                    updateThemeBadge();
+                }
+            } catch(e) {}
+        }
+
+        function saveTheme() {
+            try { localStorage.setItem('hubTheme', state.theme); } catch(e) {}
+        }
+
+        // ---- Timer ---- //
+        function bindTimerButtons() {
+            document.querySelectorAll('.timer-btn[data-time]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const sec = parseInt(btn.dataset.time, 10);
+                    if (!isNaN(sec)) setTimerQuick(sec);
+                });
+            });
+            document.getElementById('timerToggle').addEventListener('click', toggleTimer);
+            document.getElementById('timerReset').addEventListener('click', resetTimer);
+            document.getElementById('newBtn').addEventListener('click', refreshResult);
+        }
+
+        function setTimerQuick(seconds) {
+            stopTimer();
+            state.timerSeconds = seconds;
+            renderTimer();
+        }
+        function toggleTimer() {
+            if (state.timerRunning) { stopTimer(); } else { startTimer(); }
+        }
+        function startTimer() {
+            if (state.timerRunning) return;
+            if (state.timerSeconds <= 0) state.timerSeconds = 60;
+            state.timerRunning = true;
+            document.getElementById('timerToggle').textContent = '⏸ Stop';
+            state.timerInterval = setInterval(() => {
+                state.timerSeconds--;
+                renderTimer();
+                if (state.timerSeconds <= 0) { stopTimer(); onTimerEnd(); }
+            }, 1000);
+        }
+        function stopTimer() {
+            state.timerRunning = false;
+            if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
+            document.getElementById('timerToggle').textContent = '▶ Start';
+        }
+        function resetTimer() {
+            stopTimer();
+            state.timerSeconds = 0;
+            renderTimer();
+        }
+        function renderTimer() {
+            const el = document.getElementById('timerDisplay');
+            if (!el) return;
+            const mins = Math.floor(state.timerSeconds / 60);
+            const secs = state.timerSeconds % 60;
+            el.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+        }
+        function onTimerEnd() {
+            const display = document.getElementById('timerDisplay');
+            if (display) {
+                display.classList.add('flash');
+                setTimeout(() => display.classList.remove('flash'), 2000);
+            }
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.frequency.value = 800;
+                gain.gain.value = 0.3;
+                osc.start(); osc.stop(ctx.currentTime + 0.3);
+            } catch(e) {}
+        }
+
+        // ---- Utilities ---- //
+        function randomPick(arr) {
+            if (!arr || arr.length === 0) return null;
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function scrambleWord(word) {
+            const letters = word.split('');
+            for (let i = letters.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [letters[i], letters[j]] = [letters[j], letters[i]];
+            }
+            if (letters.join('') === word && word.length > 2) {
+                [letters[0], letters[1]] = [letters[1], letters[0]];
+            }
+            return letters.join(' ');
+        }
+
+        // ---- Preload categories.json for Random Topic ---- //
+        async function preloadCategories() {
+            try {
+                const resp = await fetch('data/categories.json');
+                if (resp.ok) {
+                    window._categoriesData = await resp.json();
+                }
+            } catch (e) {
+                console.warn('Could not load categories.json');
+            }
+        }
+
+        // ---- Boot ---- //
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+            preloadCategories();
+        });
+    })();
+    </script>
+</body>
+</html>

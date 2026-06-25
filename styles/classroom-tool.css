@@ -1,0 +1,740 @@
+/* ============================================================ */
+/* ESL Classroom Tool v3.0 - Styles                             */
+/* ============================================================ */
+
+/* ---- Page Layout ---- */
+body {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: var(--bg-page);
+}
+
+.classroom-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 20px auto;
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-heavy);
+    overflow: hidden;
+}
+
+/* ---- Header ---- */
+.classroom-header {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 32px 24px 28px;
+    text-align: center;
+    position: relative;
+}
+
+.classroom-header::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #764ba2;
+    opacity: 0.7;
+}
+
+.classroom-header h1 {
+    color: white;
+    margin-bottom: 6px;
+    font-size: 2rem;
+    letter-spacing: -0.01em;
+}
+
+.classroom-header .subtitle {
+    color: rgba(255,255,255,0.85);
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0;
+}
+
+/* Remove default button min-width inside classroom */
+.classroom-container .btn,
+.classroom-container button {
+    min-width: unset;
+}
+
+/* ---- Settings Bar ---- */
+.settings-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    background: var(--bg-muted);
+    border-bottom: 1px solid var(--border-light);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.settings-label {
+    font-weight: 700;
+    color: var(--text-medium);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 4px;
+}
+
+.level-buttons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.level-btn {
+    padding: 6px 14px;
+    margin: 0;
+    border-radius: var(--radius-round);
+    font-size: 0.82rem;
+    font-weight: 700;
+    background: var(--bg-white);
+    color: var(--text-medium);
+    border: 2px solid var(--border-light);
+    min-width: unset;
+    transition: all var(--transition-fast);
+}
+
+.level-btn:hover {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    background: var(--primary-light);
+    transform: translateY(-1px);
+}
+
+.level-btn.active {
+    background: var(--primary-gradient);
+    color: white;
+    border-color: transparent;
+}
+
+.settings-btn {
+    padding: 8px 12px;
+    margin: 0;
+    min-width: unset;
+    border-radius: var(--radius-round);
+    font-size: 1.1rem;
+    background: var(--bg-white);
+    color: var(--text-medium);
+    border: 2px solid var(--border-light);
+    line-height: 1;
+}
+
+.settings-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary-blue);
+}
+
+/* ---- Settings Panel ---- */
+.settings-panel {
+    display: none;
+    padding: 16px 20px;
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.settings-panel.open {
+    display: block;
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.settings-row label {
+    font-weight: 700;
+    color: var(--text-medium);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.settings-row select {
+    max-width: 200px;
+    padding: 8px 12px;
+}
+
+/* ---- Timer Bar ---- */
+.timer-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--border-light);
+    flex-wrap: wrap;
+}
+
+.timer-label {
+    font-weight: 700;
+    color: var(--text-medium);
+    font-size: 0.85rem;
+    margin-right: 4px;
+}
+
+.timer-display {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    min-width: 80px;
+    text-align: center;
+    background: var(--bg-muted);
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+}
+
+.timer-display.timer-flash {
+    background: var(--secondary-red);
+    color: white;
+    animation: timerPulse 0.5s ease 3;
+}
+
+@keyframes timerPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+.timer-presets {
+    display: flex;
+    gap: 4px;
+}
+
+.timer-preset {
+    padding: 5px 10px;
+    margin: 0;
+    min-width: unset;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: var(--primary-light);
+    color: var(--primary-blue);
+    border: 1px solid var(--border-accent);
+    border-radius: var(--radius-sm);
+}
+
+.timer-preset:hover {
+    background: var(--primary-blue);
+    color: white;
+}
+
+.timer-custom-input {
+    width: 60px !important;
+    padding: 6px 8px !important;
+    margin: 0 !important;
+    font-size: 0.82rem !important;
+    text-align: center;
+    border-radius: var(--radius-sm);
+}
+
+.timer-custom-btn {
+    padding: 5px 10px;
+    margin: 0;
+    min-width: unset;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: var(--bg-muted);
+    color: var(--text-medium);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+}
+
+.timer-custom-btn:hover {
+    background: var(--primary-blue);
+    color: white;
+}
+
+.timer-toggle-btn {
+    padding: 6px 16px;
+    margin: 0;
+    min-width: unset;
+    font-weight: 700;
+    background: var(--secondary-green);
+    color: white;
+    border-radius: var(--radius-round);
+    font-size: 0.85rem;
+}
+
+.timer-toggle-btn:hover {
+    background: #238636;
+}
+
+.timer-reset-btn {
+    padding: 6px 10px;
+    margin: 0;
+    min-width: unset;
+    font-size: 1rem;
+    background: var(--bg-white);
+    color: var(--text-medium);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-round);
+}
+
+.timer-reset-btn:hover {
+    background: var(--secondary-red);
+    color: white;
+    border-color: var(--secondary-red);
+}
+
+/* ---- Tabs Bar ---- */
+.tabs-bar {
+    display: flex;
+    gap: 0;
+    background: var(--bg-white);
+    border-bottom: 2px solid var(--border-light);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tab-btn {
+    padding: 12px 16px;
+    margin: 0;
+    min-width: unset;
+    font-size: 0.82rem;
+    font-weight: 700;
+    background: transparent;
+    color: var(--text-light);
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+    box-shadow: none;
+}
+
+.tab-btn:hover {
+    background: var(--bg-muted);
+    color: var(--text-dark);
+    border-bottom-color: var(--border-medium);
+    transform: none;
+    box-shadow: none;
+}
+
+.tab-btn.active {
+    color: var(--primary-blue);
+    border-bottom-color: var(--primary-blue);
+    background: var(--primary-light);
+}
+
+/* ---- Tab Panels ---- */
+.tab-panel {
+    display: none;
+    padding: 24px 20px;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+/* ---- Mode Toggle (Conversation Panel) ---- */
+.mode-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.mode-btn {
+    padding: 10px 24px;
+    margin: 0;
+    border-radius: var(--radius-round);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: 2px solid var(--border-light);
+    background: var(--bg-white);
+    color: var(--text-medium);
+    min-width: 120px;
+}
+
+.mode-btn.silly-mode.active {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    border-color: transparent;
+}
+
+.mode-btn.serious-mode.active {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+    border-color: transparent;
+}
+
+/* ---- Question Card ---- */
+.question-card {
+    background: var(--bg-muted);
+    padding: 32px 24px;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    margin-bottom: 20px;
+    border-left: 6px solid var(--primary-blue);
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.question-type-label {
+    position: absolute;
+    top: -12px;
+    left: 24px;
+    padding: 4px 14px;
+    border-radius: var(--radius-round);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: white;
+}
+
+.question-type-label.silly {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+}
+
+.question-type-label.serious {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+.question-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ---- Action Buttons ---- */
+.action-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: var(--radius-round);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.action-btn.primary-btn {
+    background: var(--primary-gradient);
+    color: white;
+    box-shadow: var(--shadow-button);
+}
+
+.action-btn.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* ---- Card Styles ---- */
+.card {
+    text-align: center;
+}
+
+.card h3 {
+    color: var(--text-medium);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+}
+
+.display-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin: 0;
+    padding: 16px;
+    background: var(--bg-muted);
+    border-radius: var(--radius-md);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.display-text.large {
+    font-size: 1.4rem;
+    min-height: 80px;
+}
+
+.display-text.medium {
+    font-size: 1.15rem;
+    min-height: 50px;
+}
+
+/* ---- WYR Card ---- */
+.wyr-card .display-text {
+    background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+    border-left: 5px solid var(--secondary-purple);
+    color: #6b21a8;
+}
+
+/* ---- Tongue Twister Card ---- */
+.twister-card .display-text {
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    border-left: 5px solid var(--secondary-green);
+    color: #166534;
+    letter-spacing: 0.02em;
+}
+
+/* ---- Scramble Card ---- */
+.scramble-card .display-text.scramble-word {
+    font-size: 2.2rem;
+    letter-spacing: 0.15em;
+    font-family: 'Consolas', 'Courier New', monospace;
+    background: linear-gradient(135deg, #fefce8, #fef9c3);
+    border-left: 5px solid var(--secondary-gold);
+    color: #854d0e;
+    min-height: unset;
+}
+
+.scramble-input-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.scramble-input {
+    flex: 1;
+    font-size: 1.1rem !important;
+    padding: 12px 16px !important;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.check-btn {
+    padding: 12px 20px;
+    margin: 0;
+    min-width: unset;
+    font-size: 1rem;
+    background: var(--secondary-teal);
+    color: white;
+    border-radius: var(--radius-md);
+    white-space: nowrap;
+}
+
+.check-btn:hover {
+    background: #0d9488;
+}
+
+.scramble-feedback {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    min-height: 24px;
+    color: var(--text-medium);
+}
+
+.scramble-feedback.correct {
+    color: var(--secondary-green);
+    animation: fadeIn 0.3s ease;
+}
+
+.scramble-feedback.incorrect {
+    color: var(--secondary-red);
+    animation: fadeIn 0.3s ease;
+}
+
+/* ---- WOTD Card ---- */
+.wotd-card .display-text {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-left: 5px solid var(--primary-blue);
+    color: var(--text-dark);
+}
+
+/* ---- Taboo Card ---- */
+.taboo-card .display-text {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    border-left: 5px solid var(--secondary-red);
+}
+
+.taboo-word-display {
+    font-size: 2rem !important;
+    font-weight: 800;
+    color: var(--secondary-red);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
+.taboo-forbidden-list {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    font-style: italic;
+    margin: 0;
+    padding: 12px 0 0;
+}
+
+/* ---- Scenario Card ---- */
+.scenario-card .display-text {
+    text-align: left;
+    display: block;
+    padding: 16px 20px;
+}
+
+.scenario-roles {
+    font-size: 0.85rem;
+    color: #f5576c;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+}
+
+.scenario-text {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* ---- Scenario Box (alternative) ---- */
+.scenario-box {
+    background: #fff5f7;
+    border-left: 4px solid #f5576c;
+    padding: 16px 20px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    text-align: left;
+}
+
+.scenario-box .scenario-roles {
+    font-size: 0.85rem;
+    color: #f5576c;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.scenario-box .scenario-text {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .classroom-container {
+        margin: 10px 4px;
+        border-radius: var(--radius-md);
+    }
+
+    .classroom-header {
+        padding: 24px 16px 20px;
+    }
+
+    .classroom-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .classroom-header .subtitle {
+        font-size: 0.85rem;
+    }
+
+    .settings-bar {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    .level-btn {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+    }
+
+    .timer-bar {
+        padding: 10px 12px;
+        gap: 6px;
+    }
+
+    .timer-display {
+        font-size: 1.5rem;
+        min-width: 60px;
+        padding: 3px 10px;
+    }
+
+    .tabs-bar {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .tab-btn {
+        padding: 10px 12px;
+        font-size: 0.75rem;
+    }
+
+    .tab-panel {
+        padding: 16px 12px;
+    }
+
+    .question-card {
+        padding: 24px 16px;
+        min-height: 100px;
+    }
+
+    .question-text {
+        font-size: 1rem;
+    }
+
+    .display-text.large {
+        font-size: 1.1rem;
+        min-height: 60px;
+    }
+
+    .scramble-word {
+        font-size: 1.6rem !important;
+    }
+
+    .taboo-word-display {
+        font-size: 1.5rem !important;
+    }
+
+    .action-btn {
+        width: 100%;
+        padding: 14px 20px;
+    }
+
+    .scramble-input-row {
+        flex-direction: column;
+    }
+
+    .check-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .classroom-container {
+        margin: 2px 2px;
+    }
+
+    .classroom-header h1 {
+        font-size: 1.2rem;
+    }
+
+    .tab-btn {
+        padding: 8px 10px;
+        font-size: 0.7rem;
+    }
+
+    .timer-display {
+        font-size: 1.3rem;
+        min-width: 50px;
+        padding: 2px 8px;
+    }
+}

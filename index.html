@@ -3,328 +3,454 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Learning Hub</title>
-    <link rel="stylesheet" href="styles/unified-theme.css">
+    <title>🎓 English Game Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ======================================== */
+        /* CSS Reset & Base */
+        /* ======================================== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0f0f1a;
+            --surface: #1a1a2e;
+            --surface2: #222240;
+            --text: #e8e8f0;
+            --text-dim: #9999bb;
+            --accent: #7c5cfc;
+            --accent2: #ff6b9d;
+            --gold: #ffd700;
+            --green: #00e676;
+            --red: #ff5252;
+            --radius: 16px;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 20% 20%, rgba(124,92,252,0.10) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(255,107,157,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 0%, #0f0f1a 100%);
             min-height: 100vh;
-            padding: 20px;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px 60px;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
+        /* ======================================== */
+        /* Hero Section */
+        /* ======================================== */
+        .hero {
             text-align: center;
-            margin-bottom: 40px;
-            color: white;
+            margin-bottom: 50px;
+            padding-top: 40px;
         }
-
-        header h1 {
-            font-size: 3rem;
+        .hero-icon {
+            font-size: 4rem;
+            display: block;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: float 3s ease-in-out infinite;
         }
-        
-        /* Mobile Styles */
-        @media (max-width: 768px) {
-            header h1 { font-size: 2rem; }
-            header p { font-size: 1rem; }
-            .portal-grid { grid-template-columns: 1fr; gap: 20px; }
-            .roleplay-grid { grid-template-columns: 1fr; }
-            body { padding: 10px; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
         }
-        
-        @media (max-width: 480px) {
-            header h1 { font-size: 1.5rem; }
-            .portal-card { padding: 20px; }
-            .portal-icon { font-size: 2rem; }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), #ffa441);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
         }
-
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .portal-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
+        .hero .tagline {
+            color: var(--text-dim);
+            font-size: 1.05rem;
+            font-weight: 400;
+            margin-bottom: 24px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .portal-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        /* CTA Button Group */
+        .hero-cta-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Big CTA Button */
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--accent), #9b59b6);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            padding: 16px 36px;
+            border-radius: 40px;
+            text-decoration: none;
+            border: none;
             cursor: pointer;
+            box-shadow: 0 8px 30px rgba(124,92,252,0.4);
+            transition: all var(--transition);
             position: relative;
             overflow: hidden;
         }
-
-        .portal-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        .hero-cta-stories {
+            background: linear-gradient(135deg, #ff8c52, var(--accent2));
+            box-shadow: 0 8px 30px rgba(255,107,157,0.4);
         }
-
-        .portal-card::before {
+        .hero-cta-stories:hover {
+            box-shadow: 0 14px 40px rgba(255,107,157,0.6);
+        }
+        .hero-cta::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #3498db, #2ecc71);
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            pointer-events: none;
+        }
+        .hero-cta:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 40px rgba(124,92,252,0.6);
+        }
+        .hero-cta:active {
+            transform: translateY(0);
+        }
+        .hero-cta .arrow {
+            font-size: 1.3rem;
+            transition: transform var(--transition);
+        }
+        .hero-cta:hover .arrow {
+            transform: translateX(4px);
         }
 
-        .portal-icon {
-            font-size: 3rem;
+        /* ======================================== */
+        /* Section: Role Play Gallery */
+        /* ======================================== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 20px;
-            display: block;
+            width: 100%;
+            max-width: 1050px;
         }
-
-        .portal-card h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
+        .section-header h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+            white-space: nowrap;
         }
-
-        .portal-card p {
-            color: #7f8c8d;
-            line-height: 1.6;
-            margin-bottom: 20px;
+        .section-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent2), transparent);
+            border-radius: 1px;
         }
-
-        .portal-btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .portal-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
-
-        .roleplay-section {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .roleplay-section h2 {
-            color: #2c3e50;
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 2rem;
-        }
-
-        .roleplay-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .roleplay-card {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 20px;
-            border-left: 5px solid #3498db;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .roleplay-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .roleplay-card h4 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        .roleplay-card p {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        .roleplay-link {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-        }
-
-        .roleplay-link:hover {
-            color: #2980b9;
-            text-decoration: underline;
-        }
-
-        .difficulty-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
+        .section-badge {
+            background: var(--surface2);
+            color: var(--text-dim);
             font-size: 0.75rem;
-            font-weight: bold;
-            margin-top: 8px;
-            margin-right: 5px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 12px;
+            white-space: nowrap;
         }
 
-        .badge-easy { background: #d4edda; color: #155724; }
-        .badge-medium { background: #fff3cd; color: #856404; }
-        .badge-hard { background: #f8d7da; color: #721c24; }
+        /* Gallery Grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            width: 100%;
+            max-width: 1050px;
+            margin-bottom: 40px;
+        }
 
+        .rp-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 24px 20px 20px;
+            text-decoration: none;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+            border-top: 4px solid var(--surface2);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .rp-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(124,92,252,0.04) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .rp-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.55);
+        }
+        .rp-card:active {
+            transform: translateY(0);
+        }
+
+        .rp-card-icon {
+            font-size: 2.4rem;
+            position: relative;
+            z-index: 1;
+        }
+        .rp-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            position: relative;
+            z-index: 1;
+        }
+        .rp-card-desc {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+        .rp-card-badge {
+            align-self: flex-start;
+            background: rgba(124,92,252,0.15);
+            color: var(--accent);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Color accents per card */
+        .rp-card.color-0 { border-top-color: #E17055; } /* restaurant */
+        .rp-card.color-1 { border-top-color: #6C5CE7; } /* college */
+        .rp-card.color-2 { border-top-color: #00B894; } /* hospital */
+        .rp-card.color-3 { border-top-color: #FDCB6E; } /* jobfair */
+        .rp-card.color-4 { border-top-color: #4A90D9; } /* airline */
+        .rp-card.color-5 { border-top-color: #00CEC9; } /* small shop */
+        .rp-card.color-6 { border-top-color: #FD79A8; } /* shopping */
+        .rp-card.color-7 { border-top-color: #74B9FF; } /* bureaucracy */
+
+        /* ======================================== */
+        /* Quick Links Bar */
+        /* ======================================== */
+        .quick-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 1050px;
+            margin-bottom: 10px;
+        }
+        .quick-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 8px 18px;
+            background: var(--surface);
+            border-radius: 22px;
+            transition: var(--transition);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .quick-link:hover {
+            color: var(--text);
+            background: var(--surface2);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+            transform: translateY(-2px);
+        }
+
+        /* ======================================== */
+        /* Footer */
+        /* ======================================== */
+        .site-footer {
+            margin-top: auto;
+            padding-top: 30px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+
+        /* ======================================== */
+        /* Responsive */
+        /* ======================================== */
         @media (max-width: 768px) {
-            header h1 { font-size: 2rem; }
-            .portal-grid { grid-template-columns: 1fr; }
-            .roleplay-grid { grid-template-columns: 1fr; }
+            .hero { padding-top: 20px; margin-bottom: 30px; }
+            .hero-icon { font-size: 3rem; }
+            .hero-cta { font-size: 1rem; padding: 14px 28px; }
+            .gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+            .rp-card { padding: 16px 14px; }
+            .rp-card-icon { font-size: 1.8rem; }
+            .rp-card-title { font-size: 0.95rem; }
+            .rp-card-desc { font-size: 0.75rem; }
+            body { padding: 16px 12px 40px; }
+        }
+
+        @media (max-width: 500px) {
+            .gallery { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .rp-card { padding: 12px 10px; gap: 6px; }
+            .quick-links { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎓 English Learning Hub</h1>
-            <p>Your complete portal for English language practice and interactive learning</p>
-        </header>
 
-        <div class="portal-grid">
-            <div class="portal-card">
-                <span class="portal-icon">🎯</span>
-                <h3>Classroom Tools</h3>
-                <p>Interactive conversation starters, vocabulary games, and classroom activities for all English levels. Perfect for teachers and students.</p>
-                <a href="classroom-tool.html" class="portal-btn">Open Classroom Tools</a>
-            </div>
+    <!-- Hub Nav -->
+    <a href="hub.html" style="position:fixed;top:20px;right:20px;color:var(--text-dim);text-decoration:none;font-size:0.85rem;font-weight:600;padding:8px 16px;background:var(--surface);border-radius:20px;transition:var(--transition);z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.3);">🏫 English Hub</a>
 
-            <div class="portal-card">
-                <span class="portal-icon">🎭</span>
-                <h3>Roleplay Scenarios</h3>
-                <p>Immersive English practice through real-world scenarios. Practice conversations in restaurants, job interviews, shopping, and more!</p>
-                <button class="portal-btn" onclick="scrollToRoleplay()">Explore Scenarios</button>
-            </div>
-
-            <div class="portal-card">
-                <span class="portal-icon">📚</span>
-                <h3>Quick Start Guide</h3>
-                <p>New to the hub? Learn how to make the most of our tools and roleplay scenarios with our quick guide and tips.</p>
-                <button class="portal-btn" onclick="showGuide()">View Guide</button>
-            </div>
+    <!-- ============================================ -->
+    <!-- HERO -->
+    <!-- ============================================ -->
+    <div class="hero">
+        <span class="hero-icon">🎓</span>
+        <h1>English Game Hub</h1>
+        <p class="tagline">Interactive classroom activities, role-play scenarios, and one-click topic generators for ESL teachers.</p>
+        <div class="hero-cta-group">
+            <a href="hub.html" class="hero-cta">
+                🏫 English Hub <span class="arrow">→</span>
+            </a>
+            <a href="stories.html" class="hero-cta hero-cta-stories">
+                📚 Stories Hub <span class="arrow">→</span>
+            </a>
         </div>
+    </div>
 
-        <section class="roleplay-section" id="roleplay-section">
-            <h2>🎭 Roleplay Scenarios</h2>
-            <div class="roleplay-grid">
-                <div class="roleplay-card">
-                    <h4>🎓 College & Career</h4>
-                    <p>Navigate college admissions, career fairs, and academic interviews. Perfect for advanced students preparing for higher education.</p>
-                    <a href="Role_Play/College.html" class="roleplay-link">Start College Scenario</a>
-                    <a href="Role_Play/Jobfair.html" class="roleplay-link">Start Job Fair Scenario</a>
-                    <div>
-                        <span class="difficulty-badge badge-hard">Advanced</span>
-                        <span class="difficulty-badge badge-medium">Intermediate</span>
-                    </div>
-                </div>
+    <!-- ============================================ -->
+    <!-- ROLE PLAY GALLERY -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2>🎭 Role Play Scenarios</h2>
+        <span class="section-badge">Whole Class</span>
+        <div class="section-line"></div>
+    </div>
 
-                <div class="roleplay-card">
-                    <h4>🍽️ Food & Dining</h4>
-                    <p>Practice restaurant conversations, ordering food, and dining etiquette. Essential skills for everyday English communication.</p>
-                    <a href="Role_Play/Restaurant.html" class="roleplay-link">Start Restaurant Scenario</a>
-                    <div>
-                        <span class="difficulty-badge badge-medium">Intermediate</span>
-                        <span class="difficulty-badge badge-easy">Basic</span>
-                    </div>
-                </div>
+    <div class="gallery" id="rpGallery">
+        <!-- Populated by JS -->
+    </div>
 
-                <div class="roleplay-card">
-                    <h4>🛍️ Shopping & Commerce</h4>
-                    <p>Master shopping conversations, price negotiations, and customer service interactions. Great for practical English skills.</p>
-                    <a href="Role_Play/Shop_use.html" class="roleplay-link">Start Market Scenario</a>
-                    <a href="Role_Play/Small_Shop.html" class="roleplay-link">Start Small Shop Scenario</a>
-                    <div>
-                        <span class="difficulty-badge badge-easy">Basic</span>
-                        <span class="difficulty-badge badge-medium">Intermediate</span>
-                    </div>
-                </div>
+    <!-- ============================================ -->
+    <!-- QUICK LINKS -->
+    <!-- ============================================ -->
+    <div class="quick-links">
+        <a href="hub.html" class="quick-link">🏫 English Hub</a>
+        <a href="stories.html" class="quick-link">📚 Stories Hub</a>
+        <a href="Classroom-tool.html" class="quick-link">🛠️ Classroom Tool (v3)</a>
+    </div>
 
-                <div class="roleplay-card">
-                    <h4>🏥 Healthcare & Emergency</h4>
-                    <p>Learn medical vocabulary and emergency conversations. Important for travelers and anyone needing healthcare in English.</p>
-                    <a href="Role_Play/Hostpital.html" class="roleplay-link">Start Hospital Scenario</a>
-                    <div>
-                        <span class="difficulty-badge badge-medium">Intermediate</span>
-                        <span class="difficulty-badge badge-hard">Advanced</span>
-                    </div>
-                </div>
-
-                <div class="roleplay-card">
-                    <h4>✈️ Travel & Transportation</h4>
-                    <p>Airport check-ins, flight bookings, and travel conversations. Perfect for planning your next trip in English.</p>
-                    <a href="Role_Play/Winter_airline.html" class="roleplay-link">Start Airline Scenario</a>
-                    <div>
-                        <span class="difficulty-badge badge-medium">Intermediate</span>
-                    </div>
-                </div>
-
-                <div class="roleplay-card">
-                    <h4>🏢 Bureaucracy & Official</h4>
-                    <p>Navigate official paperwork, government offices, and bureaucratic processes. Advanced vocabulary for formal situations.</p>
-                    <a href="Role_Play/index_beauracracy.html" class="roleplay-link">Start Bureaucracy Scenario</a>
-                    <div>
-                        <span class="difficulty-badge badge-hard">Advanced</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <div class="site-footer">
+        English Game Hub &copy; 2024 — Built for the classroom.
     </div>
 
     <script>
-        function scrollToRoleplay() {
-            document.getElementById('roleplay-section').scrollIntoView({ 
-                behavior: 'smooth' 
-            });
+    (function() {
+        'use strict';
+
+        const scenarios = [
+            {
+                icon: '🍽️',
+                title: 'Restaurant Club',
+                desc: 'Full menu ordering, payments, reservations & tipping — a complete dining experience.',
+                href: 'Role_Play/Restaurant.html',
+                color: 0
+            },
+            {
+                icon: '🎓',
+                title: 'College Life',
+                desc: 'Navigate campus life, classes, student housing, and academic scenarios.',
+                href: 'Role_Play/College.html',
+                color: 1
+            },
+            {
+                icon: '🏥',
+                title: 'Hospital',
+                desc: 'Doctor/patient role-play — symptoms, checkups, pharmacy, and emergencies.',
+                href: 'Role_Play/Hostpital.html',
+                color: 2
+            },
+            {
+                icon: '💼',
+                title: 'Job Fair',
+                desc: 'Practice interviews, networking, and professional communication.',
+                href: 'Role_Play/Jobfair.html',
+                color: 3
+            },
+            {
+                icon: '✈️',
+                title: 'Winter Airline',
+                desc: 'Airport check-in, boarding, lost luggage, and in-flight scenarios.',
+                href: 'Role_Play/Winter_airline.html',
+                color: 4
+            },
+            {
+                icon: '🏪',
+                title: 'Small Shop',
+                desc: 'Buying and selling in a neighborhood store — haggling, stock, and service.',
+                href: 'Role_Play/Small_Shop.html',
+                color: 5
+            },
+            {
+                icon: '🛍️',
+                title: 'Shopping',
+                desc: 'Browse, try on, purchase, returns — the full retail experience.',
+                href: 'Role_Play/Shop_use.html',
+                color: 6
+            },
+            {
+                icon: '📋',
+                title: 'Bureaucracy',
+                desc: 'Government offices, forms, permits, and dealing with red tape.',
+                href: 'Role_Play/index_beauracracy.html',
+                color: 7
+            }
+        ];
+
+        function buildGallery() {
+            const gallery = document.getElementById('rpGallery');
+            gallery.innerHTML = scenarios.map(s => `
+                <a href="${s.href}" class="rp-card color-${s.color}">
+                    <span class="rp-card-icon">${s.icon}</span>
+                    <span class="rp-card-title">${s.title}</span>
+                    <span class="rp-card-desc">${s.desc}</span>
+                    <span class="rp-card-badge">🎭 ROLE PLAY</span>
+                </a>
+            `).join('');
         }
 
-        function showGuide() {
-            alert('📚 Quick Start Guide\n\n1. Classroom Tools: Use for conversation starters and vocabulary games\n2. Roleplay Scenarios: Choose based on your English level and interests\n3. Start with easier scenarios and work your way up\n4. Practice regularly - 15 minutes daily is better than 2 hours weekly!\n\n💡 Tip: Keep a notebook of new words and phrases you learn!');
-        }
-
-        // Add some interactivity
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.portal-card, .roleplay-card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-5px)';
-                });
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-        });
+        document.addEventListener('DOMContentLoaded', buildGallery);
+    })();
     </script>
 </body>
 </html>

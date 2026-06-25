@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Stories Hub — English Game Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0f0f1a;
+            --surface: #1a1a2e;
+            --surface2: #222240;
+            --text: #e8e8f0;
+            --text-dim: #9999bb;
+            --accent: #7c5cfc;
+            --accent2: #ff6b9d;
+            --gold: #ffd700;
+            --green: #00e676;
+            --red: #ff5252;
+            --radius: 14px;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 20% 20%, rgba(124,92,252,0.10) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(255,107,157,0.06) 0%, transparent 60%);
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px 60px;
+        }
+
+        /* Nav */
+        .top-nav {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .top-nav a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 7px 16px;
+            background: var(--surface);
+            border-radius: 20px;
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .top-nav a:hover {
+            color: var(--text);
+            background: var(--surface2);
+            transform: translateY(-2px);
+        }
+
+        /* Hero */
+        .hero { text-align: center; margin-bottom: 40px; }
+        .hero-icon { font-size: 3.5rem; display: block; margin-bottom: 8px; animation: float 3s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent2), #ffa441);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        /* Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            width: 100%;
+            max-width: 1100px;
+        }
+        .panel {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .panel-wide { grid-column: 1 / -1; }
+        .panel h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .panel h2 span { font-size: 1.3rem; }
+        .panel-desc { color: var(--text-dim); font-size: 0.78rem; line-height: 1.5; }
+
+        /* Scenario Cards — roleplay scenarios */
+        .scenario-card {
+            background: var(--surface2);
+            border-radius: 10px;
+            padding: 16px 18px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            border-left: 4px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-family: 'Poppins', sans-serif;
+            text-align: left;
+            color: inherit;
+            width: 100%;
+        }
+        .scenario-card:hover { transform: translateX(4px); background: #2a2a4e; border-color: var(--accent2); }
+        .scenario-card:active { transform: translateX(2px); background: var(--surface); }
+        .scenario-card:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(124,92,252,0.3); }
+        .scenario-card .sc-roles {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent2);
+            pointer-events: none;
+        }
+        .scenario-card .sc-text {
+            font-size: 0.88rem;
+            line-height: 1.4;
+            color: var(--text);
+            pointer-events: none;
+        }
+        .scenario-card .sc-tag {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            margin-top: 2px;
+            pointer-events: none;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 14px 26px;
+            border-radius: 32px;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--accent2), #e91e63); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,107,157,0.4); }
+        .btn-secondary { background: linear-gradient(135deg, var(--accent), #6c5ce7); }
+        .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(124,92,252,0.4); }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            box-shadow: none;
+        }
+        .btn-outline:hover { background: rgba(124,92,252,0.1); }
+        .btn-sm { font-size: 0.75rem; padding: 8px 16px; }
+
+        /* Output box */
+        .output-box {
+            background: var(--surface2);
+            border-radius: 10px;
+            padding: 20px;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text);
+            min-height: 80px;
+            white-space: pre-wrap;
+        }
+        .output-box b { color: var(--accent2); }
+        .output-box .vocab { color: var(--gold); font-weight: 700; }
+
+        /* Classics sidebar */
+        .classics-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .classics-list li {
+            padding: 10px 14px;
+            background: var(--surface2);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .classics-list li:hover { color: var(--text); background: #2a2a4e; }
+        .classics-list li .book-icon { font-size: 1.2rem; }
+        .classics-list li .coming-soon { font-size: 0.65rem; color: var(--accent2); font-weight: 600; margin-left: auto; }
+
+        /* Result row */
+        .result-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .result-row .btn-sm { flex-shrink: 0; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; }
+            body { padding: 16px 12px 40px; }
+            .hero-icon { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav class="top-nav">
+        <a href="index.html">🏠 Home</a>
+        <a href="hub.html">🏫 English Hub</a>
+        <a href="Classroom-tool.html">🛠️ Classroom Tool v3</a>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+        <span class="hero-icon">📚</span>
+        <h1>Stories Hub</h1>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+
+        <!-- LEFT COLUMN: Scenarios -->
+        <div class="panel" id="scenariosPanel">
+            <h2><span>🎭</span> Role-Play Scenarios</h2>
+            <p class="panel-desc">Short A & B role-plays. Click any to display it — great for pair practice.</p>
+            <div id="scenarioCards"><p style="color:var(--text-dim);font-size:0.8rem;">Loading scenarios…</p></div>
+        </div>
+
+        <!-- RIGHT COLUMN: Unfinished Story -->
+        <div class="panel" id="unfinishedPanel">
+            <h2><span>✍️</span> Unfinished Story</h2>
+            <p class="panel-desc">A short story to read aloud. <b style="color:var(--gold);">Bold words</b> are challenge vocabulary. Students finish the story!</p>
+            <div class="result-row">
+                <button class="btn btn-primary" id="unfinishedBtn" onclick="generateUnfinished()">🎲 New Unfinished Story</button>
+                <button class="btn btn-outline btn-sm" id="rerollUnfinished" onclick="generateUnfinished()" style="display:none;">🔄 Re-roll</button>
+            </div>
+            <div class="output-box" id="unfinishedOutput">Click the button to get a story!</div>
+        </div>
+
+        <!-- FULL WIDTH: Story Reader -->
+        <div class="panel panel-wide" id="readerPanel">
+            <h2><span>📖</span> Short Story Reader</h2>
+            <p class="panel-desc">A growing library of classic short stories. <i>You'll add the story text later — for now, the catalog is ready.</i></p>
+            <div class="result-row" style="margin-bottom:14px;">
+                <button class="btn btn-secondary" id="toggleReaderBtn" onclick="toggleReader()">▶ Open Reader</button>
+            </div>
+            <div id="readerArea" style="display:none;">
+                <div style="display:grid; grid-template-columns:250px 1fr; gap:16px;">
+                    <!-- Sidebar -->
+                    <div>
+                        <ul class="classics-list" id="classicsList">
+                            <!-- Populated by JS -->
+                        </ul>
+                    </div>
+                    <!-- Reader pane -->
+                    <div>
+                        <div class="output-box" id="readerContent" style="min-height:300px;">
+                            Select a story from the list to read.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="classroom-data.js"></script>
+    <script>
+    (function() {
+        'use strict';
+
+        // ==================== DATA ====================
+        const UNFINISHED_STORIES = [
+            {
+                text: "Maya stared at the letter in her hands. It had no return address, only her name written in elegant cursive. She carefully tore it open, her fingers trembling. Inside was a single sentence: \"Come to the old lighthouse at midnight. Bring the key.\" Maya didn't have a key — or did she?\n\nJust then, she remembered the strange object her grandmother had given her years ago, saying, \"Keep this safe. One day, you'll understand.\"\n\nThat night, under a full moon, Maya walked toward the lighthouse...",
+                vocab: ["elegant", "cursive", "trembling", "midnight", "lighthouse", "strange"]
+            },
+            {
+                text: "The classroom was completely silent when Mr. Chen walked in. That was unusual. Even more unusual was the fact that every student's laptop was turned off. On the whiteboard, someone had written in huge letters: WE KNOW.\n\nMr. Chen set down his coffee and asked calmly, \"Alright. Who wants to explain?\"\n\nNobody answered. But from the back of the room, a folded note began passing from desk to desk. When it reached the front, Mr. Chen opened it and read...",
+                vocab: ["silent", "unusual", "whiteboard", "calmly", "folded", "reached"]
+            },
+            {
+                text: "Leo had been working on his time machine for three years. His garage was filled with wires, blinking lights, and the hum of something that shouldn't be possible. Tonight was the first test.\n\nHe set the controls to 'One Day Forward' — nothing too risky. But as the machine began to glow, his cat, Pickles, jumped onto the console.\n\nThere was a flash of light, and when Leo opened his eyes, everything looked the same — except his phone said it was 1998, and a young version of his mother was standing in the driveway, staring at him.\n\n\"Who are you?\" she demanded.",
+                vocab: ["blinking", "console", "flash", "version", "driveway", "demanded"]
+            },
+            {
+                text: "The forest behind the school had always been off-limits. But rumor said that deep within it, there was a tree that grew books instead of fruit. Every few months, a new book would appear, and whoever read it would have the most vivid dreams of their life.\n\nAiko didn't believe the rumor. But when her dog ran into the forest one afternoon, she had no choice but to follow. After twenty minutes of pushing through ferns and vines, she found herself in a clearing. In the center stood a massive oak tree, its branches heavy not with acorns, but with leather-bound volumes.\n\nAiko reached for one...",
+                vocab: ["off-limits", "rumor", "vivid", "clearing", "massive", "volumes"]
+            },
+            {
+                text: "Captain Rivera had seen a lot in her years of space travel. Asteroids, nebulas, even a comet up close. But nothing prepared her for what was floating outside the ship now: a door. Just a plain wooden door, drifting in the void of space, with 'PULL' written on it in chalk.\n\n\"Impossible,\" she whispered. Her co-pilot checked the sensors. The door was real. It had mass, temperature, and was slowly opening inward.\n\n\"Should we...?\" the co-pilot began.\n\nRivera grabbed her helmet. \"I'm going out there.\"",
+                vocab: ["asteroids", "nebulas", "comet", "floating", "drifting", "void", "sensors"]
+            },
+            {
+                text: "Every year on the same day, Grandfather Park would disappear into the mountains and return with a story. This year, he was too sick to go. So he handed his grandson, Jin, a worn map and said, \"It's your turn.\"\n\nJin didn't want to go. The mountains were cold, dangerous, and full of wild animals. But his grandfather's eyes were serious.\n\n\"At the top of the trail, you'll find a stone door. Knock three times and say your name. What happens next... well, that's for you to find out.\"\n\nJin packed his bag and left before sunrise.",
+                vocab: ["disappear", "worn", "dangerous", "wild", "trail", "sunrise"]
+            },
+            {
+                text: "The old camera at the flea market cost only five dollars. It didn't even use film — just a strange glass lens and a crank on the side. The seller, an elderly woman with silver hair, warned, \"Be careful what you photograph. This camera doesn't capture what IS — it captures what WAS.\"\n\nSam thought she was joking. But when he developed the first photo — a shot of the town square — the image showed horse-drawn carriages and cobblestone streets, not the modern plaza he had photographed.\n\nHe turned the camera toward his own house...",
+                vocab: ["flea market", "crank", "elderly", "photograph", "captures", "carriages", "cobblestone"]
+            },
+            {
+                text: "The letter arrived on a Tuesday, sealed with red wax. Inside was an invitation to a school Mei had never heard of: The Academy of Impossible Arts. The subjects listed made no sense — Cloud Sculpting, Memory Weaving, Shadow Dancing.\n\n\"It's spam,\" her father said.\n\nBut when Mei looked up the address, it matched an empty lot on the edge of town. Curious, she rode her bike there at dusk. The empty lot was not empty. A massive building shimmered into view, as if made of glass and starlight. A woman in a silver cloak stood at the gate.\n\n\"We've been expecting you, Mei.\"",
+                vocab: ["sealed", "invitation", "subjects", "empty", "shimmered", "cloak", "expecting"]
+            },
+            {
+                text: "Underneath the city, miles of forgotten tunnels wound through the earth. Construction workers had accidentally broken into one that morning. Now, a team of explorers — including archaeologist Dr. Patel — descended into the darkness.\n\nThe walls were covered in writing. Not any language Dr. Patel recognized — symbols that seemed to shift when you weren't looking directly at them.\n\n\"This isn't ancient,\" she murmured. \"It's impossible. The carbon dating says these tunnels are over twenty thousand years old. But the symbols... they're instructions.\"\n\n\"Instructions for what?\" asked the team leader.\n\nDr. Patel pointed at the largest symbol, pulsing with a soft blue light. \"For waking something up.\"",
+                vocab: ["forgotten", "wound", "descended", "archaeologist", "symbols", "ancient", "pulsing"]
+            },
+            {
+                text: "Nia was the best diver in her village. She could hold her breath for six minutes and dive deeper than anyone else. The reef had always been her second home. But today, something was different.\n\nAt the bottom of the reef, half-buried in sand, she spotted a metallic glint. She swam closer and found an ornate box, covered in coral and rust. It was sealed tight. Carved on its lid were words in a language she'd never seen.\n\nShe brought it to the surface. The village elder took one look and paled. \"Where did you find this?\" he whispered.\n\n\"The reef. Why? What is it?\"\n\nHe didn't answer. He just told her to put it back.\n\nNia didn't.",
+                vocab: ["breath", "reef", "metallic", "ornate", "coral", "carved", "surface", "elder"]
+            },
+            {
+                text: "The vending machine in the cafeteria had been broken for weeks. Then one Monday, without explanation, it started working again. But instead of snacks, it dispensed tiny scrolls of paper. Each scroll had a single word printed on it — and the words seemed to know things.\n\nTomas inserted a coin. The machine whirred. Out came a scroll that read: UMBRELLA. Confused, Tomas pocketed it and walked outside — into a sudden rainstorm. He'd never been happier to have an umbrella in his bag.\n\nHis friend Lina tried next. Her scroll said: APOLOGIZE. She laughed. \"Apologize to who?\"\n\nThat afternoon, she ran into the girl she'd argued with last semester. They hadn't spoken in months.\n\nNow the whole school was lining up at the vending machine...",
+                vocab: ["dispensed", "scrolls", "inserted", "confused", "sudden", "semester", "argued"]
+            },
+            {
+                text: "In the attic of her new house, Priya found a dusty globe. It wasn't like any globe she'd seen — the countries were wrong, the oceans had different names, and there was a landmass where the Pacific Ocean should have been. When she spun it, the room filled with the sound of waves.\n\nThat night, she spun it again and spoke the name of the mystery continent: \"Zhaan.\"\n\nThe globe flashed. When she woke up, she was lying on a beach with purple sand under an orange sky. A girl holding a lantern approached and said, \"You're early. We weren't expecting visitors for another hundred years.\"",
+                vocab: ["attic", "dusty", "globe", "oceans", "landmass", "mystery", "continent", "lantern"]
+            },
+            {
+                text: "Luca's grandmother had a rule: never open the green door in the hallway. For twelve years, Luca had walked past it every day without a second thought. But on his thirteenth birthday, his grandmother handed him a key.\n\n\"You're old enough now,\" she said. \"But be warned — once you open it, you can't un-see what's on the other side.\"\n\nLuca's hand trembled as he turned the key. The door swung open. Behind it was... a library. A massive, impossible library stretching in every direction. On every shelf were books with gold lettering. Luca pulled one out. Its title: THE DAY YOU WERE BORN — THE COMPLETE RECORD.\n\nThen he noticed: there was a book for every person he'd ever met.",
+                vocab: ["hallway", "thirteenth", "warned", "trembled", "impossible", "stretching", "lettering", "complete"]
+            },
+            {
+                text: "The twins, Arlo and Ada, had always shared everything: a birthday, a room, and a secret language made up of whistles and hand signals. On their last day of middle school, they discovered they could also share thoughts.\n\nIt started in math class. Ada was struggling with a problem when Arlo — across the room — sent her the answer. Not out loud. In her mind.\n\nAt first, they thought it was a coincidence. That night, they tested it. Arlo thought: POTATO and Ada shouted \"POTATO!\" before he could speak. They tried complex sentences, images, even songs. It all worked.\n\nBut the next morning, they woke up to find a message scrawled on their bedroom mirror: \"WE KNOW ABOUT YOU TWO.\"",
+                vocab: ["twins", "secret", "whistles", "struggling", "coincidence", "complex", "scrawled", "mirror"]
+            },
+            {
+                text: "No one ever talked about the last train. It ran once a night, at 3:33 AM, on a track that didn't appear on any map. The station was hidden behind an old factory, overgrown with weeds. Rumor said the train could take you anywhere — not just any city, but any moment in time.\n\nJuno had lost someone important. She didn't care about the danger. She waited at the hidden station, shivering in the cold, until she heard the whistle. The train was silver, glowing faintly, and when the doors opened, a conductor in old-fashioned clothing tipped his hat.\n\n\"Destination?\" he asked.\n\n\"I want to go back,\" Juno said. \"Three years ago. The day everything went wrong.\"",
+                vocab: ["appear", "overgrown", "hidden", "shivering", "faintly", "conductor", "destination"]
+            },
+            {
+                text: "Miko loved baking. Every Saturday, she'd try a new recipe from her mother's old cookbook. But there was one page she'd never tried — the last page, stained with something dark, with a recipe called 'Starlight Bread.' The instructions were strange: knead under a full moon, add a pinch of stardust, and bake until it glows.\n\nMiko laughed. It was clearly a joke. But one full-moon Saturday, bored and curious, she gathered the ingredients as written — substituting edible glitter for stardust. She kneaded the dough by the window, letting the moonlight hit it.\n\nWhen the timer dinged, she opened the oven. The bread was... glowing. Softly. Beautifully. And floating two inches above the baking tray.\n\nShe reached for it...",
+                vocab: ["recipe", "cookbook", "stained", "instructions", "substituting", "glitter", "floating", "tray"]
+            },
+            {
+                text: "The map was drawn on a napkin. A crude sketch of the school, with an X marked in the library and a note: 'Third shelf, behind the encyclopedias.' Omar found it tucked inside his textbook on the first day of senior year.\n\nHe didn't recognize the handwriting. But curiosity got the better of him. During lunch, he slipped into the library and ran his fingers along the third shelf. Behind a row of dusty encyclopedias, his fingers touched something cold — a small metal box with a combination lock.\n\nWritten on the bottom in permanent marker: 'The code is the day we became friends.'\n\nOmar frowned. He had no idea who 'we' was. But someone clearly thought he would.",
+                vocab: ["crude", "textbook", "curiosity", "slipped", "encyclopedias", "combination", "permanent", "frowned"]
+            },
+            {
+                text: "Every night at exactly 11:11 PM, the streetlight outside Emma's window would flicker exactly three times. She'd lived in the house for six years and had never thought much of it — until the night it flickered four times.\n\nShe looked out the window. A figure stood under the light, looking up at her. It raised a hand and pointed toward the park across the street.\n\nEmma told herself it was a prank, a neighbor, anything logical. But the next night, the light flickered five times. The figure was closer — standing at the edge of her yard. And it was holding something.\n\nShe squinted. It was a photograph. Of her. Taken from outside her window.\n\nHer phone buzzed. A text from an unknown number: \"It's time to talk.\"",
+                vocab: ["exactly", "flicker", "figure", "logical", "edge", "squinted", "photograph", "buzzed"]
+            },
+            {
+                text: "In the center of the forbidden desert stood the Library of Whispers — a tower so tall its top disappeared into clouds. They said the library contained every piece of knowledge ever lost: burned books, forgotten languages, erased histories.\n\nOnly one person could enter per century. This century, the honor fell to a quiet librarian named Sora. She didn't feel heroic. She felt terrified.\n\nThe tower door had no handle. Instead, it asked a question out loud: \"What is the most dangerous knowledge of all?\"\n\nSora thought for a long moment. Truth? Power? The future?\n\nShe whispered her answer. The door swung open. Inside, the books seemed to breathe. And one of them — on the very first shelf — had her name on the spine.\n\nShe reached for it...",
+                vocab: ["forbidden", "desert", "disappeared", "contained", "erased", "century", "heroic", "terrified", "spine"]
+            },
+            {
+                text: "Pip was an inventor who never made it big. Her workshop was filled with half-finished machines: a hat that could translate baby babble, a pen that wrote in any color you wished for, a clock that counted down to embarrassing moments. She sold just enough gadgets to keep the lights on.\n\nOne rainy afternoon, a stranger visited her shop. He wore a sleek black coat and carried a briefcase. \"I represent a very exclusive client,\" he said. \"Someone who believes you're the only person alive who can build a... well, a very unusual machine.\"\n\nHe opened the briefcase. Inside were blueprints for a door that could open anywhere — not just to another room, but to another world.\n\n\"Before you ask,\" the stranger added, \"the pay is unlimited. The danger, however, is considerable.\"\n\nPip grinned. \"I'm in.\"",
+                vocab: ["inventor", "gadgets", "represent", "exclusive", "blueprints", "unlimited", "considerable", "grinned"]
+            }
+        ];
+
+        // Classic stories placeholder data
+        const CLASSICS = [
+            { id: "monkey-paw", title: "The Monkey's Paw", author: "W.W. Jacobs", year: 1902, icon: "🐾" },
+            { id: "gift-magi", title: "The Gift of the Magi", author: "O. Henry", year: 1905, icon: "🎁" },
+            { id: "necklace", title: "The Necklace", author: "Guy de Maupassant", year: 1884, icon: "💎" },
+            { id: "tell-tale-heart", title: "The Tell-Tale Heart", author: "Edgar Allan Poe", year: 1843, icon: "❤️" },
+            { id: "lottery", title: "The Lottery", author: "Shirley Jackson", year: 1948, icon: "🎫" },
+            { id: "yellow-wallpaper", title: "The Yellow Wallpaper", author: "Charlotte Perkins Gilman", year: 1892, icon: "🟨" },
+            { id: "open-window", title: "The Open Window", author: "Saki (H.H. Munro)", year: 1914, icon: "🪟" },
+            { id: "last-leaf", title: "The Last Leaf", author: "O. Henry", year: 1907, icon: "🍃" },
+            { id: "cask-amontillado", title: "The Cask of Amontillado", author: "Edgar Allan Poe", year: 1846, icon: "🍷" },
+            { id: "story-hour", title: "The Story of an Hour", author: "Kate Chopin", year: 1894, icon: "⏱️" },
+            { id: "interlopers", title: "The Interlopers", author: "Saki", year: 1919, icon: "🌲" },
+            { id: "gift", title: "The Gift", author: "Ray Bradbury", year: 1952, icon: "⭐" }
+        ];
+
+        // ==================== SCENARIOS ====================
+        function loadScenarios() {
+            const container = document.getElementById('scenarioCards');
+            if (!window.data || !window.data.scenarios) {
+                container.innerHTML = '<p style="color:var(--text-dim);font-size:0.8rem;">No scenarios loaded. Make sure classroom-data.js is available.</p>';
+                return;
+            }
+            const allScenarios = [];
+            for (const cat in window.data.scenarios) {
+                const catLabel = cat.toLowerCase().replace(/_/g, ' ');
+                for (const s of window.data.scenarios[cat]) {
+                    allScenarios.push({ ...s, category: catLabel, catKey: cat });
+                }
+            }
+            if (allScenarios.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-dim);font-size:0.8rem;">No scenarios found.</p>';
+                return;
+            }
+
+            // Show a subset (first 20 or so)
+            const shown = allScenarios.slice(0, 30);
+            container.innerHTML = shown.map((s, i) => `
+                <button type="button" class="scenario-card" onclick="selectScenario(${i})" data-idx="${i}" id="sc-${i}">
+                    <span class="sc-roles">${escHtml(s.roles)}</span>
+                    <span class="sc-text">${escHtml(s.text)}</span>
+                    <span class="sc-tag">🏷 ${escHtml(s.category)}</span>
+                </button>
+            `).join('');
+
+            window._shownScenarios = shown;
+            window._allScenarios = allScenarios;
+        }
+
+        function selectScenario(idx) {
+            const s = window._shownScenarios?.[idx];
+            if (!s) return;
+            // Highlight
+            document.querySelectorAll('.scenario-card').forEach(c => c.style.borderLeftColor = 'var(--accent)');
+            const el = document.getElementById('sc-' + idx);
+            if (el) el.style.borderLeftColor = 'var(--accent2)';
+            // Display in reader area
+            openReaderIfClosed();
+            document.getElementById('readerContent').innerHTML = `
+                <h3 style="color:var(--accent2);margin-bottom:10px;">🎭 Scenario</h3>
+                <p style="color:var(--text-dim);margin-bottom:6px;"><strong>Roles:</strong> ${escHtml(s.roles)} | <strong>Category:</strong> ${escHtml(s.category)}</p>
+                <p style="font-size:1.05rem;line-height:1.7;">${escHtml(s.text)}</p>
+                <p style="margin-top:16px;color:var(--text-dim);font-size:0.8rem;">💡 Have pairs take turns playing each role. Encourage ad-libbing beyond the prompt.</p>
+            `;
+        }
+
+        function openReaderIfClosed() {
+            const area = document.getElementById('readerArea');
+            if (area.style.display === 'none') {
+                area.style.display = 'block';
+                document.getElementById('toggleReaderBtn').textContent = '▼ Close Reader';
+            }
+        }
+
+        // ==================== UNFINISHED STORY ====================
+        function generateUnfinished() {
+            const story = UNFINISHED_STORIES[Math.floor(Math.random() * UNFINISHED_STORIES.length)];
+            let html = story.text;
+            // Bold the vocab words
+            for (const w of story.vocab) {
+                const re = new RegExp(`\\b(${escapeRegex(w)})\\b`, 'gi');
+                html = html.replace(re, '<b class="vocab">$1</b>');
+            }
+            html += `\n\n<span style="color:var(--gold);font-size:0.8rem;">🔑 <b>Vocab:</b> ${story.vocab.join(' • ')}</span>`;
+            html += `\n<span style="color:var(--accent2);font-size:0.85rem;">✍️ <b>Task:</b> Continue the story in your own words. What happens next? (100-200 words)</span>`;
+            document.getElementById('unfinishedOutput').innerHTML = html;
+            document.getElementById('rerollUnfinished').style.display = 'inline-block';
+        }
+
+        // ==================== STORY READER ====================
+        function toggleReader() {
+            const area = document.getElementById('readerArea');
+            const btn = document.getElementById('toggleReaderBtn');
+            if (area.style.display === 'none') {
+                area.style.display = 'block';
+                btn.textContent = '▼ Close Reader';
+            } else {
+                area.style.display = 'none';
+                btn.textContent = '▶ Open Reader';
+            }
+        }
+
+        function loadClassicsList() {
+            const list = document.getElementById('classicsList');
+            list.innerHTML = CLASSICS.map(c => `
+                <li onclick="selectClassic('${c.id}')">
+                    <span class="book-icon">${c.icon}</span>
+                    <span>${c.title}<br><small style="color:var(--text-dim)">${c.author} (${c.year})</small></span>
+                    <span class="coming-soon">ADD TEXT</span>
+                </li>
+            `).join('');
+        }
+
+        function selectClassic(id) {
+            const c = CLASSICS.find(x => x.id === id);
+            if (!c) return;
+            document.getElementById('readerContent').innerHTML = `
+                <h3 style="color:var(--accent2);margin-bottom:6px;">${c.icon} ${c.title}</h3>
+                <p style="color:var(--text-dim);margin-bottom:16px;"><strong>${c.author}</strong> — ${c.year}</p>
+                <div style="background:var(--bg);border-radius:8px;padding:20px;text-align:center;color:var(--text-dim);">
+                    <p style="font-size:2rem;">📝</p>
+                    <p style="margin-top:8px;">You'll add the full story text here later!</p>
+                    <p style="font-size:0.75rem;margin-top:6px;">Story ID: <code style="color:var(--accent);">${c.id}</code></p>
+                </div>
+            `;
+        }
+
+        // ==================== UTILS ====================
+        function escHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+        function escapeRegex(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+        // ==================== INIT ====================
+        window.addEventListener('DOMContentLoaded', () => {
+            loadClassicsList();
+            if (window.data) {
+                loadScenarios();
+            } else {
+                // Data not loaded yet? Wait a bit
+                const check = setInterval(() => {
+                    if (window.data) { loadScenarios(); clearInterval(check); }
+                }, 100);
+                setTimeout(() => clearInterval(check), 3000);
+            }
+        });
+
+        // Expose functions globally
+        window.selectScenario = selectScenario;
+        window.selectClassic = selectClassic;
+        window.generateUnfinished = generateUnfinished;
+        window.toggleReader = toggleReader;
+    })();
+    </script>
+</body>
+</html>
