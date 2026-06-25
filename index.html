@@ -257,36 +257,84 @@
         .rp-card.color-7 { border-top-color: #74B9FF; } /* bureaucracy */
 
         /* ======================================== */
-        /* Quick Links Bar */
+        /* QR Code */
         /* ======================================== */
-        .quick-links {
+        .footer-qr {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 100%;
-            max-width: 1050px;
-            margin-bottom: 10px;
-        }
-        .quick-link {
-            display: inline-flex;
+            flex-direction: column;
             align-items: center;
-            gap: 6px;
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 0.82rem;
-            font-weight: 600;
-            padding: 8px 18px;
-            background: var(--surface);
-            border-radius: 22px;
-            transition: var(--transition);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            gap: 10px;
+            margin-top: 10px;
         }
-        .quick-link:hover {
-            color: var(--text);
-            background: var(--surface2);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-            transform: translateY(-2px);
+        .footer-qr img {
+            width: 130px;
+            height: 130px;
+            border-radius: 12px;
+            background: #fff;
+            padding: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+        .footer-qr img:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+        }
+        .footer-qr span {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+        }
+
+        /* ======================================== */
+        /* QR Overlay */
+        /* ======================================== */
+        .qr-overlay {
+            position: fixed;
+            inset: 0;
+            background: #0f0f1a;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            cursor: pointer;
+            animation: qrFadeIn 0.25s ease;
+        }
+        .qr-overlay.hidden {
+            display: none;
+        }
+        @keyframes qrFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .qr-overlay img {
+            width: min(80vw, 80vh, 450px);
+            height: auto;
+            aspect-ratio: 1;
+            border-radius: 20px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+            animation: qrPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes qrPop {
+            from { transform: scale(0.6); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .qr-overlay .qr-label {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: var(--accent);
+            padding: 8px 20px;
+            border-radius: 20px;
+            animation: qrFadeIn 0.35s ease 0.15s both;
+        }
+        .qr-overlay .qr-dismiss {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            animation: qrFadeIn 0.35s ease 0.25s both;
         }
 
         /* ======================================== */
@@ -319,7 +367,9 @@
         @media (max-width: 500px) {
             .gallery { grid-template-columns: 1fr 1fr; gap: 8px; }
             .rp-card { padding: 12px 10px; gap: 6px; }
-            .quick-links { flex-direction: column; align-items: center; }
+            .hero-cta-group { flex-direction: column; align-items: center; }
+            .hero-cta { width: 100%; justify-content: center; font-size: 0.95rem; padding: 12px 20px; }
+            body { padding: 14px 10px 30px; }
         }
     </style>
 </head>
@@ -359,19 +409,21 @@
     </div>
 
     <!-- ============================================ -->
-    <!-- QUICK LINKS -->
-    <!-- ============================================ -->
-    <div class="quick-links">
-        <a href="hub.html" class="quick-link">🏫 English Hub</a>
-        <a href="stories.html" class="quick-link">📚 Stories Hub</a>
-        <a href="Classroom-tool.html" class="quick-link">🛠️ Classroom Tool (v3)</a>
-    </div>
-
-    <!-- ============================================ -->
     <!-- FOOTER -->
     <!-- ============================================ -->
     <div class="site-footer">
         English Game Hub &copy; 2024 — Built for the classroom.
+            <div class="footer-qr">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://esl.weckeroscar.com" alt="QR code: esl.weckeroscar.com" width="150" height="150" onclick="openQr()">
+            <span>📱 esl.weckeroscar.com</span>
+        </div>
+    </div>
+
+    <!-- QR Overlay (outside footer to avoid opacity inheritance) -->
+    <div id="qrOverlay" class="qr-overlay hidden" onclick="closeQr()">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://esl.weckeroscar.com" alt="QR code: esl.weckeroscar.com">
+        <span class="qr-label">📱 esl.weckeroscar.com</span>
+        <span class="qr-dismiss">Tap anywhere to close</span>
     </div>
 
     <script>
@@ -450,6 +502,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', buildGallery);
+
+        // ==================== QR Overlay ====================
+        window.openQr = function() {
+            document.getElementById('qrOverlay').classList.remove('hidden');
+        };
+        window.closeQr = function() {
+            document.getElementById('qrOverlay').classList.add('hidden');
+        };
     })();
     </script>
 </body>
