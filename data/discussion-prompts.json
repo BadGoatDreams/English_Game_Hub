@@ -1,0 +1,189 @@
+{
+  "elementary": {
+    "everyday": [
+      "What is your favorite time of day? Why?",
+      "Do you like to help at home? What do you do?",
+      "What makes you feel happy?",
+      "Tell us about your best friend.",
+      "What do you do on a rainy day?"
+    ],
+    "school": [
+      "What is your favorite subject in school?",
+      "Do you like to read books? Which one?",
+      "What games do you play at break time?",
+      "Who is your favorite teacher? Why?",
+      "What would you change about your classroom?"
+    ],
+    "food": [
+      "What is your favorite meal?",
+      "Do you like to try new foods?",
+      "What food do you not like?",
+      "Do you help cook at home?",
+      "What do you eat for breakfast?"
+    ],
+    "animals": [
+      "If you could be any animal, which one?",
+      "Do you have a pet? Tell us about it.",
+      "What animal is the most beautiful?",
+      "What animal do you think is scary?",
+      "If you could talk to animals, what would you ask?"
+    ],
+    "fun": [
+      "What do you like to do on weekends?",
+      "What is your favorite game?",
+      "If you had a superpower, what would it be?",
+      "Where would you go if you could fly?",
+      "What is the best holiday?"
+    ]
+  },
+  "basic": {
+    "everyday": [
+      "Describe your typical morning routine.",
+      "What do you usually do after school or work?",
+      "Do you prefer to stay at home or go out? Why?",
+      "Who is the most important person in your life?",
+      "What makes a good friend?",
+      "How do you usually spend your money?"
+    ],
+    "school": [
+      "Should students wear uniforms? Why or why not?",
+      "What is the best way to learn a new language?",
+      "Should homework be banned?",
+      "What subject do you think is most useful in life?",
+      "Is it better to learn alone or in a group?",
+      "Should students choose their own teachers?"
+    ],
+    "food": [
+      "What is a traditional dish from your country?",
+      "Are home-cooked meals better than restaurant food?",
+      "Should children learn to cook?",
+      "What food would you eat every day if you could?",
+      "Is fast food bad for you?",
+      "What is the strangest food you have ever tried?"
+    ],
+    "travel": [
+      "Where would you most like to travel?",
+      "Is it better to travel by plane or by train?",
+      "What country would you like to visit? Why?",
+      "What do you pack first when going on a trip?",
+      "Would you rather go to the beach or the mountains?",
+      "Is it better to travel alone or with friends?"
+    ],
+    "technology": [
+      "How often do you use your phone?",
+      "Is social media good or bad?",
+      "What is your favorite app?",
+      "Should children have smartphones?",
+      "Can people live without the internet?",
+      "What new technology do you find exciting?"
+    ],
+    "life": [
+      "What job would you like to do in the future?",
+      "Is it better to live in a city or a village?",
+      "What sport do you enjoy playing or watching?",
+      "Do you prefer hot or cold weather?",
+      "What would you buy if you won a lot of money?",
+      "Is it important to learn English? Why?"
+    ]
+  },
+  "intermediate": {
+    "everyday": [
+      "How has your daily life changed in the past year?",
+      "What small habits make a big difference in your day?",
+      "Do you consider yourself an optimist or a pessimist?",
+      "How do you handle stress?",
+      "What skill would you most like to learn?",
+      "How important is free time to you?"
+    ],
+    "school": [
+      "Should education be free for everyone?",
+      "What changes would you make to the school system?",
+      "Are grades an accurate measure of intelligence?",
+      "Should arts and music be required subjects?",
+      "Is online learning as effective as classroom learning?",
+      "What is the role of a teacher in the 21st century?"
+    ],
+    "technology": [
+      "Is artificial intelligence a threat or an opportunity?",
+      "How has social media changed the way we communicate?",
+      "Would you trust a self-driving car?",
+      "Should there be limits on screen time for adults?",
+      "How is technology changing the job market?",
+      "Do smartphones make us less social?",
+      "What will the internet look like in 20 years?"
+    ],
+    "environment": [
+      "What is the biggest environmental problem today?",
+      "Should plastic bags be banned?",
+      "What can one person do to help the planet?",
+      "Is it better to buy local or imported food?",
+      "Should cars be banned from city centers?",
+      "How can we reduce waste in our daily lives?",
+      "Is climate change the most serious problem or humanity?"
+    ],
+    "culture": [
+      "Is globalization making cultures more alike?",
+      "Should immigrants try to keep their own traditions?",
+      "What makes your country unique?",
+      "Is it important to protect traditional languages?",
+      "How does music shape culture?",
+      "Should countries promote tourism or limit it?"
+    ],
+    "life": [
+      "Is it better to take risks or play it safe?",
+      "What does success mean to you?",
+      "How important is money for happiness?",
+      "Is work-life balance possible?",
+      "Should everyone go to university?",
+      "What age should people retire?",
+      "Is marriage still important in modern society?"
+    ]
+  },
+  "advanced": {
+    "society": [
+      "Is universal basic income a good idea?",
+      "Should voting be mandatory?",
+      "Is censorship ever justified?",
+      "Do we need a new economic system?",
+      "How should countries address the aging population?",
+      "Is nationalism a force for good or harm?",
+      "What does a just society look like?"
+    ],
+    "technology": [
+      "Should genetic engineering of humans be allowed?",
+      "What happens when AI surpasses human intelligence?",
+      "Is privacy possible in the digital age?",
+      "Should tech companies be broken up?",
+      "How will automation change the meaning of work?",
+      "Is the internet making us more polarized?",
+      "Should there be a right to be forgotten online?"
+    ],
+    "ethics": [
+      "Is it ethical to eat meat?",
+      "Should animals have rights similar to humans?",
+      "Is capital punishment ever justified?",
+      "Should wealthy countries accept more refugees?",
+      "Do we have a moral obligation to future generations?",
+      "Is it wrong to have children given the climate crisis?",
+      "How should limited medical resources be distributed?"
+    ],
+    "future": [
+      "Will humans colonize other planets in this century?",
+      "What will work look like in 50 years?",
+      "Should we try to stop technological progress?",
+      "How will climate change reshape human civilization?",
+      "Is utopia possible?",
+      "What role will religion play in the future?",
+      "Will national borders become obsolete?"
+    ],
+    "education": [
+      "Should university be free for everyone?",
+      "Is the lecture format outdated?",
+      "Should education focus more on skills than knowledge?",
+      "Are elite universities harmful to society?",
+      "How should we educate children for jobs that don't exist yet?",
+      "Is standardized testing useful?",
+      "Should history education focus more on uncomfortable truths?"
+    ]
+  }
+}

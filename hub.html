@@ -625,16 +625,18 @@
 
         // Activity definitions
         const activityDefs = [
-            { key: 'silly',      icon: '🤪', label: 'Silly Qs' },
-            { key: 'serious',    icon: '🤔', label: 'Serious Qs' },
-            { key: 'wyr',        icon: '🤷', label: 'Would You Rather' },
-            { key: 'topic',      icon: '📝', label: 'Random Topic' },
-            { key: 'debate',     icon: '⚖️', label: 'Debate' },
-            { key: 'twister',    icon: '👅', label: 'Tongue Twisters' },
-            { key: 'scramble',   icon: '🔤', label: 'Word Scramble' },
-            { key: 'wotd',       icon: '📖', label: 'Word of Day' },
-            { key: 'taboo',      icon: '🚫', label: 'Vocab Taboo' },
-            { key: 'incorrect',  icon: '❌', label: 'Incorrect' }
+            { key: 'silly',        icon: '🤪', label: 'Silly Qs' },
+            { key: 'serious',      icon: '🤔', label: 'Serious Qs' },
+            { key: 'wyr',          icon: '🤷', label: 'Would You Rather' },
+            { key: 'topic',        icon: '📝', label: 'Random Topic' },
+            { key: 'debate',       icon: '⚖️', label: 'Debate' },
+            { key: 'twister',      icon: '👅', label: 'Tongue Twisters' },
+            { key: 'scramble',     icon: '🔤', label: 'Word Scramble' },
+            { key: 'wotd',         icon: '📖', label: 'Word of Day' },
+            { key: 'taboo',        icon: '🚫', label: 'Vocab Taboo' },
+            { key: 'incorrect',    icon: '❌', label: 'Incorrect' },
+            { key: 'discussion',   icon: '🗣️', label: 'Discussion' },
+            { key: 'fourcorners',  icon: '🧭', label: 'Four Corners' }
         ];
 
         // ---- Init ---- //
@@ -662,6 +664,24 @@
                 const resp = await fetch('data/incorrect-sentences.json');
                 if (resp.ok) window._incorrectData = await resp.json();
             } catch(e) { console.warn('Could not load incorrect-sentences.json'); }
+
+            // Discussion prompts
+            try {
+                const resp = await fetch('data/discussion-prompts.json');
+                if (resp.ok) window._discussionData = await resp.json();
+            } catch(e) { console.warn('Could not load discussion-prompts.json'); }
+
+            // Four Corners
+            try {
+                const resp = await fetch('data/four-corners.json');
+                if (resp.ok) window._fourCornersData = await resp.json();
+            } catch(e) { console.warn('Could not load four-corners.json'); }
+
+            // Categories data for theme filtering
+            try {
+                const resp = await fetch('data/categories.json');
+                if (resp.ok) window._categoriesData = await resp.json();
+            } catch(e) { console.warn('Could not load categories.json'); }
         }
 
         // ---- Theme Dropdown ---- //
@@ -892,6 +912,62 @@
             if (actKey === 'taboo') {
                 const taboo = randomPick(window.data.taboo || [{word: 'Umbrella', forbidden: ['rain', 'wet', 'open', 'close']}]);
                 return { text: `🚫 TABOO: "${taboo.word}" — Forbidden: ${taboo.forbidden.join(', ')}`, filtered: false };
+            }
+
+            // ---- DISCUSSION PROMPTS ---- //
+            if (actKey === 'discussion') {
+                if (window._discussionData) {
+                    let data = window._discussionData[level];
+                    if (!data || Object.keys(data).length === 0) {
+                        data = window._discussionData.basic || window._discussionData.intermediate || window._discussionData.elementary || window._discussionData.advanced;
+                    }
+                    if (data) {
+                        // If a theme is set, try to match a discussion category
+                        if (theme) {
+                            // Map theme keys to discussion category keys
+                            const themeToDiscCat = {
+                                family: 'everyday', travel: 'travel', food: 'food',
+                                technology: 'technology', education: 'school', culture: 'culture',
+                                nature: 'environment', health: 'life', arts: 'culture'
+                            };
+                            const discCat = themeToDiscCat[theme] || theme;
+                            if (data[discCat] && data[discCat].length > 0) {
+                                const chosen = randomPick(data[discCat]);
+                                return { text: `🗣️ Discuss: ${chosen}`, filtered: true };
+                            }
+                            // Try 'everyday' as fallback theme category
+                            if (data.everyday && data.everyday.length > 0) {
+                                const chosen = randomPick(data.everyday);
+                                return { text: `🗣️ Discuss: ${chosen}`, filtered: true };
+                            }
+                        }
+                        // No theme or theme not matched: pick from any category
+                        const allPrompts = [];
+                        for (const cat in data) {
+                            allPrompts.push(...(data[cat] || []));
+                        }
+                        if (allPrompts.length > 0) {
+                            const chosen = randomPick(allPrompts);
+                            return { text: `🗣️ Discuss: ${chosen}`, filtered: !!theme };
+                        }
+                    }
+                }
+                return { text: '🗣️ Discuss: What do you think about this?', filtered: false };
+            }
+
+            // ---- FOUR CORNERS ---- //
+            if (actKey === 'fourcorners') {
+                if (window._fourCornersData) {
+                    const data = window._fourCornersData[level] || window._fourCornersData.basic || window._fourCornersData.intermediate || window._fourCornersData.elementary || window._fourCornersData.advanced;
+                    if (data && data.length > 0) {
+                        const q = randomPick(data);
+                        return {
+                            text: `🧭 ${q.question}\n\nA: ${q.options[0]}  |  B: ${q.options[1]}\nC: ${q.options[2]}  |  D: ${q.options[3]}`,
+                            filtered: false
+                        };
+                    }
+                }
+                return { text: '🧭 Four Corners: Pick a corner!\n\nA: Option A  |  B: Option B\nC: Option C  |  D: Option D', filtered: false };
             }
 
             // ---- INCORRECT SENTENCE (new!) ---- //

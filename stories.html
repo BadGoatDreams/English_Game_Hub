@@ -110,46 +110,61 @@
         .panel h2 span { font-size: 1.3rem; }
         .panel-desc { color: var(--text-dim); font-size: 0.78rem; line-height: 1.5; }
 
-        /* Scenario Cards — roleplay scenarios */
-        .scenario-card {
+        /* Scenario display (compact) */
+        .scenario-display {
             background: var(--surface2);
             border-radius: 10px;
-            padding: 16px 18px;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 2px solid transparent;
-            border-left: 4px solid var(--accent);
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-family: 'Poppins', sans-serif;
-            text-align: left;
-            color: inherit;
-            width: 100%;
+            padding: 18px;
+            min-height: 120px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text);
         }
-        .scenario-card:hover { transform: translateX(4px); background: #2a2a4e; border-color: var(--accent2); }
-        .scenario-card:active { transform: translateX(2px); background: var(--surface); }
-        .scenario-card:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(124,92,252,0.3); }
-        .scenario-card .sc-roles {
+        .scenario-display .sc-roles {
             font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--accent2);
-            pointer-events: none;
+            margin-bottom: 8px;
         }
-        .scenario-card .sc-text {
-            font-size: 0.88rem;
-            line-height: 1.4;
+        .scenario-display .sc-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
             color: var(--text);
-            pointer-events: none;
+            margin-bottom: 8px;
         }
-        .scenario-card .sc-tag {
+        .scenario-display .sc-tag {
             font-size: 0.65rem;
             color: var(--text-dim);
-            margin-top: 2px;
-            pointer-events: none;
         }
+        .scenario-display .sc-empty {
+            color: var(--text-dim);
+            text-align: center;
+            padding-top: 16px;
+            font-size: 0.85rem;
+        }
+
+        /* Theme buttons (for scenarios) */
+        .theme-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .theme-btn {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1.5px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .theme-btn:hover { background: rgba(124,92,252,0.12); }
+        .theme-btn.active { background: var(--accent); color: #fff; }
 
         /* Buttons */
         .btn {
@@ -193,6 +208,74 @@
         }
         .output-box b { color: var(--accent2); }
         .output-box .vocab { color: var(--gold); font-weight: 700; }
+
+        /* Full-screen reading overlay */
+        .fs-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5,5,18,0.97);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 24px 60px;
+            overflow-y: auto;
+        }
+        .fs-overlay.open { display: flex; }
+        .fs-overlay .fs-close {
+            position: fixed;
+            top: 16px; right: 20px;
+            font-size: 1.4rem;
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: 700;
+            z-index: 10001;
+            transition: var(--transition);
+        }
+        .fs-overlay .fs-close:hover { background: var(--accent2); color: #fff; border-color: var(--accent2); }
+        .fs-overlay .fs-content {
+            max-width: 800px;
+            width: 100%;
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 36px 28px;
+            box-shadow: var(--shadow);
+            margin-top: 10px;
+        }
+        .fs-overlay .fs-content h3 { font-size: 1.5rem; margin-bottom: 6px; color: var(--accent2); }
+        .fs-overlay .fs-content .fs-meta { color: var(--text-dim); margin-bottom: 20px; font-size: 0.85rem; }
+        .fs-overlay .fs-content .fs-body {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: var(--text);
+            text-align: justify;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+        .fs-overlay .fs-content .fs-body p { margin-bottom: 14px; }
+        .fs-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: 1.5px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-left: 8px;
+        }
+        .fs-btn:hover { background: rgba(124,92,252,0.12); }
 
         /* Classics sidebar */
         .classics-list {
@@ -238,8 +321,6 @@
             .top-nav { flex-direction: column; align-items: stretch; }
             .top-nav a { justify-content: center; }
             .panel { padding: 16px 12px; }
-            .scenario-card { padding: 12px 14px; }
-            .scenario-card .sc-text { font-size: 0.8rem; }
             .btn { font-size: 0.82rem; padding: 12px 18px; }
             #readerArea > div { grid-template-columns: 1fr; }
         }
@@ -259,53 +340,58 @@
         <h1>Stories Hub</h1>
     </div>
 
-    <!-- MAIN GRID -->
-    <div class="main-grid">
+     <!-- MAIN GRID -->
+     <div class="main-grid">
 
-        <!-- LEFT COLUMN: Scenarios -->
-        <div class="panel" id="scenariosPanel">
-            <h2><span>🎭</span> Role-Play Scenarios</h2>
-            <p class="panel-desc">Short A & B role-plays. Click any to display it — great for pair practice.</p>
-            <div id="scenarioCards"><p style="color:var(--text-dim);font-size:0.8rem;">Loading scenarios…</p></div>
-        </div>
+         <!-- FULL WIDTH: Story Reader (top) -->
+         <div class="panel panel-wide" id="readerPanel">
+             <h2><span>📖</span> Short Story Reader</h2>
+             <p class="panel-desc">A growing library of classic short stories — click any title to read.</p>
+             <div id="readerArea">
+                 <div style="display:grid; grid-template-columns:250px 1fr; gap:16px;">
+                     <!-- Sidebar -->
+                     <div>
+                         <ul class="classics-list" id="classicsList">
+                             <!-- Populated by JS -->
+                         </ul>
+                     </div>
+                     <!-- Reader pane -->
+                     <div>
+                         <div class="output-box" id="readerContent" style="min-height:300px;">
+                             Select a story from the list to read.
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
 
-        <!-- RIGHT COLUMN: Unfinished Story -->
-        <div class="panel" id="unfinishedPanel">
-            <h2><span>✍️</span> Unfinished Story</h2>
-            <p class="panel-desc">A short story to read aloud. <b style="color:var(--gold);">Bold words</b> are challenge vocabulary. Students finish the story!</p>
-            <div class="result-row">
-                <button class="btn btn-primary" id="unfinishedBtn" onclick="generateUnfinished()">🎲 New Unfinished Story</button>
-                <button class="btn btn-outline btn-sm" id="rerollUnfinished" onclick="generateUnfinished()" style="display:none;">🔄 Re-roll</button>
-            </div>
-            <div class="output-box" id="unfinishedOutput">Click the button to get a story!</div>
-        </div>
+         <!-- LEFT COLUMN: Unfinished Story -->
+         <div class="panel" id="unfinishedPanel">
+             <h2><span>✍️</span> Unfinished Story</h2>
+             <p class="panel-desc">A short story to read aloud. <b style="color:var(--gold);">Bold words</b> are challenge vocabulary. Students finish the story!</p>
+             <div class="result-row">
+                 <button class="btn btn-primary" id="unfinishedBtn" onclick="generateUnfinished()">🎲 New Unfinished Story</button>
+                 <button class="btn btn-outline btn-sm" id="rerollUnfinished" onclick="generateUnfinished()" style="display:none;">🔄 Re-roll</button>
+             </div>
+             <div class="output-box" id="unfinishedOutput">Click the button to get a story!</div>
+         </div>
 
-        <!-- FULL WIDTH: Story Reader -->
-        <div class="panel panel-wide" id="readerPanel">
-            <h2><span>📖</span> Short Story Reader</h2>
-            <p class="panel-desc">A growing library of classic short stories. <i>You'll add the story text later — for now, the catalog is ready.</i></p>
-            <div class="result-row" style="margin-bottom:14px;">
-                <button class="btn btn-secondary" id="toggleReaderBtn" onclick="toggleReader()">▶ Open Reader</button>
-            </div>
-            <div id="readerArea" style="display:none;">
-                <div style="display:grid; grid-template-columns:250px 1fr; gap:16px;">
-                    <!-- Sidebar -->
-                    <div>
-                        <ul class="classics-list" id="classicsList">
-                            <!-- Populated by JS -->
-                        </ul>
-                    </div>
-                    <!-- Reader pane -->
-                    <div>
-                        <div class="output-box" id="readerContent" style="min-height:300px;">
-                            Select a story from the list to read.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+         <!-- RIGHT COLUMN: Scenarios (compact) -->
+         <div class="panel" id="scenariosPanel">
+             <h2><span>🎭</span> Role-Play Scenarios</h2>
+             <p class="panel-desc">Random A & B role-plays for pair practice.</p>
+             <div class="theme-btns" id="scenarioThemeBtns">
+                 <!-- Populated by JS -->
+             </div>
+             <div class="result-row">
+                 <button class="btn btn-primary" id="scenarioBtn" onclick="drawScenario()">🎲 Get Scenario</button>
+             </div>
+             <div class="scenario-display" id="scenarioDisplay">
+                 <div class="sc-empty">Click "Get Scenario" for a random role-play.</div>
+             </div>
+         </div>
 
-    </div>
+     </div>
 
     <script src="classroom-data.js"></script>
     <script>
@@ -396,78 +482,108 @@
             }
         ];
 
-        // Classic stories placeholder data
-        const CLASSICS = [
-            { id: "monkey-paw", title: "The Monkey's Paw", author: "W.W. Jacobs", year: 1902, icon: "🐾" },
-            { id: "gift-magi", title: "The Gift of the Magi", author: "O. Henry", year: 1905, icon: "🎁" },
-            { id: "necklace", title: "The Necklace", author: "Guy de Maupassant", year: 1884, icon: "💎" },
-            { id: "tell-tale-heart", title: "The Tell-Tale Heart", author: "Edgar Allan Poe", year: 1843, icon: "❤️" },
-            { id: "lottery", title: "The Lottery", author: "Shirley Jackson", year: 1948, icon: "🎫" },
-            { id: "yellow-wallpaper", title: "The Yellow Wallpaper", author: "Charlotte Perkins Gilman", year: 1892, icon: "🟨" },
-            { id: "open-window", title: "The Open Window", author: "Saki (H.H. Munro)", year: 1914, icon: "🪟" },
-            { id: "last-leaf", title: "The Last Leaf", author: "O. Henry", year: 1907, icon: "🍃" },
-            { id: "cask-amontillado", title: "The Cask of Amontillado", author: "Edgar Allan Poe", year: 1846, icon: "🍷" },
-            { id: "story-hour", title: "The Story of an Hour", author: "Kate Chopin", year: 1894, icon: "⏱️" },
-            { id: "interlopers", title: "The Interlopers", author: "Saki", year: 1919, icon: "🌲" },
-            { id: "gift", title: "The Gift", author: "Ray Bradbury", year: 1952, icon: "⭐" }
-        ];
+        // Classic stories — loaded from data/stories.json
+        let STORIES_DATA = [];
+        let STORIES_LOADED = false;
+        
+        function loadStoriesData() {
+            return fetch('data/stories.json')
+                .then(r => r.json())
+                .then(data => {
+                    STORIES_DATA = data.classics || [];
+                    STORIES_LOADED = true;
+                    loadClassicsList();
+                })
+                .catch(err => {
+                    console.error('Failed to load stories data:', err);
+                    STORIES_LOADED = true;
+                    loadClassicsList(); // show empty/error state
+                });
+        }
 
-        // ==================== SCENARIOS ====================
-        function loadScenarios() {
-            const container = document.getElementById('scenarioCards');
+        // ==================== SCENARIOS (compact) ====================
+        let _allScenarios = [];
+        let _scenarioFilter = 'all';
+
+        function initScenarios() {
             if (!window.data || !window.data.scenarios) {
-                container.innerHTML = '<p style="color:var(--text-dim);font-size:0.8rem;">No scenarios loaded. Make sure classroom-data.js is available.</p>';
+                document.getElementById('scenarioDisplay').innerHTML = '<div class="sc-empty">No scenarios loaded.</div>';
                 return;
             }
-            const allScenarios = [];
+            const all = [];
             for (const cat in window.data.scenarios) {
                 const catLabel = cat.toLowerCase().replace(/_/g, ' ');
                 for (const s of window.data.scenarios[cat]) {
-                    allScenarios.push({ ...s, category: catLabel, catKey: cat });
+                    all.push({ ...s, category: catLabel, catKey: cat });
                 }
             }
-            if (allScenarios.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-dim);font-size:0.8rem;">No scenarios found.</p>';
-                return;
+            _allScenarios = all;
+
+            // Build theme buttons
+            const themes = [...new Set(all.map(s => s.catKey))].sort();
+            const btnsContainer = document.getElementById('scenarioThemeBtns');
+            let html = '<button class="theme-btn active" data-theme="all" onclick="setScenarioTheme(\'all\')">All</button>';
+            for (const t of themes) {
+                const label = t.toLowerCase().replace(/_/g, ' ');
+                html += `<button class="theme-btn" data-theme="${t}" onclick="setScenarioTheme('${t}')">${escHtml(label)}</button>`;
             }
-
-            // Show a subset (first 20 or so)
-            const shown = allScenarios.slice(0, 30);
-            container.innerHTML = shown.map((s, i) => `
-                <button type="button" class="scenario-card" onclick="selectScenario(${i})" data-idx="${i}" id="sc-${i}">
-                    <span class="sc-roles">${escHtml(s.roles)}</span>
-                    <span class="sc-text">${escHtml(s.text)}</span>
-                    <span class="sc-tag">🏷 ${escHtml(s.category)}</span>
-                </button>
-            `).join('');
-
-            window._shownScenarios = shown;
-            window._allScenarios = allScenarios;
+            btnsContainer.innerHTML = html;
         }
 
-        function selectScenario(idx) {
-            const s = window._shownScenarios?.[idx];
-            if (!s) return;
-            // Highlight
-            document.querySelectorAll('.scenario-card').forEach(c => c.style.borderLeftColor = 'var(--accent)');
-            const el = document.getElementById('sc-' + idx);
-            if (el) el.style.borderLeftColor = 'var(--accent2)';
-            // Display in reader area
-            openReaderIfClosed();
-            document.getElementById('readerContent').innerHTML = `
-                <h3 style="color:var(--accent2);margin-bottom:10px;">🎭 Scenario</h3>
-                <p style="color:var(--text-dim);margin-bottom:6px;"><strong>Roles:</strong> ${escHtml(s.roles)} | <strong>Category:</strong> ${escHtml(s.category)}</p>
-                <p style="font-size:1.05rem;line-height:1.7;">${escHtml(s.text)}</p>
-                <p style="margin-top:16px;color:var(--text-dim);font-size:0.8rem;">💡 Have pairs take turns playing each role. Encourage ad-libbing beyond the prompt.</p>
+        function setScenarioTheme(theme) {
+            _scenarioFilter = theme;
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.theme-btn[data-theme="${theme}"]`).classList.add('active');
+        }
+
+        function drawScenario() {
+            const filtered = _scenarioFilter === 'all' 
+                ? _allScenarios 
+                : _allScenarios.filter(s => s.catKey === _scenarioFilter);
+            if (filtered.length === 0) {
+                document.getElementById('scenarioDisplay').innerHTML = '<div class="sc-empty">No scenarios in this theme.</div>';
+                return;
+            }
+            const s = filtered[Math.floor(Math.random() * filtered.length)];
+            document.getElementById('scenarioDisplay').innerHTML = `
+                <div class="sc-roles">${escHtml(s.roles)}</div>
+                <div class="sc-text">${escHtml(s.text)}</div>
+                <div class="sc-tag">🏷 ${escHtml(s.category)}</div>
             `;
         }
 
-        function openReaderIfClosed() {
-            const area = document.getElementById('readerArea');
-            if (area.style.display === 'none') {
-                area.style.display = 'block';
-                document.getElementById('toggleReaderBtn').textContent = '▼ Close Reader';
+        function selectClassic(id) {
+            const c = STORIES_DATA.find(x => x.id === id);
+            if (!c) return;
+            const hasText = c.text && c.text.trim().length > 0;
+            const youtubeBtn = c.youtube ? `<a href="${escAttr(c.youtube)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="margin-left:8px;">🎬 Listen on YouTube</a>` : '';
+            let contentHtml = '';
+            if (hasText) {
+                const paragraphs = c.text.split('\n\n').filter(p => p.trim());
+                const textHtml = paragraphs.map(p => `<p style="margin-bottom:12px;line-height:1.8;text-align:justify;">${escHtml(p)}</p>`).join('');
+                contentHtml = `
+                <div style="background:var(--bg);border-radius:8px;padding:24px;font-size:0.9rem;max-height:60vh;overflow-y:auto;">
+                    ${textHtml}
+                </div>`;
+            } else {
+                contentHtml = `
+                <div style="background:var(--bg);border-radius:8px;padding:20px;text-align:center;color:var(--text-dim);">
+                    <p style="font-size:2rem;">📝</p>
+                    <p style="margin-top:8px;">Story text coming soon!</p>
+                    <p style="font-size:0.75rem;margin-top:6px;">Story ID: <code style="color:var(--accent);">${c.id}</code></p>
+                </div>`;
             }
+            const rc = document.getElementById('readerContent');
+            rc.innerHTML = `
+                <h3 style="color:var(--accent2);margin-bottom:6px;">${c.icon} ${c.title}</h3>
+                <p style="color:var(--text-dim);margin-bottom:16px;">
+                    <strong>${c.author}</strong> — ${c.year}
+                    ${youtubeBtn}
+                    <button class="fs-btn" onclick="openFullscreenReader()" title="Read in full screen">📖 Full Screen</button>
+                </p>
+                ${contentHtml}
+            `;
+            rc.dataset.storyId = c.id;
         }
 
         // ==================== UNFINISHED STORY ====================
@@ -486,41 +602,26 @@
         }
 
         // ==================== STORY READER ====================
-        function toggleReader() {
-            const area = document.getElementById('readerArea');
-            const btn = document.getElementById('toggleReaderBtn');
-            if (area.style.display === 'none') {
-                area.style.display = 'block';
-                btn.textContent = '▼ Close Reader';
-            } else {
-                area.style.display = 'none';
-                btn.textContent = '▶ Open Reader';
-            }
-        }
-
         function loadClassicsList() {
             const list = document.getElementById('classicsList');
-            list.innerHTML = CLASSICS.map(c => `
+            if (!STORIES_LOADED) {
+                list.innerHTML = '<li style="justify-content:center;color:var(--text-dim);">Loading stories…</li>';
+                return;
+            }
+            if (STORIES_DATA.length === 0) {
+                list.innerHTML = '<li style="justify-content:center;color:var(--text-dim);">No stories found.</li>';
+                return;
+            }
+            list.innerHTML = STORIES_DATA.map(c => {
+                const hasText = c.text && c.text.trim().length > 0;
+                const badge = hasText ? '<span class="coming-soon" style="color:var(--accent);">READ</span>' : '<span class="coming-soon">COMING SOON</span>';
+                return `
                 <li onclick="selectClassic('${c.id}')">
                     <span class="book-icon">${c.icon}</span>
                     <span>${c.title}<br><small style="color:var(--text-dim)">${c.author} (${c.year})</small></span>
-                    <span class="coming-soon">ADD TEXT</span>
-                </li>
-            `).join('');
-        }
-
-        function selectClassic(id) {
-            const c = CLASSICS.find(x => x.id === id);
-            if (!c) return;
-            document.getElementById('readerContent').innerHTML = `
-                <h3 style="color:var(--accent2);margin-bottom:6px;">${c.icon} ${c.title}</h3>
-                <p style="color:var(--text-dim);margin-bottom:16px;"><strong>${c.author}</strong> — ${c.year}</p>
-                <div style="background:var(--bg);border-radius:8px;padding:20px;text-align:center;color:var(--text-dim);">
-                    <p style="font-size:2rem;">📝</p>
-                    <p style="margin-top:8px;">You'll add the full story text here later!</p>
-                    <p style="font-size:0.75rem;margin-top:6px;">Story ID: <code style="color:var(--accent);">${c.id}</code></p>
-                </div>
-            `;
+                    ${badge}
+                </li>`;
+            }).join('');
         }
 
         // ==================== UTILS ====================
@@ -529,27 +630,69 @@
             div.textContent = str;
             return div.innerHTML;
         }
+        function escAttr(str) { return str.replace(/&/g,'&').replace(/"/g,'"').replace(/'/g,'&#39;').replace(/</g,'<').replace(/>/g,'>'); }
         function escapeRegex(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
         // ==================== INIT ====================
         window.addEventListener('DOMContentLoaded', () => {
-            loadClassicsList();
+            loadStoriesData();
             if (window.data) {
-                loadScenarios();
+                initScenarios();
             } else {
-                // Data not loaded yet? Wait a bit
                 const check = setInterval(() => {
-                    if (window.data) { loadScenarios(); clearInterval(check); }
+                    if (window.data) { initScenarios(); clearInterval(check); }
                 }, 100);
                 setTimeout(() => clearInterval(check), 3000);
             }
         });
 
+        // Full-screen reader
+        function openFullscreenReader() {
+            const storyId = document.getElementById('readerContent').dataset?.storyId || '';
+            const story = STORIES_DATA.find(x => x.id === storyId);
+            if (!story) return;
+            const hasText = story.text && story.text.trim().length > 0;
+            const paragraphs = hasText ? story.text.split('\n\n').filter(p => p.trim()) : [];
+            const textHtml = paragraphs.length > 0
+                ? paragraphs.map(p => `<p>${escHtml(p)}</p>`).join('')
+                : '<p style="text-align:center;color:var(--text-dim);padding:40px;">Story text coming soon!</p>';
+            let overlay = document.getElementById('fsOverlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'fsOverlay';
+                overlay.className = 'fs-overlay';
+                overlay.innerHTML = `
+                    <button class="fs-close" onclick="closeFullscreenReader()">✕ Close</button>
+                    <div class="fs-content">
+                        <h3 id="fsTitle"></h3>
+                        <div class="fs-meta" id="fsMeta"></div>
+                        <div class="fs-body" id="fsBody"></div>
+                    </div>`;
+                document.body.appendChild(overlay);
+            }
+            document.getElementById('fsTitle').textContent = (story.icon || '📖') + ' ' + story.title;
+            document.getElementById('fsMeta').innerHTML = `<strong>${escHtml(story.author)}</strong> — ${escHtml(String(story.year))}`;
+            document.getElementById('fsBody').innerHTML = textHtml;
+            overlay.classList.add('open');
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) closeFullscreenReader();
+            });
+            document.addEventListener('keydown', escFullscreen);
+        }
+        function closeFullscreenReader() {
+            const overlay = document.getElementById('fsOverlay');
+            if (overlay) overlay.classList.remove('open');
+            document.removeEventListener('keydown', escFullscreen);
+        }
+        function escFullscreen(e) { if (e.key === 'Escape') closeFullscreenReader(); }
+
         // Expose functions globally
-        window.selectScenario = selectScenario;
         window.selectClassic = selectClassic;
         window.generateUnfinished = generateUnfinished;
-        window.toggleReader = toggleReader;
+        window.drawScenario = drawScenario;
+        window.setScenarioTheme = setScenarioTheme;
+        window.openFullscreenReader = openFullscreenReader;
+        window.closeFullscreenReader = closeFullscreenReader;
     })();
     </script>
 </body>
